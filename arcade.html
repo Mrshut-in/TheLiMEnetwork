@@ -1,0 +1,2131 @@
+<style>
+  #lime-arcade-app {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    border-radius: 12px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #lime-arcade-app .arcade-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    align-items: flex-start;
+  }
+
+  #lime-arcade-app .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 200px;
+  }
+
+  #lime-arcade-app .game-display-box {
+    flex-grow: 1;
+    border: 4px dashed #555;
+    padding: 20px;
+    min-height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+  }
+
+  #lime-arcade-app .game-wrapper {
+    display: none;
+    width: 100%;
+  }
+
+  #lime-arcade-app .game-wrapper.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  #lime-arcade-app .button {
+    cursor: pointer;
+    width: 100%;
+    height: fit-content;
+    padding: 15px;
+    background-color: rgb(223, 223, 223);
+    border-left: 3px solid white;    
+    border-top: 3px solid white;
+    border-right: 3px solid gray;
+    border-bottom: 3px solid gray;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.1rem;
+    font-weight: 900;
+    outline: 2px solid black;
+    text-align: center;
+    color: black;
+    transition: filter 0.1s;
+    box-sizing: border-box;
+  }
+
+  #lime-arcade-app .button:hover, 
+  #lime-arcade-app .button.active-btn {
+    background-color: rgb(0, 197, 0);
+    color: white;
+    outline-color: white;
+    border-left: 3px solid rgb(0, 255, 0);
+    border-top: 3px solid rgb(0, 255, 0);
+    border-right: 3px solid green;
+    border-bottom: 3px solid green;
+  }
+
+  #lime-arcade-app .button:active {
+    border-left: 3px solid green;
+    border-top: 3px solid green;
+    border-right: 3px solid rgb(0, 255, 0);
+    border-bottom: 3px solid rgb(0, 255, 0);
+  }
+
+  #lime-arcade-app .minecraft-btn {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100%;
+    padding: 15px;
+    background-color: #38a169;
+    border-left: 3px solid #68d391;
+    border-top: 3px solid #68d391;
+    border-right: 3px solid #276749;
+    border-bottom: 3px solid #276749;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.1rem;
+    font-weight: 900;
+    outline: 2px solid black;
+    text-align: center;
+    color: white;    
+    transition: filter 0.1s;
+    box-sizing: border-box;
+    margin-top: 10px;
+  }
+
+  #lime-arcade-app .minecraft-btn:hover,
+  #lime-arcade-app .minecraft-btn.active-btn {
+    filter: brightness(1.15);
+    color: white;
+    background-color: #48bb78;
+  }
+
+  #lime-arcade-app .minecraft-btn:active {
+    border-left: 3px solid #276749;
+    border-top: 3px solid #276749;
+    border-right: 3px solid #68d391;
+    border-bottom: 3px solid #68d391;
+  }
+
+  @media(max-width: 850px) {
+    #lime-arcade-app .arcade-container {
+      flex-direction: column;
+    }
+    #lime-arcade-app .sidebar {
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    #lime-arcade-app .button, #lime-arcade-app .minecraft-btn {
+      width: auto;
+      flex-grow: 1;      
+      margin-top: 0;
+    }
+    #lime-arcade-app .game-display-box {
+      min-height: 500px;
+    }
+  }
+</style>
+
+<script>
+  // Minecraft not working fix
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Backspace' || event.keyCode === 8) {
+      let doPrevent = true;
+      let types = ["text", "password", "file", "search", "email", "number", "date", "color", "datetime", "datetime-local", "month", "range", "search", "tel", "time", "url", "week"];
+      let d = event.srcElement || event.target;
+      let disabled = d.getAttribute("readonly") || d.getAttribute("disabled");
+      
+      if (!disabled) {
+        if (d.tagName.toUpperCase() === "INPUT") {
+          let type = d.getAttribute("type");
+          if (type) type = type.toLowerCase();
+          if (types.indexOf(type) > -1) doPrevent = false;
+        } else if (d.tagName.toUpperCase() === "TEXTAREA") {
+          doPrevent = false;
+        } else if (d.isContentEditable) {
+          doPrevent = false;
+        }
+      }
+      
+      if (doPrevent) {
+        event.preventDefault();
+      }
+    }
+  });
+
+  window.reportScore = function(game, score) { };
+
+  window.switchGame = function(gameId, btnElement, subGameId) {
+    // 1. Visually switch active tabs
+    document.querySelectorAll('.game-wrapper').forEach(wrapper => {
+      wrapper.classList.remove('active');
+    });
+    document.querySelectorAll('.sidebar .button, .sidebar .minecraft-btn').forEach(btn => {
+      btn.classList.remove('active-btn');
+    });
+    document.getElementById('wrapper-' + gameId).classList.add('active');
+    btnElement.classList.add('active-btn');
+
+    if (gameId === 'pixelverse' && subGameId && window.setPixelverseGame) {
+      window.setPixelverseGame(subGameId);
+    }
+    
+    const iframeGames = {
+      'minecraft': 'limeMinecraft',
+      'earthmaker': 'limeEarthMaker',
+      'messenger': 'limeMessenger',
+      'survivio': 'limeSurvivio',
+      'jellymario': 'limeJellyMario'
+    };
+
+    // Browser fixer 2
+    Object.keys(iframeGames).forEach(key => {
+      if (key !== gameId) {
+        const frame = document.getElementById(iframeGames[key]);
+        if (frame && !frame.src.includes('about:blank')) {
+          frame.src = 'about:blank'; // Instantly shuts down the background game
+        }
+      }
+    });
+
+    // 3. LAZY LOAD the newly selected heavy game
+    if (iframeGames[gameId]) {
+      const frame = document.getElementById(iframeGames[gameId]);
+      if (frame && (!frame.src || frame.src.includes('about:blank'))) {
+        frame.src = frame.getAttribute('data-src');
+      }
+      // Focus frame for instant keyboard support
+      setTimeout(function() { if(frame) frame.focus(); }, 100);
+    }
+  };
+
+  window.toggleFullScreen = function(frameId) {
+    const frame = document.getElementById(frameId);
+    if (!frame) return;
+    
+    if (frame.requestFullscreen) {
+      frame.requestFullscreen();
+    } else if (frame.webkitRequestFullscreen) { /* Safari */
+      frame.webkitRequestFullscreen();
+    } else if (frame.msRequestFullscreen) { /* IE11 */
+      frame.msRequestFullscreen();
+    }
+  };
+</script>
+
+<div id="lime-arcade-app">
+  <div class="arcade-container">
+    
+    <div class="sidebar">
+      <button class="button active-btn" onclick="switchGame('pixelverse', this, 'dino')">Dino Run</button>
+      <button class="button" onclick="switchGame('pixelverse', this, 'snake')">Snake</button>
+      <button class="button" onclick="switchGame('pixelverse', this, 'space')">Space War</button>
+      <button class="button" onclick="switchGame('pacman', this)">Pac-Man</button>
+      <button class="button" onclick="switchGame('flyinglime', this)">Flappy Bird</button>
+      <button class="button" onclick="switchGame('minesweeper', this)">Minesweeper</button>
+      <button class="button" onclick="switchGame('cookie', this)">Cookie Clicker</button>
+      <button class="button" onclick="switchGame('capitalist', this)">Capitalist Tycoon</button>
+      
+      <!-- Bigger games -->
+      <button class="minecraft-btn" onclick="switchGame('minecraft', this)">PLAY MINECRAFT</button>
+      <button class="minecraft-btn" onclick="switchGame('earthmaker', this)">EARTH MAKER</button>
+      <button class="minecraft-btn" onclick="switchGame('messenger', this)">MESSENGER</button>
+      <button class="minecraft-btn" onclick="switchGame('survivio', this)">SURVIV.IO</button>
+      <button class="minecraft-btn" onclick="switchGame('jellymario', this)">JELLY MARIO</button>
+    </div>
+
+    <div class="game-display-box">
+      
+      <!-- Pixelverse games -->
+      <div id="wrapper-pixelverse" class="game-wrapper active">
+        <div id="pixelverse" style="background:#050905;color:white;font-family:Arial,sans-serif;padding:20px;border-radius:16px;max-width:900px;margin:auto;border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433;">
+          <style>
+          #pixelverse *{box-sizing:border-box}
+          #pixelverse button{cursor:pointer;color:white;background:#0a170a;border:1px solid #1f3d1f;border-radius:9px;padding:10px;font-weight:bold}
+          #pixelverse button:hover,#pixelverse .selected{background:#39ff14;color:#000;border-color:#39ff14;}
+          #pixelverse button:disabled{opacity:.45;cursor:not-allowed}
+          #pixelverse .games{display:none}
+          #pixelverse .art{text-align:center;font-size:36px;padding:15px;background:#030803}
+          #pixelverse .name{padding:10px;font-size:12px}
+          #pixelverse canvas{width:100%;height:auto;display:block;background:#020502;border-radius:9px;touch-action:none;border: 1px solid #1f3d1f;}
+          #pixelverse .stage{position:relative}
+          #pixelverse .overlay{position:absolute;inset:0;background:#020502ed;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;border-radius:9px;}
+          #pixelverse .muted{font-size:12px;color:#7ca07c}
+          #pixelverse .panel{margin-top:16px;padding:14px;background:#071407;border-radius:12px;border: 1px solid #122a12;}
+          #pixelverse .controls,#pixelverse .toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+          #pixelverse .shopgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+          #pixelverse .upgrade{background:#0a170a;padding:12px;border-radius:10px;border: 1px solid #1f3d1f;}
+          #pixelverse .upgrade p{font-size:12px;color:#a2cda2}
+          #pixelverse .upgrade button{width:100%;background:#1f3d1f;color:white;border:none;}
+          #pixelverse .upgrade button:hover:not(:disabled){background:#39ff14;color:black;}
+          #pixelverse .toolbar button{flex:1}
+          #pixelverse .space-only{display:none!important}
+          #pixelverse.space-mode .space-only{display:block!important}
+          @media(max-width:450px){
+          #pixelverse{padding:10px!important}
+          #pixelverse .art{font-size:25px}
+          #pixelverse .name{font-size:10px;padding:8px 2px}
+          #pixelverse .shopgrid{grid-template-columns:1fr}
+          }
+          </style>
+
+          <div style="font-size:11px;letter-spacing:3px;color:#39ff14">LIME ARCADE</div>
+          <h1 style="margin:8px 0">By <span style="color:#a8ff00">OpticEarth & Kainyx.</span></h1>
+          <p class="muted">Earn coins. Buy upgrades. Save your progress.</p>
+
+          <div class="games">
+          <button class="gamebtn selected" data-game="dino"><div class="art">[*]</div><div class="name">DINO RUN</div></button>
+          <button class="gamebtn" data-game="snake"><div class="art">[*]</div><div class="name">SNAKE</div></button>
+          <button class="gamebtn" data-game="space"><div class="art">[*]</div><div class="name">SPACE WAR</div></button>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;gap:8px">
+          <strong id="pv-title" style="color:#39ff14">Dino Run</strong>
+          <strong id="pv-score" style="color:#a8ff00;font-size:12px">SCORE: 0</strong>
+          </div>
+
+          <div style="display:flex;gap:8px;margin:12px 0">
+          <div class="panel space-only" style="flex:1;margin:0;text-align:center;color:#a8ff00">LIVES<br><strong id="pv-lives" style="color:#fff">---</strong></div>
+          <div class="panel space-only" style="flex:1;margin:0;text-align:center;color:#a8ff00">COINS<br><strong id="pv-coins" style="color:#fff">0</strong></div>
+          <div class="panel" style="flex:1;margin:0;text-align:center;color:#a8ff00">BEST<br><strong id="pv-best" style="color:#fff">0</strong></div>
+          </div>
+
+          <div class="stage">
+          <canvas id="pv-canvas" width="720" height="300" tabindex="0"></canvas>
+          <div class="overlay" id="pv-overlay">
+          <div>
+          <div style="color:#a8ff00;letter-spacing:3px;font-size:11px">READY PLAYER ONE</div>
+          <h2 id="pv-message" style="color:#39ff14;text-shadow: 0 0 10px #39ff14;">DINO RUN</h2>
+          <p id="pv-hint" class="muted">Jump over obstacles and beat your score!</p>
+          <button id="pv-start" style="background:#39ff14;color:#000;padding:13px 22px;border:none;">▶ START GAME</button>
+          </div>
+          </div>
+          </div>
+
+          <p class="muted" id="pv-help">SPACE / UP ARROW / TAP TO JUMP</p>
+          <div class="controls">
+          <button data-action="left">◀ LEFT</button>
+          <button data-action="up">▲ JUMP</button>
+          <button data-action="fire">✦ FIRE</button>
+          <button data-action="down">▼ DOWN</button>
+          <button data-action="right">RIGHT ▶</button>
+          </div>
+          <div class="toolbar">
+          <button id="pv-reset">↻ RESTART</button>
+          <button id="pv-save" style="background:#39ff14;color:#000;">SAVE GAME</button>
+          </div>
+          <p id="pv-status" class="muted">Progress is stored in this browser.</p>
+
+          <div class="panel space-only" id="pv-space-shop">
+          <h2 style="margin-top:0;color:#39ff14">Upgrade Shop</h2>
+          <p class="muted">Earn coins while playing Space War and purchase upgrades.</p>
+          <div id="pv-shop" class="shopgrid"></div>
+          </div>
+
+          <script>
+          (function(){
+          const root=document.getElementById('pixelverse');
+          if(!root||root.dataset.ready)return;
+          root.dataset.ready='1';
+
+          const $=s=>root.querySelector(s);
+          const cv=$('#pv-canvas'),ctx=cv.getContext('2d');
+          const W=720,H=300,STORE='pixelverse_weebly_v3';
+
+          let game='dino',running=false,dead=false,raf=0,last=0;
+          let score=0,tick=0,spawn=0,keys={},dino,cacti=[],snake=[],food,dir,nextDir,ship,shots=[],aliens=[];
+          let coins=0,best={dino:0,snake:0,space:0};
+          let upgrades={speed:0,multishot:0,extraLife:0,rapid:0};
+          let tickSnake=0,invulnerable=0,cooldown=0,runCoins=0,paidScore=0;
+
+          const names={dino:'Dino Run',snake:'Snake',space:'Space War'};
+          const descriptions={
+          dino:'Jump over obstacles and survive!',
+          snake:'Eat food. Avoid the walls and your own tail!',
+          space:'You have 3 lives. Shoot aliens before they hit your ship or reach the floor!'
+          };
+          const controls={
+          dino:'SPACE / UP ARROW / TAP TO JUMP',
+          snake:'ARROW KEYS / WASD / SWIPE TO TURN',
+          space:'LEFT / RIGHT TO MOVE · SPACE / FIRE TO SHOOT'
+          };
+          const items=[
+          {id:'speed',name:'Turbo Engine',desc:'Increase ship movement speed.',cost:30,max:5},
+          {id:'multishot',name:'Multi Laser',desc:'Fire multiple lasers at once.',cost:50,max:3},
+          {id:'extraLife',name:'Extra Life',desc:'Start with one extra life per level.',cost:60,max:3},
+          {id:'rapid',name:'Rapid Fire',desc:'Shoot more frequently.',cost:40,max:5}
+          ];
+
+          function rect(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x,y,w,h); }
+          function circle(x,y,r,c){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); }
+          function label(s,x,y,size,c){ ctx.fillStyle=c; ctx.font='bold '+size+'px Arial'; ctx.fillText(s,x,y); }
+          
+          function update(){
+          $('#pv-score').textContent='SCORE: '+Math.floor(score)+' | BEST: '+best[game];
+          $('#pv-best').textContent=best[game];
+          $('#pv-coins').textContent=coins;
+          $('#pv-lives').textContent=game==='space'&&ship?ship.lives:'---';
+          window.reportScore(game, best[game]);
+          }
+          
+          function reward(n){
+          coins+=n;
+          runCoins+=n;
+          update();
+          shop();
+          }
+          
+          function message(title,hint,button){
+          $('#pv-message').textContent=title;
+          $('#pv-hint').textContent=hint;
+          $('#pv-start').textContent=button||'▶ START GAME';
+          $('#pv-overlay').style.display='flex';
+          }
+          
+          function shop(){
+          const el=$('#pv-shop');
+          el.replaceChildren();
+          items.forEach(it=>{
+          const level=upgrades[it.id],cost=it.cost*(level+1);
+          const card=document.createElement('div');
+          card.className='upgrade';
+          const title=document.createElement('strong');
+          title.textContent=it.name;
+          title.style.color='#39ff14';
+          const desc=document.createElement('p');
+          desc.textContent=it.desc;
+          const lvl=document.createElement('p');
+          lvl.textContent='Level '+level+' / '+it.max;
+          const btn=document.createElement('button');
+          btn.textContent=level>=it.max?'✓ MAX LEVEL':'BUY · '+cost;
+          btn.disabled=level>=it.max||coins<cost;
+          btn.onclick=()=>{
+          if(coins<cost||upgrades[it.id]>=it.max)return;
+          coins-=cost;
+          upgrades[it.id]++;
+          shop();
+          update();
+          $('#pv-status').textContent='Upgrade purchased. Save to keep it after closing the browser.';
+          };
+          card.append(title,desc,lvl,btn);
+          el.append(card);
+          });
+          }
+          
+          function placeFood(){
+          do{
+          food={x:Math.floor(Math.random()*30),y:Math.floor(Math.random()*18)};
+          }while(snake.some(p=>p.x===food.x&&p.y===food.y));
+          }
+          
+          function reset(){
+          running=false;
+          dead=false;
+          score=0;
+          tick=0;
+          spawn=0;
+          keys={};
+          tickSnake=0;
+          invulnerable=0;
+          cooldown=0;
+          runCoins=0;
+          paidScore=0;
+
+          if(game==='dino'){
+          dino={x:75,y:220,vy:0,step:0};
+          cacti=[];
+          }
+          if(game==='snake'){
+          snake=[{x:14,y:9},{x:13,y:9},{x:12,y:9}];
+          dir={x:1,y:0};
+          nextDir={x:1,y:0};
+          placeFood();
+          }
+          if(game==='space'){
+          ship={x:W/2,y:H-38,lives:3+upgrades.extraLife};
+          shots=[];
+          aliens=[];
+          }
+
+          root.querySelectorAll('[data-game]').forEach(b=>{
+          b.classList.toggle('selected',b.dataset.game===game);
+          });
+
+          root.classList.toggle('space-mode',game==='space');
+
+          $('#pv-title').textContent=names[game];
+          $('#pv-help').textContent=controls[game];
+          update();
+          draw();
+          message(game==='dino'?'DINO RUN':game==='snake'?'SNAKE':'SPACE WAR',descriptions[game]);
+          }
+          
+          function start(){
+          if(running||dead)return;
+          running=true;
+          $('#pv-overlay').style.display='none';
+          last=performance.now();
+          }
+          
+          function finish(){
+          if(!running)return;
+          running=false;
+          dead=true;
+          best[game]=Math.max(best[game],Math.floor(score));
+          update();
+          message('GAME OVER','SCORE: '+Math.floor(score)+' · COINS EARNED: '+runCoins,'↻ PLAY AGAIN');
+          }
+          
+          function loseLife(){
+          if(!running||invulnerable>0)return;
+          ship.lives--;
+          invulnerable=75;
+          update();
+          if(ship.lives<=0)finish();
+          }
+          
+          function jump(){
+          if(!running){
+          if(!dead)start();
+          return;
+          }
+          if(game==='dino'&&dino.y>=219)dino.vy=-12.5;
+          if(game==='space')shoot();
+          }
+          
+          function shoot(){
+          if(!running||game!=='space'||cooldown>0)return;
+          const n=upgrades.multishot;
+          const angles=n===0?[0]:n===1?[-5,0,5]:[-10,-5,0,5,10];
+          angles.forEach(a=>shots.push({x:ship.x,y:ship.y-18,vx:a*.3}));
+          cooldown=Math.max(3,12-upgrades.rapid*2);
+          }
+          
+          function turn(x,y){
+          if(game==='snake'&&!(x===-dir.x&&y===-dir.y))nextDir={x,y};
+          }
+          
+          function draw(){
+          const g=ctx.createLinearGradient(0,0,0,H);
+          g.addColorStop(0,'#020702');
+          g.addColorStop(1,'#000000');
+          ctx.fillStyle=g;
+          ctx.fillRect(0,0,W,H);
+
+          for(let i=0;i<65;i++){
+          circle(i*139%W,(i*73+Math.floor(tick*1.5))%H,1,'#123812');
+          }
+
+          if(game==='dino'){
+          rect(0,266,W,2,'#1f4d1f');
+          cacti.forEach(o=>{
+          rect(o.x+7,266-o.h,13,o.h,'#39ff14');
+          rect(o.x,244-o.h/3,9,6,'#39ff14');
+          rect(o.x,237-o.h/3,5,17,'#39ff14');
+          rect(o.x+18,237-o.h/2,9,6,'#39ff14');
+          });
+          const x=dino.x,y=dino.y;
+          rect(x+7,y+14,29,25,'#a8ff00');
+          rect(x+26,y+1,22,23,'#a8ff00');
+          rect(x+43,y+9,10,7,'#a8ff00');
+          rect(x+37,y+6,4,4,'#020502');
+          rect(x+1,y+20,11,6,'#a8ff00');
+          rect(x+13,y+36,7,9,'#a8ff00');
+          rect(x+30,y+36,7,9,'#a8ff00');
+          }
+
+          if(game==='snake'){
+          for(let x=0;x<30;x++){
+          for(let y=0;y<18;y++){
+          rect(x*24+1,y*16+1,22,14,(x+y)%2?'#0a140a':'#050a05');
+          }
+          }
+          rect(0,0,W,3,'#39ff14');
+          rect(0,H-3,W,3,'#39ff14');
+          rect(0,0,3,H,'#39ff14');
+          rect(W-3,0,3,H,'#39ff14');
+          circle(food.x*24+12,food.y*16+8,8,'#ffffff');
+          snake.forEach((p,i)=>{
+          rect(p.x*24+2,p.y*16+2,20,12,i?'#1a8c1a':'#39ff14');
+          });
+          }
+
+          if(game==='space'){
+          shots.forEach(b=>rect(b.x-2,b.y,4,13,'#39ff14'));
+          aliens.forEach(a=>{
+          rect(a.x-13,a.y,26,19,'#228b22');
+          rect(a.x-9,a.y+4,5,5,'#a8ff00');
+          rect(a.x+4,a.y+4,5,5,'#a8ff00');
+          rect(a.x-17,a.y+12,5,5,'#ffffff');
+          rect(a.x+12,a.y+12,5,5,'#ffffff');
+          });
+          if(invulnerable<=0||Math.floor(tick/5)%2===0){
+          ctx.save();
+          ctx.translate(ship.x,ship.y);
+          ctx.shadowBlur=16;
+          ctx.shadowColor='#39ff14';
+          ctx.fillStyle='#39ff14';
+          ctx.beginPath();
+          ctx.moveTo(0,-20);
+          ctx.lineTo(17,15);
+          ctx.lineTo(0,9);
+          ctx.lineTo(-17,15);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+          }
+          rect(0,H-3,W,3,'#1f4d1f');
+          label('LIVES: '+ship.lives,15,25,15,'#39ff14');
+          }
+          }
+
+          function loop(now){
+          requestAnimationFrame(loop);
+          
+          if(!running || !document.getElementById('wrapper-pixelverse').classList.contains('active')){
+            last = now;
+            return;
+          }
+
+          const dt=Math.min((now-last)/16.67,2)||1;
+          last=now;
+          tick+=dt;
+
+          if(game==='dino'){
+          score+=dt*.18;
+          dino.step+=dt;
+          dino.vy+=.62*dt;
+          dino.y+=dino.vy*dt;
+          if(dino.y>220){
+          dino.y=220;
+          dino.vy=0;
+          }
+          spawn-=dt;
+          if(spawn<=0){
+          cacti.push({x:W,h:26+Math.random()*28});
+          spawn=58+Math.random()*42;
+          }
+          cacti.forEach(o=>o.x-=(4.8+Math.min(score/90,5))*dt);
+          cacti=cacti.filter(o=>o.x>-40);
+          const earned=Math.floor(score/10);
+          if(earned>paidScore){
+          reward(earned-paidScore);
+          paidScore=earned;
+          }
+          if(cacti.some(o=>dino.x+49>o.x&&dino.x+9<o.x+26&&dino.y+43>266-o.h+3))finish();
+          }
+          else if(game==='snake'){
+          tickSnake+=dt;
+          if(tickSnake>=7){
+          tickSnake=0;
+          dir=nextDir;
+          const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+          if(h.x<0||h.x>=30||h.y<0||h.y>=18)finish();
+          else{
+          const eat=h.x===food.x&&h.y===food.y;
+          if((eat?snake:snake.slice(0,-1)).some(p=>p.x===h.x&&p.y===h.y))finish();
+          else{
+          snake.unshift(h);
+          if(eat){
+          score+=10;
+          reward(3);
+          placeFood();
+          }else snake.pop();
+          }
+          }
+          }
+          }
+          else if(game==='space'){
+          score+=dt*.12;
+          if(invulnerable>0)invulnerable=Math.max(0,invulnerable-dt);
+          if(cooldown>0)cooldown=Math.max(0,cooldown-dt);
+
+          spawn-=dt;
+          if(spawn<=0){
+          aliens.push({x:25+Math.random()*(W-50),y:-22,w:26,h:19});
+          spawn=Math.max(19,60-score*.08);
+          }
+          const speed=5.5+upgrades.speed*1.5;
+          if(keys.left)ship.x-=speed*dt;
+          if(keys.right)ship.x+=speed*dt;
+          ship.x=Math.max(20,Math.min(W-20,ship.x));
+          if(keys.fire)shoot();
+
+          shots.forEach(b=>{
+          b.x+=b.vx*dt;
+          b.y-=8*dt;
+          });
+          shots=shots.filter(b=>b.y>-20&&b.x>-10&&b.x<W+10);
+          aliens.forEach(a=>a.y+=(1.5+score*.001)*dt);
+
+          for(let i=aliens.length-1;i>=0&&running;i--){
+          const a=aliens[i];
+          if(a.x+13>ship.x-15&&a.x-13<ship.x+15&&a.y+a.h>ship.y-15&&a.y<ship.y+15){
+          aliens.splice(i,1);
+          loseLife();
+          continue;
+          }
+          if(a.y+a.h>=H-3){
+          aliens.splice(i,1);
+          loseLife();
+          continue;
+          }
+          const j=shots.findIndex(b=>b.x>=a.x-14&&b.x<=a.x+14&&b.y<=a.y+a.h&&b.y+13>=a.y);
+          if(j>=0){
+          shots.splice(j,1);
+          aliens.splice(i,1);
+          score+=10;
+          reward(2);
+          }
+          }
+          }
+
+          best[game]=Math.max(best[game],Math.floor(score));
+          update();
+          draw();
+          }
+
+          function save(){
+          try{
+          localStorage.setItem(STORE,JSON.stringify({coins,best,upgrades}));
+          $('#pv-status').textContent='✓ Game progress saved on this browser!';
+          shop();
+          }catch(e){
+          $('#pv-status').textContent='Saving is blocked by your browser settings.';
+          }
+          }
+          function load(){
+          try{
+          const d=JSON.parse(localStorage.getItem(STORE)||'null');
+          if(!d)return;
+          coins=Math.max(0,Number(d.coins)||0);
+          ['dino','snake','space'].forEach(k=>{
+          best[k]=Math.max(0,Number(d.best&&d.best[k])||0);
+          window.reportScore(k, best[k]);
+          });
+          items.forEach(it=>{
+          upgrades[it.id]=Math.max(0,Math.min(it.max,Number(d.upgrades&&d.upgrades[it.id])||0));
+          });
+          }catch(e){}
+          }
+
+          window.setPixelverseGame = function(newGame) {
+            if (game === newGame) return; 
+            game = newGame;
+            tickSnake = 0;
+            reset();
+          };
+
+          root.querySelectorAll('[data-game]').forEach(b=>{
+          b.addEventListener('click',()=>{
+          game=b.dataset.game;
+          reset();
+          });
+          });
+
+          $('#pv-start').addEventListener('click',()=>{
+          if(dead)reset();
+          start();
+          });
+          $('#pv-reset').addEventListener('click',reset);
+          $('#pv-save').addEventListener('click',save);
+
+          document.addEventListener('keydown',e=>{
+          if(!root.isConnected || !document.getElementById('wrapper-pixelverse').classList.contains('active'))return;
+          const k=e.code;
+          if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(k))e.preventDefault();
+
+          if(game==='dino'&&(k==='Space'||k==='ArrowUp')){
+          if(!dead)jump();
+          }
+          if(game==='snake'){
+          if(k==='ArrowUp'||k==='KeyW')turn(0,-1);
+          if(k==='ArrowDown'||k==='KeyS')turn(0,1);
+          if(k==='ArrowLeft'||k==='KeyA')turn(-1,0);
+          if(k==='ArrowRight'||k==='KeyD')turn(1,0);
+          }
+          if(game==='space'){
+          if(k==='ArrowLeft'||k==='KeyA')keys.left=true;
+          if(k==='ArrowRight'||k==='KeyD')keys.right=true;
+          if(k==='Space'){
+          keys.fire=true;
+          if(!running&&!dead)start();
+          }
+          }
+          });
+
+          document.addEventListener('keyup',e=>{
+          if(e.code==='ArrowLeft'||e.code==='KeyA')keys.left=false;
+          if(e.code==='ArrowRight'||e.code==='KeyD')keys.right=false;
+          if(e.code==='Space')keys.fire=false;
+          });
+
+          root.querySelectorAll('[data-action]').forEach(b=>{
+          const a=b.dataset.action;
+          b.addEventListener('pointerdown',e=>{
+          e.preventDefault();
+          if(!running){
+          if(!dead)start();
+          else return;
+          }
+          if(game==='dino'&&a==='up')jump();
+          if(game==='snake'){
+          if(a==='up')turn(0,-1);
+          if(a==='down')turn(0,1);
+          if(a==='left')turn(-1,0);
+          if(a==='right')turn(1,0);
+          }
+          if(game==='space'){
+          if(a==='left')keys.left=true;
+          if(a==='right')keys.right=true;
+          if(a==='fire'||a==='up')shoot();
+          }
+          });
+          ['pointerup','pointerleave','pointercancel'].forEach(ev=>{
+          b.addEventListener(ev,()=>{
+          if(a==='left')keys.left=false;
+          if(a==='right')keys.right=false;
+          });
+          });
+          });
+
+          cv.addEventListener('pointerdown',()=>{
+          if(game==='dino'&&running)jump();
+          else if(game==='space'&&running)shoot();
+          });
+
+          let touch=null;
+          cv.addEventListener('touchstart',e=>{
+          if(e.touches.length)touch={x:e.touches[0].clientX,y:e.touches[0].clientY};
+          },{passive:true});
+
+          cv.addEventListener('touchend',e=>{
+          if(!touch||game!=='snake'||!e.changedTouches.length)return;
+          const t=e.changedTouches[0],dx=t.clientX-touch.x,dy=t.clientY-touch.y;
+          if(Math.max(Math.abs(dx),Math.abs(dy))>18){
+          if(Math.abs(dx)>Math.abs(dy))turn(dx>0?1:-1,0);
+          else turn(0,dy>0?1:-1);
+          }
+          touch=null;
+          },{passive:true});
+
+          load();
+          shop();
+          reset();
+          
+          requestAnimationFrame(loop);
+          })();
+          </script>
+        </div>
+      </div>
+
+      <!-- Pacman -->
+      <div id="wrapper-pacman" class="game-wrapper">
+        <div id="lime-game">
+          <h1>LIME MAN</h1>
+          <p class="lime-subtitle">LiME Arcade</p>
+
+          <div class="lime-stats">
+            <span>SCORE: <b id="lime-score">0</b></span>
+            <span>LIVES: <b id="lime-lives">O O O</b></span>
+          </div>
+
+          <div class="lime-screen">
+            <canvas id="lime-canvas"></canvas>
+            <div id="lime-overlay">
+              <h2 id="lime-message">READY?</h2>
+              <p id="lime-help">Eat the dots. Escape the ghosts!</p>
+              <button id="lime-start">▶ PLAY LIME MAN</button>
+            </div>
+          </div>
+
+          <div class="lime-controls">
+            <button data-dir="up">▲</button>
+            <div>
+              <button data-dir="left">◀</button>
+              <button data-dir="down">▼</button>
+              <button data-dir="right">▶</button>
+            </div>
+          </div>
+
+          <p class="lime-tip">ARROW KEYS / WASD TO MOVE</p>
+        </div>
+
+        <style>
+        #lime-game {
+          --lime: #a8ff00;
+          background: #050b03;
+          color: var(--lime);
+          font-family: monospace;
+          text-align: center;
+          padding: 22px 12px;
+          border: 2px solid var(--lime);
+          border-radius: 14px;
+          max-width: 680px;
+          margin: 20px auto;
+          box-shadow: 0 0 25px #a8ff0033;
+          box-sizing: border-box;
+        }
+        #lime-game * { box-sizing: border-box; }
+        #lime-game h1 { margin: 0; font-size: clamp(30px, 6vw, 46px); letter-spacing: 4px; text-shadow: 0 0 16px #a8ff00; }
+        #lime-game .lime-subtitle { letter-spacing: 5px; font-size: 12px; margin: 8px 0 18px; }
+        .lime-stats { display: flex; justify-content: space-between; gap: 10px; max-width: 560px; margin: 0 auto 12px; font-size: clamp(11px, 2.5vw, 14px); }
+        .lime-screen { position: relative; width: 100%; max-width: 580px; margin: auto; background: #000; border: 2px solid #7fc900; border-radius: 5px; overflow: hidden; }
+        #lime-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+        #lime-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: #020802eF; }
+        #lime-overlay h2 { margin: 0 0 8px; font-size: clamp(23px, 5vw, 34px); text-shadow: 0 0 14px #a8ff00; }
+        #lime-overlay p { color: #e2f7cf; font-size: 12px; }
+        #lime-game button { font-family: monospace; font-weight: bold; cursor: pointer; touch-action: manipulation; }
+        #lime-start { background: #a8ff00; color: #101800; border: 0; border-radius: 6px; padding: 13px 18px; margin-top: 10px; font-size: 13px; box-shadow: 0 0 18px #a8ff0066; }
+        #lime-start:hover { background: white; }
+        .lime-controls { display: none; margin: 14px auto 0; }
+        .lime-controls button { width: 54px; height: 44px; margin: 3px; color: #a8ff00; background: #172510; border: 1px solid #a8ff00; border-radius: 8px; font-size: 19px; }
+        .lime-tip { color: #b6c8a5; font-size: 11px; margin: 16px 0 0; }
+        @media (max-width: 700px), (pointer: coarse) { .lime-controls { display: block; } }
+        </style>
+
+        <script>
+        (function () {
+          const root = document.getElementById("lime-game");
+          if (!root || root.dataset.loaded) return;
+          root.dataset.loaded = "true";
+
+          const canvas = root.querySelector("#lime-canvas");
+          const ctx = canvas.getContext("2d");
+          const overlay = root.querySelector("#lime-overlay");
+          const message = root.querySelector("#lime-message");
+          const help = root.querySelector("#lime-help");
+          const startButton = root.querySelector("#lime-start");
+          const scoreLabel = root.querySelector("#lime-score");
+          const livesLabel = root.querySelector("#lime-lives");
+
+          const mapText = [
+            "############################",
+            "#............##............#",
+            "#.####.#####.##.#####.####..#",
+            "#o####.#####.##.#####.####o.#",
+            "#.####.#####.##.#####.####..#",
+            "#..........................#",
+            "#.####.##.########.##.####..#",
+            "#.####.##.########.##.####..#",
+            "#......##....##....##.......#",
+            "######.#####.##.#####.#######",
+            "######.#####.##.#####.#######",
+            "######.##..........##.#######",            "######.##.###  ###.##.#######",
+            "######.##.#      #.##.#######",
+            "...... ...#      #... .......",
+            "######.##.#      #.##.#######",
+            "######.##.########.##.#######",
+            "######.##..........##.#######",
+            "######.##.########.##.#######",
+            "#............##............#",
+            "#.####.#####.##.#####.####..#",
+            "#o..##................##..o.#",
+            "###.##.##.########.##.##.###",
+            "#......##....##....##.......#",
+            "#.##########.##.##########..#",
+            "#..........................#",
+            "############################",
+            "############################",
+            "############################",
+            "############################",
+            "############################"
+          ];
+
+          const TILE = 20;
+          const COLS = Math.max(...mapText.map(row => row.length));
+          const ROWS = mapText.length;
+          canvas.width = COLS * TILE;
+          canvas.height = ROWS * TILE;
+
+          const DIRS = { up:{x:0,y:-1}, down:{x:0,y:1}, left:{x:-1,y:0}, right:{x:1,y:0} };
+
+          let map, player, ghosts, score = 0, lives = 3, powerTimer = 0, mouth = 0;
+          let running = false, animationFrame = null, lastTime = 0, accumulator = 0, lastStep = 0;
+
+          function resetGame() {
+            map = mapText.map(row => row.padEnd(COLS, "#").split(""));
+            player = { x: 1, y: 1, dir: "right", next: "right" };
+            ghosts = [
+              { x: 13, y: 14, dir: "left", color: "#ff5277" },
+              { x: 14, y: 14, dir: "right", color: "#36eaff" },
+              { x: 12, y: 14, dir: "up", color: "#ff9cf5" }
+            ];
+            score = 0; lives = 3; powerTimer = 0; mouth = 0;
+            updateStats();
+          }
+
+          function updateStats() {
+            scoreLabel.textContent = score;
+            livesLabel.textContent = "O ".repeat(lives);
+            window.reportScore('pacman', score);
+          }
+
+          function wrapX(x) {
+            if (x < 0) return COLS - 1;
+            if (x >= COLS) return 0;
+            return x;
+          }
+
+          function wall(x, y) {
+            if (y < 0 || y >= ROWS) return true;
+            x = wrapX(x);
+            return !map[y] || map[y][x] === "#";
+          }
+
+          function move(entity, dir) {
+            const d = DIRS[dir];
+            if (!d) return false;
+            const nx = wrapX(entity.x + d.x);
+            const ny = entity.y + d.y;
+            if (wall(nx, ny)) return false;
+            entity.x = nx; entity.y = ny; entity.dir = dir;
+            return true;
+          }
+
+          function setDirection(dir) { if (DIRS[dir] && player) player.next = dir; }
+
+          document.addEventListener("keydown", function (e) {
+            if (!root.isConnected) return;
+            const keys = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", W: "up", s: "down", S: "down", a: "left", A: "left", d: "right", D: "right" };
+            if (keys[e.key]) { e.preventDefault(); setDirection(keys[e.key]); }
+          });
+
+          root.querySelectorAll("[data-dir]").forEach(btn => {
+            btn.addEventListener("pointerdown", e => { e.preventDefault(); setDirection(btn.dataset.dir); });
+          });
+
+          function drawMap() {
+            ctx.fillStyle = "#020702";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for (let y = 0; y < ROWS; y++) {
+              for (let x = 0; x < COLS; x++) {
+                const px = x * TILE, py = y * TILE, cell = map[y][x];
+                if (cell === "#") {
+                  ctx.fillStyle = "#102908"; ctx.fillRect(px, py, TILE, TILE);
+                  ctx.strokeStyle = "#79c900"; ctx.lineWidth = 1.5; ctx.strokeRect(px + 2, py + 2, TILE - 4, TILE - 4);
+                  ctx.strokeStyle = "#315a12"; ctx.strokeRect(px + 4, py + 4, TILE - 8, TILE - 8);
+                } else if (cell === ".") {
+                  ctx.fillStyle = "#e7ffbd"; ctx.beginPath(); ctx.arc(px + TILE / 2, py + TILE / 2, 2.5, 0, Math.PI * 2); ctx.fill();
+                } else if (cell === "o") {
+                  ctx.fillStyle = "#a8ff00"; ctx.shadowColor = "#a8ff00"; ctx.shadowBlur = 12;
+                  ctx.beginPath(); ctx.arc(px + TILE / 2, py + TILE / 2, 6, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+                }
+              }
+            }
+          }
+
+          function drawPlayer() {
+            const x = player.x * TILE + TILE / 2, y = player.y * TILE + TILE / 2;
+            const angles = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 };
+            const angle = angles[player.dir] || 0;
+            const opening = 0.15 + Math.abs(Math.sin(mouth)) * 0.45;
+            ctx.fillStyle = "#a8ff00"; ctx.shadowColor = "#a8ff00"; ctx.shadowBlur = 12;
+            ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y, 8.5, angle + opening, angle + Math.PI * 2 - opening); ctx.closePath(); ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+
+          function drawGhost(g) {
+            const x = g.x * TILE + TILE / 2, y = g.y * TILE + TILE / 2, frightened = powerTimer > 0;
+            ctx.fillStyle = frightened ? "#467bff" : g.color; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 7;
+            ctx.beginPath(); ctx.arc(x, y - 1, 8, Math.PI, 0); ctx.lineTo(x + 8, y + 7); ctx.lineTo(x + 4, y + 5); ctx.lineTo(x, y + 8); ctx.lineTo(x - 4, y + 5); ctx.lineTo(x - 8, y + 7); ctx.closePath(); ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(x - 3, y - 2, 2.5, 0, Math.PI * 2); ctx.arc(x + 3, y - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#14220d"; ctx.beginPath(); ctx.arc(x - 2, y - 2, 1.2, 0, Math.PI * 2); ctx.arc(x + 4, y - 2, 1.2, 0, Math.PI * 2); ctx.fill();
+          }
+
+          function draw() { drawMap(); ghosts.forEach(drawGhost); drawPlayer(); }
+
+          function finishGame(won) {
+            running = false;
+            message.textContent = won ? "YOU WIN!" : "GAME OVER";
+            help.textContent = won ? "You are da winnnerrrrrr" : "Try again and beat your high score!";
+            startButton.textContent = "↻ PLAY AGAIN"; overlay.style.display = "flex";
+            if (animationFrame !== null) { cancelAnimationFrame(animationFrame); animationFrame = null; }
+          }
+
+          function checkCollisions() {
+            for (const ghost of ghosts) {
+              if (ghost.x === player.x && ghost.y === player.y) {
+                if (powerTimer > 0) {
+                  score += 100; ghost.x = 13; ghost.y = 14; ghost.dir = "left"; updateStats();
+                } else {
+                  lives--; updateStats();
+                  if (lives <= 0) { finishGame(false); return; }
+                  player.x = 1; player.y = 1; player.dir = "right"; player.next = "right";
+                  ghosts[0].x = 13; ghosts[0].y = 14; ghosts[1].x = 14; ghosts[1].y = 14; ghosts[2].x = 12; ghosts[2].y = 14;
+                  return;
+                }
+              }
+            }
+          }
+
+          function ghostDistances(startX, startY) {
+            const distances = Array.from({ length: ROWS }, () => Array(COLS).fill(Infinity));
+            const queue = [{ x: wrapX(startX), y: startY }];
+            if (startY < 0 || startY >= ROWS || wall(startX, startY)) return distances;
+            distances[startY][wrapX(startX)] = 0;
+            for (let head = 0; head < queue.length; head++) {
+              const current = queue[head];
+              for (const dir of Object.keys(DIRS)) {
+                const d = DIRS[dir], nx = wrapX(current.x + d.x), ny = current.y + d.y;
+                if (wall(nx, ny) || distances[ny][nx] !== Infinity) continue;
+                distances[ny][nx] = distances[current.y][current.x] + 1;
+                queue.push({ x: nx, y: ny });
+              }
+            }
+            return distances;
+          }
+
+          function moveGhost(g, index) {
+            const reverse = { up: "down", down: "up", left: "right", right: "left" };
+            let choices = Object.keys(DIRS).filter(dir => { const d = DIRS[dir]; return !wall(g.x + d.x, g.y + d.y); });
+            if (!choices.length) return;
+            const forwardChoices = choices.filter(dir => dir !== reverse[g.dir]);
+            if (forwardChoices.length) choices = forwardChoices;
+            if (powerTimer > 0) {
+              const playerDistances = ghostDistances(player.x, player.y);
+              choices.sort((a, b) => {
+                const da = DIRS[a], db = DIRS[b];
+                const distA = playerDistances[g.y + da.y]?.[wrapX(g.x + da.x)] ?? -1, distB = playerDistances[g.y + db.y]?.[wrapX(g.x + db.x)] ?? -1;
+                return distB - distA;
+              });
+              g.dir = choices[0]; move(g, g.dir); return;
+            }
+            let targetX = player.x, targetY = player.y, lookAhead = index === 1 ? 3 : index === 2 ? 2 : 0;
+            if (lookAhead && DIRS[player.dir]) {
+              for (let i = 0; i < lookAhead; i++) {
+                const d = DIRS[player.dir], nx = wrapX(targetX + d.x), ny = targetY + d.y;
+                if (wall(nx, ny)) break;
+                targetX = nx; targetY = ny;
+              }
+            }
+            let distances = ghostDistances(targetX, targetY);
+            if (!Number.isFinite(distances[g.y]?.[g.x])) distances = ghostDistances(player.x, player.y);
+            choices.sort((a, b) => {
+              const da = DIRS[a], db = DIRS[b];
+              const distA = distances[g.y + da.y]?.[wrapX(g.x + da.x)] ?? Infinity, distB = distances[g.y + db.y]?.[wrapX(g.x + db.x)] ?? Infinity;
+              return distA - distB;
+            });
+            if (choices.length > 1 && Math.random() < 0.08) g.dir = choices[1]; else g.dir = choices[0];
+            move(g, g.dir);
+          }
+
+          function step() {
+            if (!wall(player.x + DIRS[player.next].x, player.y + DIRS[player.next].y)) player.dir = player.next;
+            move(player, player.dir);
+            const cell = map[player.y][player.x];
+            if (cell === ".") { map[player.y][player.x] = " "; score += 10; updateStats(); }
+            else if (cell === "o") { map[player.y][player.x] = " "; score += 50; powerTimer = 8; updateStats(); }
+            if (powerTimer > 0) powerTimer = Math.max(0, powerTimer - 0.15);
+            checkCollisions(); if (!running) return;
+            lastStep++;
+            if (lastStep % 2 === 0) { ghosts.forEach(moveGhost); checkCollisions(); if (!running) return; }
+            const remaining = map.some(row => row.some(cell => cell === "." || cell === "o"));
+            if (!remaining) { finishGame(true); return; }
+            mouth += 0.4; draw();
+          }
+
+          function loop(timestamp) {
+            if (!running) return;
+            if (!lastTime) lastTime = timestamp;
+            accumulator += Math.min(timestamp - lastTime, 100); lastTime = timestamp;
+            while (accumulator >= 140 && running) { step(); accumulator -= 140; }
+            draw();
+            if (running) animationFrame = requestAnimationFrame(loop);
+          }
+
+          function startGame() {
+            if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+            resetGame(); running = true; accumulator = 0; lastTime = 0; lastStep = 0;
+            overlay.style.display = "none"; draw();
+            animationFrame = requestAnimationFrame(loop);
+          }
+
+          startButton.addEventListener("click", startGame);
+          resetGame(); draw();
+        })();
+        </script>
+      </div>
+
+      <!-- Flappy Bird -->
+      <div id="wrapper-flyinglime" class="game-wrapper">
+        <div id="flying-lime">
+          <style>
+            #flying-lime{--fl-lime:#39ff14;--fl-blue:#075dff;background:#050914;color:#eaf2ff;font-family:"Courier New",monospace;max-width:760px;margin:0 auto;padding:18px;border:3px solid #075dff;border-radius:12px;box-sizing:border-box;text-align:center;box-shadow:0 0 18px #075dff55}
+            #flying-lime *{box-sizing:border-box}
+            #flying-lime h1{margin:0;color:var(--fl-lime);font-size:clamp(24px,4vw,38px);text-shadow:0 0 12px #39ff14}
+            #flying-lime .fl-sub{color:#7fb5ff;letter-spacing:4px;margin:5px 0 12px;font-size:12px}
+            #flying-lime .fl-stats{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-bottom:12px;border:1px solid #075dff;color:#fff;font-weight:bold}
+            #flying-lime .fl-gamearea{position:relative;width:100%;max-width:480px;margin:auto;border:2px solid #075dff;box-shadow:0 0 14px #075dff55;line-height:0;overflow:hidden;background:#081126}
+            #flying-lime canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+            #flying-lime .fl-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding:20px;background:#020611bb;line-height:1.4}
+            #flying-lime .fl-overlay h2{font-size:clamp(24px,5vw,38px);margin:0;color:var(--fl-lime);text-shadow:0 0 10px #39ff14}
+            #flying-lime .fl-overlay p{margin:0;color:#fff;font-size:14px}
+            #flying-lime .fl-start{border:2px solid var(--fl-lime);background:#12320f;color:#fff;font:bold 16px "Courier New",monospace;padding:12px 24px;cursor:pointer;box-shadow:0 0 12px #39ff1455}
+            #flying-lime .fl-start:hover{background:#1c5515}
+            #flying-lime .fl-help{color:#9bbdff;font-size:12px;line-height:1.6;margin:12px 0 0}
+          </style>
+          <h1>FLYING LIME</h1>
+          <div class="fl-sub">LiME ARCADE</div>
+          <div class="fl-stats"><span>SCORE: <b id="fl-score">0</b></span><span>BEST: <b id="fl-best">0</b></span></div>
+          <div class="fl-gamearea">
+            <canvas id="fl-canvas" width="480" height="640" aria-label="Flying Lime game"></canvas>
+            <div class="fl-overlay" id="fl-overlay"><h2 id="fl-title">READY TO FLY?</h2><p id="fl-message">Dodge the neon pipes!</p><button class="fl-start" id="fl-start">START GAME</button></div>
+          </div>
+          <p class="fl-help">PRESS SPACE / ↑ OR TAP TO FLAP<br>FLY THROUGH THE GAPS • DON'T HIT THE PIPES OR FLOOR</p>
+          <script>
+          (()=>{
+            const root=document.getElementById('flying-lime');
+            if(root.dataset.initialized)return; root.dataset.initialized='1';
+            const canvas=document.getElementById('fl-canvas'),ctx=canvas.getContext('2d');
+            const overlay=document.getElementById('fl-overlay'),title=document.getElementById('fl-title'),message=document.getElementById('fl-message'),startBtn=document.getElementById('fl-start'),scoreEl=document.getElementById('fl-score'),bestEl=document.getElementById('fl-best');
+            const W=480,H=640; let bird,pipes,score,playing,dead,last=0,raf=0;
+            let best=0;try{best=Number(localStorage.getItem('flyingLimeBest')||0)}catch(e){} bestEl.textContent=best;
+            window.reportScore('flyinglime', best);
+
+            function reset(){bird={x:125,y:280,vy:0,r:16,rot:0};pipes=[];score=0;playing=false;dead=false;scoreEl.textContent='0';for(let i=0;i<3;i++)pipes.push({x:330+i*230,gapY:175+Math.random()*245,gap:172,passed:false});draw()}
+            function start(){reset();playing=true;overlay.style.display='none';bird.vy=-7.4;last=performance.now();if(!raf)raf=requestAnimationFrame(loop)}
+            function flap(){if(!root.closest('.game-wrapper')?.classList.contains('active'))return;if(!playing){if(dead||overlay.style.display!=='none')start();return}bird.vy=-7.3}
+            function end(){playing=false;dead=true;overlay.style.display='flex';title.textContent='GAME OVER';message.textContent='SCORE: '+score+' — TRY AGAIN!';startBtn.textContent='PLAY AGAIN';if(score>best){best=score;bestEl.textContent=best;try{localStorage.setItem('flyingLimeBest',String(best))}catch(e){}}window.reportScore('flyinglime', best);}
+            function roundedRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+            function draw(){ctx.clearRect(0,0,W,H);let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#07142d');g.addColorStop(1,'#10102a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+              for(let i=0;i<38;i++){let x=(i*83+23)%W,y=(i*137+31)%440;ctx.fillStyle=i%3?'#7aaaff':'#39ff14';ctx.globalAlpha=.45;ctx.fillRect(x,y,2,2)}ctx.globalAlpha=1;
+              ctx.fillStyle='#101d3b';for(let i=0;i<12;i++){let x=i*44-8,h=35+(i*31)%75;ctx.fillRect(x,H-h-12,31,h)}
+              pipes.forEach(p=>{let top=p.gapY-p.gap/2,bottom=p.gapY+p.gap/2;ctx.shadowBlur=14;ctx.shadowColor='#075dff';ctx.fillStyle='#083fc7';roundedRect(p.x,0,66,top,7);roundedRect(p.x-7,top-20,80,20,4);roundedRect(p.x,bottom,66,H-bottom,7);roundedRect(p.x-7,bottom,80,20,4);ctx.shadowBlur=0;ctx.strokeStyle='#3f9dff';ctx.lineWidth=3;ctx.strokeRect(p.x+3,3,60,Math.max(0,top-6));ctx.strokeRect(p.x+3,bottom+23,60,Math.max(0,H-bottom-26))});
+              ctx.save();ctx.translate(bird?bird.x:125,bird?bird.y:280);ctx.rotate(bird?Math.max(-.45,Math.min(.8,bird.vy*.055)):0);ctx.shadowBlur=18;ctx.shadowColor='#39ff14';ctx.fillStyle='#39ff14';ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#f2ffdc';ctx.beginPath();ctx.arc(5,-5,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#071126';ctx.beginPath();ctx.arc(7,-5,2.4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffcf32';ctx.beginPath();ctx.moveTo(12,1);ctx.lineTo(25,5);ctx.lineTo(12,8);ctx.fill();ctx.restore();
+              ctx.fillStyle='#075dff';ctx.fillRect(0,H-12,W,12);ctx.fillStyle='#39ff14';ctx.fillRect(0,H-12,W,3);
+            }
+            function loop(now){raf=0;if(!root.closest('.game-wrapper')?.classList.contains('active')){draw();return}const dt=Math.min((now-last)/16.67||1,2);last=now;if(playing){bird.vy+=.39*dt;bird.y+=bird.vy*dt;pipes.forEach(p=>{p.x-=2.8*dt;if(!p.passed&&p.x+66<bird.x){p.passed=true;score++;scoreEl.textContent=score;window.reportScore('flyinglime', score)}if(p.x<-90){p.x=Math.max(...pipes.map(q=>q.x))+230;p.gapY=155+Math.random()*275;p.passed=false}});const hitPipe=pipes.some(p=>bird.x+12>p.x&&bird.x-12<p.x+66&&(bird.y-12<p.gapY-p.gap/2||bird.y+12>p.gapY+p.gap/2));if(bird.y+15>H-12||bird.y-15<0||hitPipe){draw();end();return}}draw();if(playing)raf=requestAnimationFrame(loop)}
+            startBtn.addEventListener('click',start);canvas.addEventListener('pointerdown',e=>{e.preventDefault();flap()});document.addEventListener('keydown',e=>{if(['Space','ArrowUp'].includes(e.code)&&root.closest('.game-wrapper')?.classList.contains('active')){e.preventDefault();if(!e.repeat)flap()}});
+            const observer=new MutationObserver(()=>{if(root.closest('.game-wrapper')?.classList.contains('active')){draw();if(playing&&!raf){last=performance.now();raf=requestAnimationFrame(loop)}}});observer.observe(root.closest('.game-wrapper'),{attributes:true,attributeFilter:['class']});
+            reset();
+          })();
+          </script>
+        </div>
+      </div>
+
+      <!-- Minesweeper -->
+      <div id="wrapper-minesweeper" class="game-wrapper">
+        <div id="lime-minesweeper">
+          <style>
+          #lime-minesweeper {
+            --lime:#39ff14; --bg:#101810; --panel:#1c2b1c;
+            font-family:Arial,sans-serif;background:var(--bg);
+            color:#efffed;padding:20px;border-radius:14px;
+            max-width:650px;margin:0 auto;box-sizing:border-box;
+          }
+          #lime-minesweeper *{box-sizing:border-box}
+          #lime-minesweeper .lm-head{text-align:center;margin-bottom:16px}
+          #lime-minesweeper h2{color:var(--lime);font-size:30px;margin:0 0 6px}
+          #lime-minesweeper .lm-sub{color:#b4c7b0;font-size:13px}
+          #lime-minesweeper .lm-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:15px 0}
+          #lime-minesweeper button{font-family:inherit;cursor:pointer}
+          #lime-minesweeper .lm-btn{background:#283d28;color:white;border:1px solid #466746;border-radius:7px;padding:9px 12px;font-weight:bold}
+          #lime-minesweeper .lm-btn.active,#lime-minesweeper .lm-btn.primary{background:var(--lime);color:#10200d;border-color:var(--lime)}
+          #lime-minesweeper .lm-stats{display:flex;justify-content:space-around;gap:8px;background:var(--panel);padding:12px;border-radius:9px;margin-bottom:14px;text-align:center}
+          #lime-minesweeper .lm-stat strong{display:block;color:var(--lime);font-size:20px}
+          #lime-minesweeper .lm-stat span{font-size:11px;color:#b4c7b0}
+          #lime-minesweeper .lm-board-wrap{overflow-x:auto;padding-bottom:5px}
+          #lime-minesweeper .lm-board{display:grid;gap:3px;margin:auto;width:max-content;max-width:100%;touch-action:manipulation}
+          #lime-minesweeper .lm-cell{width:32px;height:32px;max-width:8vw;max-height:8vw;min-width:0;min-height:0;padding:0;border:0;border-radius:4px;background:#426342;color:white;font-size:16px;font-weight:bold;box-shadow:inset -2px -2px #294329,inset 2px 2px #628762}
+          #lime-minesweeper .lm-cell:hover:not(.open){background:#587b58}
+          #lime-minesweeper .lm-cell.open{background:#dce9d6;box-shadow:none;color:#183018}
+          #lime-minesweeper .lm-cell.flag{color:#ffcf54}
+          #lime-minesweeper .lm-cell.mine{background:#ff5959}
+          #lime-minesweeper .lm-cell.n1{color:#1976d2}
+          #lime-minesweeper .lm-cell.n2{color:#168344}
+          #lime-minesweeper .lm-cell.n3{color:#d32f2f}
+          #lime-minesweeper .lm-cell.n4{color:#6a43ba}
+          #lime-minesweeper .lm-cell.n5{color:#9a4325}
+          #lime-minesweeper .lm-message{text-align:center;min-height:25px;margin:15px 0 8px;font-weight:bold;color:var(--lime)}
+          #lime-minesweeper .lm-help{text-align:center;color:#b4c7b0;font-size:12px;line-height:1.7}
+          #lime-minesweeper .lm-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+          @media(max-width:430px){
+           #lime-minesweeper{padding:12px}
+           #lime-minesweeper .lm-cell{width:27px;height:27px;font-size:13px}
+           #lime-minesweeper h2{font-size:25px}
+          }
+          </style>
+
+          <div class="lm-head">
+            <h2>LiME Sweeper</h2>
+            <div class="lm-sub">CLEAR THE GRID. DON'T HIT A MINE.</div>
+          </div>
+
+          <div class="lm-controls">
+            <button class="lm-btn active" data-level="easy">Easy</button>
+            <button class="lm-btn" data-level="medium">Medium</button>
+            <button class="lm-btn" data-level="hard">Hard</button>
+          </div>
+
+          <div class="lm-stats">
+            <div class="lm-stat"><strong id="lm-mines">10</strong><span>MINES LEFT</span></div>
+            <div class="lm-stat"><strong id="lm-time">000</strong><span>SECONDS</span></div>
+            <div class="lm-stat"><strong id="lm-best">--</strong><span>BEST (SEC)</span></div>
+          </div>
+
+          <div class="lm-actions">
+            <button class="lm-btn primary" id="lm-restart">New Game</button>
+            <button class="lm-btn" id="lm-flagmode">Flag: OFF</button>
+          </div>
+
+          <div class="lm-board-wrap">
+            <div class="lm-board" id="lm-board" role="group" aria-label="Minesweeper grid"></div>
+          </div>
+          <div class="lm-message" id="lm-message" aria-live="polite">Pick a tile to begin!</div>
+          <div class="lm-help">
+            Tap a tile to reveal it. Numbers show nearby mines.<br>
+            Turn Flag mode on to mark suspected mines.<br>
+            Reveal every safe tile to win!
+          </div>
+
+          <script>
+          (function(){
+           const root=document.getElementById('lime-minesweeper');
+           if(root.dataset.ready)return;
+           root.dataset.ready='1';
+           const levels={ easy:{w:9,h:9,mines:10}, medium:{w:12,h:12,mines:25}, hard:{w:16,h:16,mines:40} };
+           let level='easy',grid=[],started=false,over=false,flagMode=false,flags=0,opened=0,seconds=0,timer=null,first=true;
+           const $=id=>root.querySelector('#'+id), key=()=> 'lime-sweeper-best-'+level;
+           
+           function best(){ try{return localStorage.getItem(key())||'—'}catch(e){return '—'} }
+           function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+           function clock(){ $('lm-time').textContent=String(seconds).padStart(3,'0'); }
+           function updateStats(){ 
+            $('lm-mines').textContent=levels[level].mines-flags; 
+            $('lm-best').textContent=best(); clock(); 
+            const bst = parseInt(best());
+            if(!isNaN(bst)) window.reportScore('minesweeper', bst);
+           }
+           function neighbors(x,y){ const out=[]; for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){ if(!dx&&!dy)continue; const nx=x+dx,ny=y+dy; if(grid[ny]&&grid[ny][nx])out.push(grid[ny][nx]); } return out; }
+           
+           function placeMines(safe){
+            const cfg=levels[level]; let spots=[];
+            grid.flat().forEach(c=>{ if(c!==safe && !(Math.abs(c.x-safe.x)<=1&&Math.abs(c.y-safe.y)<=1))spots.push(c); });
+            for(let i=spots.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [spots[i],spots[j]]=[spots[j],spots[i]]; }
+            spots.slice(0,cfg.mines).forEach(c=>c.mine=true);
+            grid.flat().forEach(c=>{ c.number=neighbors(c.x,c.y).filter(n=>n.mine).length; });
+           }
+           
+           function startClock(){ 
+             if(started) return; 
+             started=true; 
+             timer=setInterval(()=>{ 
+               if(over || !document.getElementById('wrapper-minesweeper').classList.contains('active'))return; 
+               seconds++; 
+               clock(); 
+             },1000); 
+           }
+           
+           function draw(){
+            const cfg=levels[level],board=$('lm-board'); board.innerHTML=''; board.style.gridTemplateColumns='repeat('+cfg.w+', minmax(0, 1fr))';
+            grid.flat().forEach(c=>{
+             const b=document.createElement('button'); b.className='lm-cell'; b.type='button'; b.setAttribute('aria-label','Row '+(c.y+1)+', column '+(c.x+1)+(c.open?', revealed':''));
+             if(c.open){ b.classList.add('open'); if(c.mine){b.classList.add('mine');b.textContent='*'}else if(c.number){b.textContent=c.number;b.classList.add('n'+c.number)} }
+             else if(c.flag){ b.classList.add('flag');b.textContent='F'; }
+             b.addEventListener('click',()=>clickCell(c)); b.addEventListener('contextmenu',e=>{ e.preventDefault();toggleFlag(c); });
+             board.appendChild(b);
+            });
+           }
+           
+           function message(s){$('lm-message').textContent=s}
+           
+           function reveal(c){
+            if(c.open||c.flag||over)return;
+            if(first){ first=false; placeMines(c); }
+            startClock(); c.open=true; opened++;
+            if(c.mine){
+             over=true;stopTimer(); grid.flat().filter(n=>n.mine).forEach(n=>n.open=true);
+             $('lm-restart').textContent='Try Again'; message('BOOM! You hit a mine. Try again!'); draw();return;
+            }
+            if(c.number===0){ neighbors(c.x,c.y).forEach(n=>{ if(!n.mine&&!n.open)revealSafe(n); }); }
+            if(opened===levels[level].w*levels[level].h-levels[level].mines){
+             over=true;stopTimer(); $('lm-restart').textContent='Play Again'; message('YOU WIN! Time: '+seconds+' seconds!');
+             try{ const old=Number(localStorage.getItem(key())); if(!old||seconds<old)localStorage.setItem(key(),String(seconds)); }catch(e){}
+             updateStats();
+             window.reportScore('minesweeper', seconds);
+            }else message('Keep going! Find all the safe tiles.');
+            draw();
+           }
+           
+           function revealSafe(c){ if(c.open||c.flag||c.mine||over)return; c.open=true;opened++; if(c.number===0)neighbors(c.x,c.y).forEach(revealSafe); }
+           function toggleFlag(c){
+            if(over||c.open)return;
+            if(!c.flag&&flags>=levels[level].mines){ message('You have used all your flags!'); return; }
+            c.flag=!c.flag; flags+=c.flag?1:-1; updateStats();draw();
+           }
+           
+           function clickCell(c){ if(over)return; if(flagMode){toggleFlag(c);return} if(c.flag||c.open)return; reveal(c); }
+           
+           function newGame(){
+            stopTimer();started=false;over=false;flagMode=false; flags=0;opened=0;seconds=0;first=true;
+            const cfg=levels[level];
+            grid=Array.from({length:cfg.h},(_,y)=>Array.from({length:cfg.w},(_,x)=>({ x,y,mine:false,number:0,open:false,flag:false })));
+            $('lm-flagmode').textContent='Flag: OFF'; $('lm-flagmode').classList.remove('active'); $('lm-restart').textContent='New Game';
+            message('Pick a tile to begin!'); updateStats();draw();
+           }
+           
+           root.querySelectorAll('[data-level]').forEach(b=>{
+            b.addEventListener('click',()=>{ level=b.dataset.level; root.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('active',x===b)); newGame(); });
+           });
+           $('lm-restart').addEventListener('click',newGame);
+           $('lm-flagmode').addEventListener('click',()=>{
+            flagMode=!flagMode; $('lm-flagmode').textContent='Flag: '+(flagMode?'ON':'OFF'); $('lm-flagmode').classList.toggle('active',flagMode);
+            message(flagMode?'Flag mode: tap tiles to place flags.':'Reveal mode: tap tiles to open them.');
+           });
+           newGame();
+          })();
+          </script>
+        </div>
+      </div>
+
+      <!-- Cookie clicker -->
+      <div id="wrapper-cookie" class="game-wrapper">
+        <div id="lime-clicker-game">
+          <style>
+            #lime-clicker-game {
+              background:#050b03;color:#e2f7cf;font-family:Arial,sans-serif;
+              padding:22px;border:3px solid #39ff14;border-radius:14px;
+              max-width:1000px;margin:auto;box-sizing:border-box;
+              box-shadow:0 0 15px #a8ff0033;
+            }
+            #lime-clicker-game *{box-sizing:border-box}
+            #lime-clicker-game h2{color:#39ff14;margin-top:0;text-align:center;font-size:28px;text-shadow:0 0 10px #39ff14}
+            #lime-clicker-game .cg-layout{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+            #lime-clicker-game .cg-panel{background:#0a1a0a;padding:18px;border-radius:12px;text-align:center;border:1px solid #1f3d1f;min-width:0}
+            #lime-clicker-game .cg-count{font-size:28px;font-weight:bold;color:#39ff14;overflow-wrap:anywhere;text-shadow:0 0 5px #39ff14}
+            #lime-clicker-game .cg-cookie{display:block;margin:22px auto;width:190px;height:190px;max-width:70%;border-radius:50%;border:8px solid #2d5a00;background:radial-gradient(circle at 30% 25%,#eaffaa,#79c900 72%);box-shadow:inset -8px -10px 0 #4c8a00,0 7px 0 #020802;font-size:85px;cursor:pointer;transition:transform .08s;touch-action:manipulation}
+            #lime-clicker-game .cg-cookie:active{transform:scale(.94)}
+            #lime-clicker-game .cg-stat{color:#a2cda2;font-size:14px;overflow-wrap:anywhere}
+            #lime-clicker-game .cg-shop-item{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:12px 0;border-bottom:1px solid #1f3d1f}
+            #lime-clicker-game .cg-shop-item:last-child{border-bottom:0}
+            #lime-clicker-game .cg-shop-item small{display:block;color:#a2cda2;margin-top:5px;line-height:1.5}
+            #lime-clicker-game button.cg-buy,#lime-clicker-game .cg-reset{background:#39ff14;border:0;border-radius:7px;color:#000;padding:10px 12px;font-weight:bold;cursor:pointer;flex-shrink:0}
+            #lime-clicker-game button:disabled{opacity:.4;cursor:not-allowed}
+            #lime-clicker-game .cg-reset{margin-top:12px;background:#1a4a1a;color:#39ff14;border:1px solid #39ff14}
+            #lime-clicker-game .cg-heading{margin:18px 0 10px;color:#a8ff00}
+            #lime-clicker-game .cg-rebirth{background:linear-gradient(135deg,#18380c,#101e0b);border:2px solid #a8ff00;border-radius:12px;padding:16px;margin-top:18px}
+            #lime-clicker-game .cg-rebirth h3{color:#a8ff00;margin:0 0 8px}
+            #lime-clicker-game .cg-rebirth button{background:#a8ff00;color:#071000;border:0;border-radius:7px;padding:12px;font-weight:bold;cursor:pointer;width:100%;margin-top:8px}
+            #lime-clicker-game .cg-rebirth button:disabled{opacity:.4}
+            #lime-clicker-game .cg-progress{height:10px;background:#1f3d1f;border-radius:20px;overflow:hidden;margin:10px 0}
+            #lime-clicker-game .cg-progress-bar{height:100%;width:0;background:#a8ff00;transition:width .2s}
+
+            /* Global leaderboard and redeem-code panels */
+            #lime-clicker-game .cg-online{
+              margin-top:18px;padding:16px;border:2px solid #39ff14;
+              border-radius:12px;background:#071207;text-align:left;
+            }
+            #lime-clicker-game .cg-online h3{color:#a8ff00;margin:0 0 12px}
+            #lime-clicker-game .cg-online label{display:block;color:#a2cda2;font-size:14px}
+            #lime-clicker-game .cg-online input{
+              display:block;width:100%;min-width:0;margin:8px 0;padding:11px;
+              border:1px solid #39ff14;border-radius:7px;
+              background:#050b03;color:#e2f7cf;font-size:16px;
+            }
+            #lime-clicker-game .cg-online input:focus{
+              outline:2px solid #a8ff00;outline-offset:2px;
+            }
+            #lime-clicker-game .cg-online button{
+              width:100%;margin-top:8px;padding:11px;border:0;border-radius:7px;
+              background:#39ff14;color:#050b03;font-weight:bold;cursor:pointer;
+            }
+            #lime-clicker-game .cg-online button:disabled{opacity:.5;cursor:not-allowed}
+            #lime-clicker-game .cg-online-status{
+              color:#a2cda2;font-size:13px;overflow-wrap:anywhere;line-height:1.5;
+            }
+
+            @media(max-width:600px){
+              #lime-clicker-game{padding:12px}
+              #lime-clicker-game .cg-layout{grid-template-columns:1fr}
+              #lime-clicker-game .cg-cookie{width:155px;height:155px}
+              #lime-clicker-game .cg-count{font-size:23px}
+              #lime-clicker-game .cg-panel{padding:12px}
+              #lime-clicker-game .cg-shop-item{gap:6px}
+              #lime-clicker-game button.cg-buy{padding:9px}
+            }
+          </style>
+
+          <h2>LiME Clicker</h2>
+
+          <div class="cg-layout">
+            <section class="cg-panel">
+              <div class="cg-count" id="cg-count">0 limes</div>
+              <div class="cg-stat" id="cg-rate">0 limes per second</div>
+              <button class="cg-cookie" id="cg-cookie" aria-label="Click to squeeze limes"></button>
+              <p>Click the lime to squeeze more!</p>
+              <p class="cg-stat" id="cg-click-power">1 lime per click</p>
+              <p class="cg-stat" id="cg-total">Limes harvested: 0</p>
+              <p class="cg-stat" id="cg-multiplier">Rebirth multiplier: x1</p>
+
+              <div class="cg-rebirth">
+                <h3>Rebirth</h3>
+                <p class="cg-stat">Reset your limes, buildings, and click upgrades to gain a permanent production multiplier!</p>
+                <p class="cg-stat">Rebirths: <strong id="cg-rebirths">0</strong></p>
+                <p class="cg-stat">Next rebirth requirement: <strong id="cg-rebirth-cost">1M</strong> limes</p>
+                <div class="cg-progress"><div class="cg-progress-bar" id="cg-rebirth-bar"></div></div>
+                <button id="cg-rebirth-button">REBIRTH</button>
+                <p class="cg-stat" id="cg-rebirth-info">Reach the required limes to rebirth!</p>
+              </div>
+            </section>
+
+            <section class="cg-panel">
+              <h3 class="cg-heading">Lime Shop</h3>
+              <div id="cg-shop"></div>
+
+              <h3 class="cg-heading">Click Upgrades</h3>
+              <div id="cg-click-shop"></div>
+
+              <!-- REDEEM CODES -->
+              <div class="cg-online">
+                <h3>Redeem a Code</h3>
+                <input id="cg-redeem-code" maxlength="40"
+                       placeholder="Enter a reward code" autocomplete="off">
+                <button id="cg-redeem-button">REDEEM CODE</button>
+                <p class="cg-online-status" id="cg-redeem-status" aria-live="polite">
+                  Redeem a code to earn bonus limes!
+                </p>
+              </div>
+
+              <button class="cg-reset" id="cg-save">Save Game</button>
+              <button class="cg-reset" id="cg-reset">Reset Everything</button>
+              <p class="cg-stat" id="cg-message" aria-live="polite">Your orchard is ready!</p>
+            </section>
+          </div>
+          <script>
+          (function () {
+            const root = document.getElementById('lime-clicker-game');
+            if (!root || root.dataset.started) return;
+            root.dataset.started = 'yes';
+
+            const SAVE_KEY = 'lime-cookie-v4-save';
+            const REDEEMED_CODES_KEY = 'lime-clicker-redeemed-codes';
+            const buildings = [
+              {name:'Squeezer',icon:'+',base:15,cps:0.1,count:0},
+              {name:'Lime Farmer',icon:'+',base:100,cps:1,count:0},
+              {name:'Lime Grove',icon:'+',base:1100,cps:8,count:0},
+              {name:'Juice Plant',icon:'+',base:12000,cps:47,count:0},
+              {name:'Lime Mine',icon:'+',base:130000,cps:260,count:0},
+              {name:'Lime Factory',icon:'+',base:1400000,cps:1400,count:0},
+              {name:'Lime Laboratory',icon:'+',base:20000000,cps:7800,count:0},
+              {name:'Lime Dimension',icon:'+',base:330000000,cps:44000,count:0}
+            ];
+
+            const clickUpgrades = [
+              {name:'Stronger Fingers',desc:'+1 base lime per click',base:50,level:0,max:25},
+              {name:'Lime Gloves',desc:'+5 base limes per click',base:500,level:0,max:25},
+              {name:'Golden Juicer',desc:'+25 base limes per click',base:10000,level:0,max:25},
+              {name:'Ultra Squeeze',desc:'+100 base limes per click',base:250000,level:0,max:25}
+            ];
+
+            let cookies=0,total=0,lifetime=0,rebirths=0,lastSave=Date.now();
+            const $ = id => root.querySelector('#'+id);
+
+            ['cg-player-name','cg-redeem-code'].forEach(id=>{
+              const input=$(id);
+              if(!input)return;
+              ['keydown','keyup','keypress'].forEach(eventName=>{
+                input.addEventListener(eventName,event=>event.stopPropagation());
+              });
+              input.addEventListener('click',event=>event.stopPropagation());
+              input.addEventListener('pointerdown',event=>event.stopPropagation());
+            });
+
+            const fmt = n => {
+              if (!Number.isFinite(n)) return '∞';
+              if (n < 1000) return (n < 10 ? n.toFixed(1) : Math.floor(n)).toLocaleString();
+              const units=['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];
+              let i=0;
+              while(n>=1000 && i<units.length-1){n/=1000;i++}
+              return n.toFixed(2)+units[i];
+            };
+
+            function multiplier(){return Math.pow(2,rebirths)}
+            function clickPower(){
+              return (1
+                + clickUpgrades[0].level
+                + clickUpgrades[1].level*5
+                + clickUpgrades[2].level*25
+                + clickUpgrades[3].level*100
+              ) * multiplier();
+            }
+            function cps(){
+              return buildings.reduce((sum,b)=>sum+b.count*b.cps,0)*multiplier();
+            }
+            function cost(b){return Math.ceil(b.base*Math.pow(1.15,b.count))}
+            function upgradeCost(u){return Math.ceil(u.base*Math.pow(3,u.level))}
+            function rebirthCost(){return 1000000*Math.pow(10,rebirths)}
+
+            function saveData(){
+              return {
+                cookies,total,lifetime,rebirths,
+                counts:buildings.map(b=>b.count),
+                clickLevels:clickUpgrades.map(u=>u.level)
+              };
+            }
+
+            function saveQuietly(){
+              try{
+                localStorage.setItem(SAVE_KEY,JSON.stringify(saveData()));
+                if (typeof window.reportScore === 'function') {
+                  window.reportScore('cookie',Math.floor(total));
+                }
+              }catch(e){}
+            }
+
+            function save(){
+              saveQuietly();
+              $('cg-message').textContent='Game saved on this device!';
+            }
+
+            function load(){
+              try{
+                const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');
+                if(!d)return;
+                cookies=Math.max(0,Number(d.cookies)||0);
+                total=Math.max(0,Number(d.total)||0);
+                lifetime=Math.max(0,Number(d.lifetime ?? d.total)||0);
+                rebirths=Math.max(0,Math.floor(Number(d.rebirths)||0));
+                buildings.forEach((b,i)=>{
+                  b.count=Math.max(0,Math.floor(Number(d.counts&&d.counts[i])||0));
+                });
+                clickUpgrades.forEach((u,i)=>{
+                  u.level=Math.max(0,Math.min(u.max,Math.floor(Number(d.clickLevels&&d.clickLevels[i])||0)));
+                });
+                if (typeof window.reportScore === 'function') {
+                  window.reportScore('cookie',Math.floor(total));
+                }
+              }catch(e){}
+            }
+
+            function render(){
+              $('cg-count').textContent=fmt(cookies)+' limes';
+              $('cg-rate').textContent=fmt(cps())+' limes per second';
+              $('cg-click-power').textContent=fmt(clickPower())+' limes per click';
+              $('cg-total').textContent='Limes harvested this run: '+fmt(total);
+              $('cg-multiplier').textContent='Rebirth multiplier: x'+fmt(multiplier());
+              $('cg-rebirths').textContent=rebirths;
+
+              const requirement=rebirthCost();
+              $('cg-rebirth-cost').textContent=fmt(requirement);
+              $('cg-rebirth-bar').style.width=Math.min(100,cookies/requirement*100)+'%';
+              $('cg-rebirth-button').disabled=cookies<requirement;
+              $('cg-rebirth-info').textContent=cookies>=requirement
+                ? 'Ready! Rebirth to double your permanent multiplier.'
+                : 'You need '+fmt(requirement-cookies)+' more limes.';
+
+              $('cg-shop').replaceChildren();
+              buildings.forEach(b=>{
+                const price=cost(b);
+                const item=document.createElement('div');
+                item.className='cg-shop-item';
+                const info=document.createElement('div');
+                const name=document.createElement('strong');
+                name.textContent=b.icon+' '+b.name+' ('+b.count+')';
+                name.style.color='#39ff14';
+                const detail=document.createElement('small');
+                detail.textContent=fmt(price)+' limes · '+fmt(b.cps*multiplier())+' limes/sec each';
+                info.append(name,detail);
+                const button=document.createElement('button');
+                button.className='cg-buy';
+                button.textContent='Buy';
+                button.disabled=cookies<price;
+                button.setAttribute('aria-label','Buy '+b.name);
+                button.addEventListener('click',()=>{
+                  const p=cost(b);
+                  if(cookies<p)return;
+                  cookies-=p;
+                  b.count++;
+                  render();
+                  saveQuietly();
+                });
+                item.append(info,button);
+                $('cg-shop').append(item);
+              });
+
+              $('cg-click-shop').replaceChildren();
+              clickUpgrades.forEach(u=>{
+                const price=upgradeCost(u);
+                const item=document.createElement('div');
+                item.className='cg-shop-item';
+                const info=document.createElement('div');
+                const name=document.createElement('strong');
+                name.textContent='+ '+u.name+' ('+u.level+'/'+u.max+')';
+                name.style.color='#a8ff00';
+                const detail=document.createElement('small');
+                detail.textContent=u.desc+' · Cost: '+fmt(price)+' limes';
+                info.append(name,detail);
+                const button=document.createElement('button');
+                button.className='cg-buy';
+                button.textContent=u.level>=u.max?'MAX':'Buy';
+                button.disabled=u.level>=u.max||cookies<price;
+                button.addEventListener('click',()=>{
+                  const p=upgradeCost(u);
+                  if(cookies<p||u.level>=u.max)return;
+                  cookies-=p;
+                  u.level++;
+                  render();
+                  saveQuietly();
+                });
+                item.append(info,button);
+                $('cg-click-shop').append(item);
+              });
+            }
+
+            // Reward codes are case-insensitive and can be redeemed once per browser.
+            const rewardCodes={
+              'LIME2026':1000,
+              'KAINYXDZZOWNER':5000,
+              'BMC2021':25000,
+              'MRSHUTIN':30000
+            };
+
+            $('cg-redeem-button').addEventListener('click',()=>{
+              const input=$('cg-redeem-code');
+              const status=$('cg-redeem-status');
+              const code=input.value.trim().toUpperCase();
+
+              if(!code){
+                status.textContent='Enter a code first!';
+                return;
+              }
+
+              let redeemed=[];
+              try{
+                redeemed=JSON.parse(localStorage.getItem(REDEEMED_CODES_KEY)||'[]');
+                if(!Array.isArray(redeemed))redeemed=[];
+              }catch(e){redeemed=[];}
+
+              if(!Object.prototype.hasOwnProperty.call(rewardCodes,code)){
+                status.textContent='That code is not valid.';
+                return;
+              }
+
+              if(redeemed.includes(code)){
+                status.textContent='You already redeemed that code on this browser!';
+                return;
+              }
+
+              const reward=rewardCodes[code];
+              cookies+=reward;
+              total+=reward;
+              lifetime+=reward;
+              redeemed.push(code);
+
+              try{
+                localStorage.setItem(REDEEMED_CODES_KEY,JSON.stringify(redeemed));
+              }catch(e){}
+
+              saveQuietly();
+              render();
+              status.textContent='Success! You received '+reward.toLocaleString()+' limes!';
+              input.value='';
+            });
+
+            $('cg-cookie').addEventListener('click',()=>{
+              const amount=clickPower();
+              cookies+=amount;
+              total+=amount;
+              lifetime+=amount;
+              render();
+            });
+
+            $('cg-rebirth-button').addEventListener('click',()=>{
+              const requirement=rebirthCost();
+              if(cookies<requirement)return;
+              if(!confirm('Rebirth now? Your limes, buildings, and click upgrades will reset, but your rebirth multiplier will double permanently.'))return;
+
+              rebirths++;
+              cookies=0;
+              total=0;
+              // Lifetime limes are preserved for game stats.
+              buildings.forEach(b=>b.count=0);
+              clickUpgrades.forEach(u=>u.level=0);
+              $('cg-message').textContent='Rebirth complete! Your multiplier is now x'+fmt(multiplier())+'!';
+              render();
+              saveQuietly();
+            });
+
+            $('cg-save').addEventListener('click',save);
+            $('cg-reset').addEventListener('click',()=>{
+              if(!confirm('Reset EVERYTHING, including your rebirths and upgrades? This cannot be undone.'))return;
+              cookies=0;total=0;lifetime=0;rebirths=0;
+              buildings.forEach(b=>b.count=0);
+              clickUpgrades.forEach(u=>u.level=0);
+              saveQuietly();
+              render();
+              $('cg-message').textContent='A brand-new orchard! Good luck!';
+            });
+
+            load();
+            render();
+
+            setInterval(()=>{
+              if(!document.getElementById('wrapper-cookie').classList.contains('active')){
+                lastSave=Date.now();
+                return;
+              }
+              const now=Date.now();
+              const elapsed=Math.min(5,(now-lastSave)/1000);
+              lastSave=now;
+              const earned=cps()*elapsed;
+              if(earned>0){
+                cookies+=earned;
+                total+=earned;
+                lifetime+=earned;
+                render();
+                saveQuietly();
+              }
+            },1000);
+          })();
+          </script>
+        </div>
+      </div>
+
+      <!-- Capitalist Tycoon -->
+      <div id="wrapper-capitalist" class="game-wrapper">
+        <div id="capitalist-tycoon" style="font-family:Arial,sans-serif;background:#101827;color:#f4f7fb;padding:18px;border-radius:16px;max-width:1000px;margin:auto">
+        <style>
+        #capitalist-tycoon * { box-sizing:border-box; }
+        
+        /* Reset Headings from Weebly overrides */
+        #capitalist-tycoon h1 { color:#7cf2b3 !important; margin:0 !important; font-size:32px !important; font-family:Arial,sans-serif !important; border:none !important; }
+        #capitalist-tycoon h2 { color:#f4f7fb !important; margin:0 0 10px !important; font-size:22px !important; font-family:Arial,sans-serif !important; border:none !important; }
+        #capitalist-tycoon h3 { color:#e3d4ff !important; margin:0 0 6px !important; font-size:16px !important; font-family:Arial,sans-serif !important; border:none !important; }
+        
+        /* Button Styles */
+        #capitalist-tycoon button { cursor:pointer; border:0; border-radius:8px; padding:9px 12px; background:#7cf2b3; color:#10251d; font-weight:bold; font-family:Arial,sans-serif; font-size:14px; line-height:1.2; height:auto; }
+        #capitalist-tycoon button:disabled { background:#42516a; color:#aab8cb; cursor:not-allowed; }
+        
+        /* Namespaced Layout Classes */
+        #capitalist-tycoon .ct-top { display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap; }
+        #capitalist-tycoon .ct-cashbox, #capitalist-tycoon .ct-stat, #capitalist-tycoon .ct-panel { background:#1b2940; border:1px solid #30425d; border-radius:12px; padding:13px; }
+        #capitalist-tycoon .ct-cash { font-size:28px; color:#7cf2b3; font-weight:bold; margin-top:5px; }
+        #capitalist-tycoon .ct-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:15px 0; }
+        #capitalist-tycoon .ct-stat span { color:#aab8cb; font-size:12px; }
+        #capitalist-tycoon .ct-stat strong { display:block; margin-top:5px; font-size:20px; }
+        #capitalist-tycoon .ct-layout { display:grid; grid-template-columns:1.4fr 1fr; gap:14px; }
+        
+        #capitalist-tycoon .ct-biz, #capitalist-tycoon .ct-upgrade { display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid #30425d; }
+        #capitalist-tycoon .ct-biz:last-child, #capitalist-tycoon .ct-upgrade:last-child { border:0; }
+        #capitalist-tycoon .ct-emoji { font-size:27px; }
+        #capitalist-tycoon .ct-info { flex:1; min-width:0; }
+        #capitalist-tycoon .ct-detail { font-size:12px; color:#aab8cb; margin-top:4px; line-height:1.5; }
+        #capitalist-tycoon .ct-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+        #capitalist-tycoon .ct-secondary { background:#30425d !important; color:#f4f7fb !important; }
+        #capitalist-tycoon .ct-note { font-size:12px; color:#aab8cb; line-height:1.5; margin-top:12px; }
+        #capitalist-tycoon .ct-toast { color:#7cf2b3; font-size:13px; margin-top:10px; min-height:18px; }
+        #capitalist-tycoon .ct-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+        #capitalist-tycoon .ct-tabs button.active { outline:2px solid #fff; }
+        #capitalist-tycoon .ct-zone-title { display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+        #capitalist-tycoon .ct-pill { background:#2d405b; color:#c8d6e8; border-radius:20px; padding:5px 9px; font-size:12px; }
+        #capitalist-tycoon .ct-rebirth { background:linear-gradient(135deg,#493078,#243b69); border:1px solid #7054a7; border-radius:10px; padding:12px; margin-top:12px; }
+        #capitalist-tycoon .ct-progress { height:7px; background:#2a3a51; border-radius:99px; overflow:hidden; margin-top:8px; }
+        #capitalist-tycoon .ct-progress span { display:block; height:100%; background:#7cf2b3; width:0; }
+        #capitalist-tycoon #ct-moon-locked { color:#ffcf83; }
+        
+        @media(max-width:650px) {
+          #capitalist-tycoon .ct-layout { grid-template-columns:1fr; }
+          #capitalist-tycoon .ct-stats { grid-template-columns:1fr; }
+          #capitalist-tycoon .ct-biz { align-items:flex-start; }
+          #capitalist-tycoon .ct-biz button { padding:8px; }
+        }
+        </style>
+        
+        <div class="ct-top">
+          <div>
+            <h1>Capitalist Tycoon</h1>
+            <div style="color:#aab8cb;margin-top:5px">Build your empire. Rebirth. Reach the Moon.</div>
+          </div>
+          <div class="ct-cashbox">
+            <div style="color:#aab8cb;font-size:12px">AVAILABLE CASH</div>
+            <div class="ct-cash" id="ct-cash">$50</div>
+          </div>
+        </div>
+        
+        <div class="ct-stats">
+          <div class="ct-stat"><span>INCOME / SECOND</span><strong id="ct-income">$0</strong></div>
+          <div class="ct-stat"><span>BUSINESSES OWNED</span><strong id="ct-owned">0</strong></div>
+          <div class="ct-stat"><span>REBIRTHS</span><strong id="ct-rebirths">0</strong></div>
+        </div>
+        
+        <div class="ct-layout">
+          <section class="ct-panel">
+            <div class="ct-zone-title"><h2 id="ct-zone-heading">Earth Businesses</h2><span class="ct-pill" id="ct-zone-pill">Earth</span></div>
+            <div class="ct-tabs"><button id="ct-earth-tab" class="active">Earth</button><button id="ct-moon-tab" class="ct-secondary" disabled>Moon (Rebirth 50)</button><button id="ct-mars-tab" class="ct-secondary" disabled>Mars (Rebirth 250)</button><button id="ct-jupiter-tab" class="ct-secondary" disabled>Jupiter (Rebirth 450)</button></div>
+            <div id="ct-moon-locked" class="ct-detail">The Moon unlocks at 50 rebirths. Build your Earth empire first!</div><div id="ct-planet-locked" class="ct-detail" style="display:none"></div>
+            <div class="ct-rebirth" style="margin:10px 0"><h3>Unlock Everything (Developer Code)</h3><div class="ct-detail">Enter the unlock code to preview every planet and business.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><input id="ct-unlock-code" type="text" placeholder="Enter unlock code" autocomplete="off" style="flex:1;min-width:140px;padding:10px;border-radius:8px;border:1px solid #405471;background:#101827;color:#f4f7fb"><button id="ct-unlock-button">Unlock</button></div><div class="ct-detail" id="ct-unlock-status" aria-live="polite"></div></div>
+            <div id="ct-businesses"></div>
+          </section>
+          
+          <section class="ct-panel">
+            <h2>Upgrades & Progress</h2>
+            <div class="ct-upgrade"><div class="ct-info"><b>Business Boost</b><div class="ct-detail">Double business income each level.</div><div class="ct-detail" id="ct-boost-level">Level 0</div></div><button id="ct-boost">Buy $250</button></div>
+            <div class="ct-upgrade"><div class="ct-info"><b>Investor Network</b><div class="ct-detail">Increase income by 25% each level.</div><div class="ct-detail" id="ct-investor-level">Level 0</div></div><button id="ct-investor">Buy $1K</button></div>
+            <div class="ct-upgrade"><div class="ct-info"><b>Marketing Campaign</b><div class="ct-detail">Add $1/sec per level.</div><div class="ct-detail" id="ct-marketing-level">Level 0</div></div><button id="ct-marketing">Buy $500</button></div>
+            
+            <div class="ct-rebirth">
+              <h3>Rebirth</h3>
+              <div class="ct-detail">Reset your cash and businesses to gain permanent multipliers. Each rebirth multiplies all income by 2×. Rebirth cost rises each time.</div>
+              <div class="ct-detail" id="ct-rebirth-info">Need $1M total cash to rebirth.</div>
+              <div class="ct-progress"><span id="ct-rebirth-bar"></span></div>
+              <button id="ct-rebirth-button" style="margin-top:10px">Rebirth</button>
+            </div>
+            
+            <div class="ct-actions"><button id="ct-collect">Collect bonus $25</button><button id="ct-save" class="ct-secondary">Save now</button><button id="ct-reset" class="ct-secondary">Reset game</button></div>
+            <div class="ct-note" id="ct-bonus-cooldown">Bonus ready!</div>
+            <div class="ct-toast" id="ct-toast" aria-live="polite"></div>
+            <div class="ct-note">Progress saves automatically in this browser. Income accumulates while the game is open, and for up to 8 hours between visits.</div>
+          </section>
+        </div>
+        
+        <section class="ct-panel" style="margin-top:14px">
+          <div class="ct-zone-title"><h2>Roulette Table</h2><span class="ct-pill" id="ct-roulette-pill">Rebirth 25 required</span></div>
+          <div id="ct-roulette-locked" class="ct-rebirth" style="display:block"><b>Roulette is locked!</b><div class="ct-detail">Reach Rebirth 25 to unlock the roulette table. You are currently at Rebirth <span id="ct-roulette-rebirth-count">0</span>.</div></div>
+          <div id="ct-roulette-content" style="display:none">
+          <div class="ct-detail">Choose a bet, pick a result, and spin. Green 0 pays 14× on an exact-number bet; red/black and odd/even pay 2× when they win. Bets are deducted before the spin.</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-top:12px">
+            <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#aab8cb">Bet amount
+              <input id="ct-roulette-bet" type="number" min="1" step="1" value="100" style="width:140px;padding:10px;border-radius:8px;border:1px solid #405471;background:#101827;color:#f4f7fb">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:#aab8cb">Bet on
+              <select id="ct-roulette-choice" style="padding:10px;border-radius:8px;border:1px solid #405471;background:#101827;color:#f4f7fb">
+                <option value="red">Red (2×)</option><option value="black">Black (2×)</option><option value="odd">Odd (2×)</option><option value="even">Even (2×)</option>
+                <option value="0">Exact number 0 (14×)</option><option value="1">Exact number 1 (14×)</option><option value="2">Exact number 2 (14×)</option><option value="3">Exact number 3 (14×)</option><option value="4">Exact number 4 (14×)</option><option value="5">Exact number 5 (14×)</option><option value="6">Exact number 6 (14×)</option><option value="7">Exact number 7 (14×)</option><option value="8">Exact number 8 (14×)</option><option value="9">Exact number 9 (14×)</option><option value="10">Exact number 10 (14×)</option><option value="11">Exact number 11 (14×)</option><option value="12">Exact number 12 (14×)</option>
+              </select>
+            </label>
+            <button id="ct-roulette-spin">Spin roulette</button>
+          </div>
+          <div id="ct-roulette-result" style="margin-top:14px;padding:14px;border-radius:10px;background:#101827;border:1px solid #30425d;font-weight:bold">Place a bet and spin!</div>
+          <div class="ct-note">Game-only currency. Roulette uses a random result from 0–12. 0 is green, odd numbers are red, and even numbers are black. Gamble responsibly in-game.</div>
+          </div>
+        </section>
+        
+        <script>
+        (function(){
+        const root=document.getElementById('capitalist-tycoon');if(!root||root.dataset.started)return;root.dataset.started='1';
+        const earthData=[
+        ['Lemonade Stand','$','A tiny start to a huge empire.',25,1],['Corner Shop','$','Sell everyday essentials.',150,5],['Coffee Shop','$','Keep the city caffeinated.',800,20],['Food Truck','$','Serve hungry customers.',2500,50],['Factory','$','Mass-produce your profits.',7000,130],['Movie Theater','$','Sell tickets and snacks.',18000,300],['Investment Bank','$','Make your money work for you.',45000,650],['Hotel Chain','$','Give travelers a place to stay.',110000,1400],['Tech Company','$','Build the next big app.',275000,3000],['Shopping Mall','$','Bring every store together.',700000,7000],['Airline','$','Connect cities around the world.',1800000,16000],['Oil Company','$','Fuel the world economy.',4500000,38000],['Sports Team','$','Turn fans into a fortune.',12000000,90000],['TV Network','$','Broadcast your way to billions.',30000000,210000],['Robot Factory','$','Automate the future.',80000000,520000],['AI Lab','$','Invent tomorrow today.',220000000,1400000],['City District','$','Own a piece of the skyline.',600000000,3800000],['Ocean Platform','$','Build an empire offshore.',1700000000,11000000],['Space Corporation','$','Prepare for the stars.',5000000000,33000000],['World Conglomerate','$','Become the ultimate capitalist.',15000000000,100000000]
+        ];
+        const moonData=[
+        ['Moon Mining Camp','$','Mine valuable lunar minerals.',1000,100],['Lunar Farm','$','Grow food under moon domes.',6000,500],['Moon Café','$','Coffee with an Earthrise view.',25000,1800],['Crater Hotel','$','Luxury stays in a crater.',100000,6500],['Oxygen Plant','$','Sell breathable air.',450000,24000],['Moon Rover Works','$','Build lunar exploration vehicles.',1800000,90000],['Helium-3 Mine','$','Harvest rare lunar fuel.',8000000,350000],['Lunar Lab','$','Research low-gravity science.',35000000,1500000],['Moonport','$','Manage lunar arrivals.',150000000,6500000],['Space Suit Brand','$','Suit up every astronaut.',700000000,28000000],['Crater Resort','$','Five-star lunar vacations.',3000000000,120000000],['Asteroid Tugs','$','Tow asteroids into orbit.',15000000000,600000000],['Orbital Factory','$','Manufacture in low gravity.',80000000000,3200000000],['Lunar Data Center','$','Power the space internet.',450000000000,18000000000],['Moon Rail Network','$','Travel across the lunar surface.',2500000000000,100000000000],['Terraforming Lab','$','Make the Moon more livable.',15000000000000,600000000000],['Lunar Shipyard','$','Build interplanetary ships.',100000000000000,4000000000000],['Moon Energy Grid','$','Power an entire lunar economy.',750000000000000,30000000000000],['Lunar Megacity','$','A city under giant domes.',6000000000000000,240000000000000],['Moon Corporation','$','Rule the lunar market.',50000000000000000,2000000000000000]
+        ];
+        const marsData=[['Mars Research Outpost','$','Study the red planet.',1e9,5e7],['Red Dust Mine','$','Mine rare Martian minerals.',8e9,3e8],['Dome Colony','$','Build a city beneath protective domes.',6e10,2e9],['Mars Terraformer','$','Begin reshaping the Martian climate.',5e11,1.8e10],['Olympus Mons Resort','$','Luxury tourism on the solar system’s tallest volcano.',5e12,2e11],['Mars Corporation','$','Control the Martian economy.',8e13,3e12]];
+        const jupiterData=[['Europa Ice Station','$','Start exploring Jupiter’s moons.',1e13,5e11],['Orbital Gas Harvester','$','Harvest resources from Jupiter’s atmosphere.',8e13,3e12],['Europa Ocean Lab','$','Research the hidden ocean beneath the ice.',7e14,2.5e13],['Jovian Ring Foundry','$','Build industry around the gas giant.',6e15,2e14],['Great Red Spot Observatory','$','Study Jupiter’s legendary storm.',5e16,1.8e15],['Jupiter Megacorp','$','Become the ruler of the Jovian system.',8e17,3e16]];
+        const defaults={cash:50,earned:0,boost:0,investor:0,marketing:0,rebirths:0,moonUnlocked:false,marsUnlocked:false,jupiterUnlocked:false,previewAll:false,zone:'earth',lastTime:Date.now(),bonusReadyAt:0};
+        const earth=earthData.map((x,i)=>({id:'e'+i,name:x[0],emoji:x[1],desc:x[2],cost:x[3],income:x[4],owned:0,productionElapsed:0}));
+        const moon=moonData.map((x,i)=>({id:'m'+i,name:x[0],emoji:x[1],desc:x[2],cost:x[3],income:x[4],owned:0,productionElapsed:0}));
+        const mars=marsData.map((x,i)=>({id:'r'+i,name:x[0],emoji:x[1],desc:x[2],cost:x[3],income:x[4],owned:0,productionElapsed:0}));
+        const jupiter=jupiterData.map((x,i)=>({id:'j'+i,name:x[0],emoji:x[1],desc:x[2],cost:x[3],income:x[4],owned:0,productionElapsed:0}));
+        let s={...defaults};const $=id=>root.querySelector('#'+id);
+        const money=n=>{if(!Number.isFinite(n))return '$0';if(n<1000)return '$'+Math.floor(n).toLocaleString('en-US');const u=['K','M','B','T','Qa','Qi','Sx','Sp','Oc','No'];let i=-1;while(n>=1000&&i<u.length-1){n/=1000;i++}return '$'+n.toFixed(n>=100?0:n>=10?1:2)+u[i]};
+        const price=b=>Math.floor(b.cost*Math.pow(1.32,b.owned));
+        const activeBusinesses=()=>s.zone==='moon'?moon:s.zone==='mars'?mars:s.zone==='jupiter'?jupiter:earth;
+        const allBusinesses=()=>earth.concat(moon,mars,jupiter);
+        const planetUnlocked=zone=>s.previewAll||zone==='earth'||(zone==='moon'&&(s.moonUnlocked||s.rebirths>=50))||(zone==='mars'&&(s.marsUnlocked||s.rebirths>=250))||(zone==='jupiter'&&(s.jupiterUnlocked||s.rebirths>=450));
+        const multiplier=()=>Math.pow(2,s.boost)*Math.pow(1.25,s.investor)*Math.pow(2,s.rebirths);
+        const productionTime=b=>{const base=2+Math.log10(Math.max(1,b.income))*1.5;if(b.income>=100000000)return 300;if(b.income>=1000000)return 180;if(b.income>=10000)return 60;return base};
+        const productionTimeLabel=seconds=>seconds>=60?Math.floor(seconds/60)+'m '+String(Math.floor(seconds%60)).padStart(2,'0')+'s':seconds.toFixed(1)+' sec';
+        const income=()=>{let base=activeBusinesses().reduce((a,b)=>a+b.owned*b.income,0);return base*multiplier()+s.marketing};
+        function toast(t){$('ct-toast').textContent=t}
+        function formatTime(ms){let sec=Math.ceil(ms/1000),m=Math.floor(sec/60),r=sec%60;return m+':'+String(r).padStart(2,'0')}
+        function save(show){s.lastTime=Date.now();try{localStorage.setItem('capitalistTycoonSaveV2',JSON.stringify({s,businesses:allBusinesses().map(b=>({id:b.id,owned:b.owned}))}));if(show)toast('Game saved!')}catch(e){if(show)toast('Saving is not available in this browser.')}}
+        function load(){try{let raw=localStorage.getItem('capitalistTycoonSaveV2')||localStorage.getItem('capitalistTycoonSaveV1');let d=JSON.parse(raw||'null');if(!d)return;if(d.s)s={...defaults,...d.s};else if(d.state)s={...defaults,...d.state};(d.businesses||[]).forEach(x=>{let b=allBusinesses().find(y=>y.id===x.id);if(b)b.owned=Math.max(0,Math.floor(x.owned||0))});if(d.s&&d.s.zone)s.zone=d.s.zone;const secs=Math.max(0,Math.min(28800,(Date.now()-(s.lastTime||Date.now()))/1000));const gain=income()*secs;s.cash+=gain;s.earned+=gain;if(gain>0)toast('Welcome back! You earned '+money(gain)+' while away.')}catch(e){s={...defaults}}}
+        function render(){
+        $('ct-cash').textContent=money(s.cash);$('ct-income').textContent=money(income())+'/sec';$('ct-owned').textContent=activeBusinesses().reduce((a,b)=>a+b.owned,0);$('ct-rebirths').textContent=s.rebirths;
+        const labels={earth:'Earth Businesses',moon:'Moon Businesses',mars:'Mars Businesses',jupiter:'Jupiter Businesses'}; $('ct-zone-heading').textContent=labels[s.zone]||labels.earth;$('ct-zone-pill').textContent=s.zone[0].toUpperCase()+s.zone.slice(1);
+        [['earth','ct-earth-tab'],['moon','ct-moon-tab'],['mars','ct-mars-tab'],['jupiter','ct-jupiter-tab']].forEach(([z,id])=>{$(id).classList.toggle('active',s.zone===z);$(id).disabled=!planetUnlocked(z)});$('ct-moon-locked').style.display=planetUnlocked('moon')?'none':'block';$('ct-planet-locked').style.display=planetUnlocked(s.zone)?'none':'block';$('ct-planet-locked').textContent=s.zone==='mars'?'Mars unlocks at Rebirth 250.':s.zone==='jupiter'?'Jupiter unlocks at Rebirth 450.':'';
+        $('ct-businesses').innerHTML=activeBusinesses().map(b=>{let p=price(b),each=b.income*multiplier(),duration=productionTime(b),progress=Math.min(100,(b.productionElapsed||0)/duration*100);return '<div class="ct-biz"><div class="ct-emoji">'+b.emoji+'</div><div class="ct-info"><b>'+b.name+' <span style="color:#7cf2b3">×'+b.owned+'</span></b><div class="ct-detail">'+b.desc+'<br>'+money(each)+'/sec each · Pays every '+duration.toFixed(1)+' sec · Payout '+money(each*b.owned*duration)+'</div><div class="ct-progress" style="margin-top:7px;height:8px"><span style="width:'+(b.owned?progress:0)+'%"></span></div><div class="ct-detail">'+(b.owned?productionTimeLabel(Math.max(0,duration-(b.productionElapsed||0)))+' until payout':'Buy to start production')+'</div></div><button data-buy="'+b.id+'" '+(s.cash<p?'disabled':'')+'>Buy<br>'+money(p)+'</button></div>'}).join('');
+        $('ct-boost-level').textContent='Level '+s.boost;$('ct-investor-level').textContent='Level '+s.investor;$('ct-marketing-level').textContent='Level '+s.marketing;
+        [['boost',500*Math.pow(8,s.boost)],['investor',2500*Math.pow(6,s.investor)],['marketing',2500*Math.pow(5,s.marketing)]].forEach(([k,p])=>{$('ct-'+k).textContent='Buy '+money(p);$('ct-'+k).disabled=s.cash<p});
+        const bonus=25+Math.min(475,Math.floor(s.earned/100000)*25);const remaining=Math.max(0,(s.bonusReadyAt||0)-Date.now());$('ct-collect').textContent=remaining>0?' Bonus '+Math.ceil(remaining/1000)+'s':'Collect bonus '+money(bonus);$('ct-collect').disabled=remaining>0;if($('ct-bonus-cooldown'))$('ct-bonus-cooldown').textContent=remaining>0?'Bonus available in '+formatTime(remaining):'Bonus ready! You can collect it once every 5 minutes.';
+        const req=1000000*Math.pow(10,s.rebirths);$('ct-rebirth-info').textContent='Need '+money(req)+' cash to rebirth. Current cash: '+money(s.cash)+'. Rebirths give a permanent 2× income multiplier each.';
+        $('ct-rebirth-button').disabled=s.cash<req;$('ct-rebirth-button').textContent=s.cash>=req?'Rebirth now':'Need '+money(req);
+        $('ct-rebirth-bar').style.width=Math.min(100,s.cash/req*100)+'%';
+        $('ct-roulette-content').style.display=s.rebirths>=25?'block':'none';$('ct-roulette-locked').style.display=s.rebirths>=25?'none':'block';$('ct-roulette-pill').textContent=s.rebirths>=25?'Unlocked':'Rebirth 25 required';$('ct-roulette-rebirth-count').textContent=s.rebirths;
+        }
+        function buy(id){let b=allBusinesses().find(x=>x.id===id);if(!b||!activeBusinesses().includes(b))return;let p=price(b);if(s.cash<p){toast('Not enough cash yet -- keep earning!');return}s.cash-=p;b.owned++;toast('Bought '+b.name+'!');render();save(false)}
+        $('ct-businesses').addEventListener('click',e=>{let b=e.target.closest('[data-buy]');if(b)buy(b.dataset.buy)});
+        $('ct-earth-tab').addEventListener('click',()=>{s.zone='earth';render()});
+        $('ct-moon-tab').addEventListener('click',()=>{if(planetUnlocked('moon')){s.zone='moon';render()}});
+        $('ct-mars-tab').addEventListener('click',()=>{if(planetUnlocked('mars')){s.zone='mars';render()}});
+        $('ct-jupiter-tab').addEventListener('click',()=>{if(planetUnlocked('jupiter')){s.zone='jupiter';render()}});
+        $('ct-unlock-button').addEventListener('click',()=>{const code=$('ct-unlock-code').value.trim().toUpperCase();if(code==='LIME-ALL-PLANETS'){s.previewAll=true;s.moonUnlocked=s.marsUnlocked=s.jupiterUnlocked=true;$('ct-unlock-status').textContent='Success! All planets and businesses are unlocked for viewing.';toast('All planets unlocked!');render();save(false)}else{$('ct-unlock-status').textContent='Invalid code. Check the code and try again.'}});
+        function upgrade(k){let p={boost:500*Math.pow(8,s.boost),investor:2500*Math.pow(6,s.investor),marketing:2500*Math.pow(5,s.marketing)}[k];if(s.cash<p){toast('Not enough cash for that upgrade yet.');return}s.cash-=p;s[k]++;toast('Upgrade purchased!');render();save(false)}
+        ['boost','investor','marketing'].forEach(k=>$('ct-'+k).addEventListener('click',()=>upgrade(k)));
+        $('ct-collect').addEventListener('click',()=>{if(Date.now()<(s.bonusReadyAt||0)){toast('Bonus is still cooling down.');return}let b=25+Math.min(475,Math.floor(s.earned/100000)*25);s.cash+=b;s.earned+=b;s.bonusReadyAt=Date.now()+300000;toast('Bonus collected: '+money(b)+'. Come back in 5 minutes!');render();save(false)});
+        $('ct-rebirth-button').addEventListener('click',()=>{let req=1000000*Math.pow(10,s.rebirths);if(s.cash<req)return;if(!confirm('Rebirth now? Your cash, Earth businesses, Moon businesses, and regular upgrades reset. Your rebirth count and permanent income multiplier stay!'))return;s.rebirths++;s.cash=50;s.boost=0;s.investor=0;s.marketing=0;allBusinesses().forEach(b=>{b.owned=0;b.productionElapsed=0});if(s.rebirths>=50)s.moonUnlocked=true;if(s.rebirths>=250)s.marsUnlocked=true;if(s.rebirths>=450)s.jupiterUnlocked=true;if(s.rebirths>=50){toast('Rebirth complete! New planets may be unlocked!')}else toast('Rebirth complete! Permanent income multiplier: '+money(Math.pow(2,s.rebirths))+'×');s.zone='earth';render();save(false)});
+        $('ct-roulette-spin').addEventListener('click',()=>{
+         if(s.rebirths<25){$('ct-roulette-result').textContent='Roulette unlocks at Rebirth 25.';return}
+         const input=$('ct-roulette-bet'),choice=$('ct-roulette-choice').value,bet=Math.floor(Number(input.value));
+         if(!Number.isFinite(bet)||bet<1){$('ct-roulette-result').textContent='Enter a bet of at least $1.';return}
+         if(bet>s.cash){$('ct-roulette-result').textContent='You do not have enough cash for that bet.';return}
+         s.cash-=bet;
+         const result=Math.floor(Math.random()*13);
+         const color=result===0?'green':(result%2===1?'red':'black');
+         const won=choice==='red'||choice==='black'?choice===color:
+                   choice==='odd'?result!==0&&result%2===1:
+                   choice==='even'?result!==0&&result%2===0:
+                   Number(choice)===result;
+         let payout=0;
+         if(won)payout=bet*(choice==='red'||choice==='black'||choice==='odd'||choice==='even'?2:14);
+         s.cash+=payout;
+         if(payout>0){s.earned+=payout;toast('Roulette win! Payout '+money(payout));}
+         else toast('Roulette lost '+money(bet)+'. Try again!');
+         const colorEmoji=color==='red'?'R':color==='black'?'B':'G';
+         $('ct-roulette-result').textContent=colorEmoji+' Result: '+result+' ('+color.toUpperCase()+') -- '+(payout>0?'YOU WIN '+money(payout)+' total payout!':'No win. You lost '+money(bet)+'.');
+         render();save(false);
+        });
+        $('ct-save').addEventListener('click',()=>save(true));
+        $('ct-reset').addEventListener('click',()=>{if(confirm('Reset ALL Capitalist Tycoon progress, including rebirths and Moon unlock? This cannot be undone.')){s={...defaults};allBusinesses().forEach(b=>{b.owned=0;b.productionElapsed=0});try{localStorage.removeItem('capitalistTycoonSaveV2');localStorage.removeItem('capitalistTycoonSaveV1')}catch(e){}toast('Game reset. Start your empire!');render()}});
+        load();if(s.rebirths>=50)s.moonUnlocked=true;if(s.rebirths>=250)s.marsUnlocked=true;if(s.rebirths>=450)s.jupiterUnlocked=true;if(!planetUnlocked(s.zone))s.zone='earth';render();let last=Date.now();setInterval(()=>{let now=Date.now(),dt=Math.min(2,(now-last)/1000);last=now;if(dt>0){let earned=0;activeBusinesses().forEach(b=>{if(b.owned>0){b.productionElapsed=(b.productionElapsed||0)+dt;const cycle=productionTime(b);while(b.productionElapsed>=cycle){b.productionElapsed-=cycle;earned+=b.income*b.owned*multiplier()*cycle}}});earned+=s.marketing*dt;s.cash+=earned;s.earned+=earned;render()}},250);setInterval(()=>save(false),10000);window.addEventListener('beforeunload',()=>save(false));
+        })();
+        </script>
+        </div>
+      </div>
+
+      <div id="wrapper-minecraft" class="game-wrapper">
+        <div style="width:100%; margin:0; padding:0; text-align:center; background: #050905; border-radius: 16px; border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433; padding: 20px; box-sizing: border-box;">
+          <h1 style="color: #39ff14; text-shadow: 0 0 10px #39ff14; margin-top: 0; font-family: Arial, sans-serif;">LIMECRAFT</h1>
+          <p style="color: #a8ff00; font-size: 14px; margin-bottom: 15px;">Click anywhere inside the game to lock your mouse and keyboard!</p>
+          <iframe
+            id="limeMinecraft"
+            data-src="https://kainyxdzz.github.io/LiMENetwork/"
+            src="about:blank"
+            title="LIME Network Minecraft"
+            style="display:block; width:100%; height:65vh; min-height:500px; border: 2px solid #1f3d1f; border-radius: 8px; margin:0; padding:0; background: #000;"
+            allow="fullscreen; autoplay; gamepad; pointer-lock"
+            allowfullscreen>
+          </iframe>
+          <div style="padding-top:20px;">
+            <button
+              onclick="toggleFullScreen('limeMinecraft')"
+              style="display:inline-block; text-decoration:none; padding:15px 30px; background:#38a169; color:white; font-size:20px; font-weight:bold; border:0; border-radius:8px; cursor:pointer; font-family: 'Courier New', monospace;">
+              [ ] FULL SCREEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Earth Maker -->
+      <div id="wrapper-earthmaker" class="game-wrapper">
+        <div style="width:100%; margin:0; padding:0; text-align:center; background: #050905; border-radius: 16px; border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433; padding: 20px; box-sizing: border-box;">
+          <h1 style="color: #39ff14; text-shadow: 0 0 10px #39ff14; margin-top: 0; font-family: Arial, sans-serif;">EARTH MAKER</h1>
+          <p style="color: #a8ff00; font-size: 14px; margin-bottom: 15px;">Shape your own planet!</p>
+          <iframe
+            id="limeEarthMaker"
+            data-src="https://oskarstalberg.com/game/planet/"
+            src="about:blank"
+            title="Earth Maker"
+            style="display:block; width:100%; height:65vh; min-height:500px; border: 2px solid #1f3d1f; border-radius: 8px; margin:0; padding:0; background: #000;"
+            allow="fullscreen; pointer-lock"
+            allowfullscreen>
+          </iframe>
+          <div style="padding-top:20px;">
+            <button
+              onclick="toggleFullScreen('limeEarthMaker')"
+              style="display:inline-block; text-decoration:none; padding:15px 30px; background:#38a169; color:white; font-size:20px; font-weight:bold; border:0; border-radius:8px; cursor:pointer; font-family: 'Courier New', monospace;">
+              [ ] FULL SCREEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messenger -->
+      <div id="wrapper-messenger" class="game-wrapper">
+        <div style="width:100%; margin:0; padding:0; text-align:center; background: #050905; border-radius: 16px; border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433; padding: 20px; box-sizing: border-box;">
+          <h1 style="color: #39ff14; text-shadow: 0 0 10px #39ff14; margin-top: 0; font-family: Arial, sans-serif;">MESSENGER</h1>
+          <p style="color: #a8ff00; font-size: 14px; margin-bottom: 15px;">Deliver packages on a tiny planet!</p>
+          <iframe
+            id="limeMessenger"
+            data-src="https://messenger.abeto.co/"
+            src="about:blank"
+            title="Messenger"
+            style="display:block; width:100%; height:65vh; min-height:500px; border: 2px solid #1f3d1f; border-radius: 8px; margin:0; padding:0; background: #000;"
+            allow="fullscreen; pointer-lock"
+            allowfullscreen>
+          </iframe>
+          <div style="padding-top:20px;">
+            <button
+              onclick="toggleFullScreen('limeMessenger')"
+              style="display:inline-block; text-decoration:none; padding:15px 30px; background:#38a169; color:white; font-size:20px; font-weight:bold; border:0; border-radius:8px; cursor:pointer; font-family: 'Courier New', monospace;">
+              [ ] FULL SCREEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Surviv.io -->
+      <div id="wrapper-survivio" class="game-wrapper">
+        <div style="width:100%; margin:0; padding:0; text-align:center; background: #050905; border-radius: 16px; border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433; padding: 20px; box-sizing: border-box;">
+          <h1 style="color: #39ff14; text-shadow: 0 0 10px #39ff14; margin-top: 0; font-family: Arial, sans-serif;">SURVIV.IO</h1>
+          <p style="color: #a8ff00; font-size: 14px; margin-bottom: 15px;">2D Battle Royale!</p>
+          <iframe
+            id="limeSurvivio"
+            data-src="https://surviv.io/"
+            src="about:blank"
+            title="Surviv.io"
+            style="display:block; width:100%; height:65vh; min-height:500px; border: 2px solid #1f3d1f; border-radius: 8px; margin:0; padding:0; background: #000;"
+            allow="fullscreen; pointer-lock"
+            allowfullscreen>
+          </iframe>
+          <div style="padding-top:20px;">
+            <button
+              onclick="toggleFullScreen('limeSurvivio')"
+              style="display:inline-block; text-decoration:none; padding:15px 30px; background:#38a169; color:white; font-size:20px; font-weight:bold; border:0; border-radius:8px; cursor:pointer; font-family: 'Courier New', monospace;">
+              [ ] FULL SCREEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jelly Mario -->
+      <div id="wrapper-jellymario" class="game-wrapper">
+        <div style="width:100%; margin:0; padding:0; text-align:center; background: #050905; border-radius: 16px; border: 2px solid #39ff14; box-shadow: 0 0 15px #39ff1433; padding: 20px; box-sizing: border-box;">
+          <h1 style="color: #39ff14; text-shadow: 0 0 10px #39ff14; margin-top: 0; font-family: Arial, sans-serif;">JELLY MARIO</h1>
+          <p style="color: #a8ff00; font-size: 14px; margin-bottom: 15px;">Bouncy physics platformer!</p>
+          <iframe
+            id="limeJellyMario"
+            data-src="https://jellymar.io/"
+            src="about:blank"
+            title="Jelly Mario"
+            style="display:block; width:100%; height:65vh; min-height:500px; border: 2px solid #1f3d1f; border-radius: 8px; margin:0; padding:0; background: #000;"
+            allow="fullscreen; pointer-lock"
+            allowfullscreen>
+          </iframe>
+          <div style="padding-top:20px;">
+            <button
+              onclick="toggleFullScreen('limeJellyMario')"
+              style="display:inline-block; text-decoration:none; padding:15px 30px; background:#38a169; color:white; font-size:20px; font-weight:bold; border:0; border-radius:8px; cursor:pointer; font-family: 'Courier New', monospace;">
+              [ ] FULL SCREEN
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
