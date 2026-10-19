@@ -1,154 +1,433 @@
-<div style="padding: 60px 20px; text-align: center; max-width: 1100px; margin: 0 auto; border: 2px dashed #39ff14; border-radius: 20px; position: relative;">
-  <h1 style="font-size: 3.3em; color: #39ff14; margin: 0 0 45px 0; font-family: 'Georgia', serif; font-style: italic; text-shadow: 1px 1px 2px rgba(57, 255, 20, 0.4);">How to Join LiME</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>LIME - Join</title>
+	<meta property="og:site_name" content="LIME" />
+	<meta property="og:title" content="LIME - Join" />
+	<meta property="og:description" content="How to join LiME Network across Java, Bedrock, and Consoles." />
+	<meta property="og:url" content="https://limenetwork.dev/join" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" type="image/png" href="./favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Droid+Sans:wght@400;700&family=Abril+Fatface&display=swap" rel="stylesheet">
 
-  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+	<style>
+		*, *::before, *::after {
+			box-sizing: border-box;
+			cursor: none !important;
+		}
 
-    <!-- Java Card -->
-    <div class="cyber-join-card" style="flex: 1; min-width: 290px; max-width: 340px;">
-      <div class="cyber-card-inner">
-        <div class="scan-line"></div>
-        <div class="corner-elements"><span></span><span></span><span></span><span></span></div>
-        <div class="card-glare"></div>
-        <h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">□ Java Edition</h2>
-        <div class="ip-box">
-          <strong>IP:</strong><br>
-          <span class="ip-text">thelimenetwork.minecraft.best</span>
-        </div>
-        <p style="color: #aaa; margin-top: 25px; line-height: 1.5; font-size: 1.05em;">
-          Same IP works for Questcraft & Vivecraft VR players.
-        </p>
-      </div>
-    </div>
+		body, html {
+			margin: 0;
+			padding: 0;
+			min-height: 100%;
+			font-family: 'Droid Sans', sans-serif;
+			background-color: #0b0e14;
+			color: #d5d5d5;
+			overflow-x: hidden;
+		}
 
-    <!-- Bedrock Card -->
-    <div class="cyber-join-card" style="flex: 1; min-width: 290px; max-width: 340px;">
-      <div class="cyber-card-inner">
-        <div class="scan-line"></div>
-        <div class="corner-elements"><span></span><span></span><span></span><span></span></div>
-        <div class="card-glare"></div>
-        <h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">□ Bedrock Edition</h2>
-        <div class="ip-box">
-          <strong>IP:</strong><br>
-          <span class="ip-text">thelimenetwork.minecraft.best</span>
-        </div>
-        <div class="port-box">
-          <strong>Port:</strong> 19132
-        </div>
-        <p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
-          You can use apps like MC Server Connector or Bedrock Together to join on PlayStation/Xbox.
-        </p>
-      </div>
-    </div>
 
-    <!-- Console Card -->
-    <div class="cyber-join-card" style="flex: 1; min-width: 290px; max-width: 340px;">
-      <div class="cyber-card-inner">
-        <div class="scan-line"></div>
-        <div class="corner-elements"><span></span><span></span><span></span><span></span></div>
-        <div class="card-glare"></div>
-        <h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">□ Console</h2>
-        <p style="margin: 12px 0 8px 0; color: #ddd; font-size: 1.1em;">Add our bot as a friend:</p>
-        <div class="bot-box">LiME2237</div>
-        <p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
-          Bot shows a world in your friends list.<br>
-          Join it → instantly connects to LiME (may take a couple tries).
-        </p>
-      </div>
-    </div>
+		#cursor-i {
+			position: fixed;
+			pointer-events: none;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: bold;
+			color: #000;
+			background: #39ff14;
+			border-radius: 50%;
+			box-shadow: 0 0 10px #39ff14, 0 0 20px rgba(57, 255, 20, 0.65);
+			transform: translate(-50%, -50%);
+			z-index: 999999;
+			user-select: none;
+			transition: opacity 0.15s ease;
+		}
 
-  </div>
-</div>
+		/* Hide custom cursor on touchscreens */
+		@media (hover: none) and (pointer: coarse) {
+			*, *::before, *::after { cursor: auto !important; }
+			#cursor-i { display: none !important; }
+		}
 
-<style>
-  .cyber-join-card {
-    perspective: 1000px;
-  }
-  .cyber-card-inner {
-    background: linear-gradient(135deg, #013220, #002233);
-    border: 2px solid #39ff14;
-    border-radius: 18px;
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 30px rgba(57, 255, 20, 0.3),
-                inset 0 0 25px rgba(0, 0, 0, 0.6);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    height: 100%;
-    text-align: center;
-    color: #fff;
-  }
-  .cyber-join-card:hover .cyber-card-inner {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 0 45px rgba(57, 255, 20, 0.6),
-                inset 0 0 30px rgba(57, 255, 20, 0.2);
-  }
-  .scan-line {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.15), transparent);
-    animation: scanMove 3.5s linear infinite;
-    pointer-events: none;
-  }
-  @keyframes scanMove { 0% { transform: translateY(-100%); } 100% { transform: translateY(300%); } }
-  .corner-elements span {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #39ff14;
-    z-index: 2;
-  }
-  .corner-elements span:nth-child(1) { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-  .corner-elements span:nth-child(2) { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-  .corner-elements span:nth-child(3) { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-  .corner-elements span:nth-child(4) { bottom: 10px; right: 10px; border-left: none; border-top: none; }
-  .cyber-join-card:hover .corner-elements span {
-    border-color: #39ff14;
-    box-shadow: 0 0 12px #39ff14;
-  }
-  .card-glare {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(125deg, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%);
-    opacity: 0;
-    transition: opacity 0.6s;
-    pointer-events: none;
-  }
-  .cyber-join-card:hover .card-glare { opacity: 1; }
 
-  .ip-box, .port-box, .bot-box {
-    background: rgba(0,0,0,0.45);
-    padding: 12px 20px;
-    border-radius: 10px;
-    margin: 16px 0;
-    border: 1px solid rgba(57, 255, 20, 0.4);
-  }
-  .ip-text {
-    font-size: 1.22em;
-    font-weight: bold;
-    color: #39ff14;
-    word-break: break-all;
-    line-height: 1.3;
-  }
-  .port-box {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #39ff14;
-  }
-  .bot-box {
-    font-size: 2em;
-    font-weight: bold;
-    color: #39ff14;
-    letter-spacing: 3px;
-    background: #000;
-    padding: 14px 36px;
-    border: 2px solid #39ff14;
-    display: inline-block;
-    margin: 12px 0 18px;
-  }
+		.floating-logo {
+			position: fixed;
+			top: 25px;
+			left: 35px;
+			z-index: 1000;
+		}
 
-  @media (max-width: 768px) {
-    .cyber-join-card { min-width: 100%; max-width: 100%; }
-    .cyber-card-inner { padding: 24px 20px; }
-    h1 { font-size: 2.7em !important; }
-  }
-</style>
+		.floating-logo a {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			color: #39ff14;
+			font-family: 'Abril Fatface', serif;
+			font-size: 1.8em;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.35);
+		}
+
+		.floating-logo img {
+			height: 48px;
+			width: auto;
+			display: block;
+			filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
+		}
+
+		/* Buttons */
+		.right-nav-dock {
+			position: fixed;
+			top: 50%;
+			right: 25px;
+			transform: translateY(-50%);
+			background: rgba(0, 0, 0, 0.72);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(57, 255, 20, 0.28);
+			border-radius: 16px;
+			padding: 12px 10px;
+			z-index: 1000;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 15px rgba(57, 255, 20, 0.08);
+		}
+
+		.right-nav-dock ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			text-align: right;
+		}
+
+		.right-nav-dock a.wsite-menu-item {
+			display: block;
+			padding: 9px 16px;
+			color: #ddd;
+			text-decoration: none;
+			font-family: 'Inter', sans-serif;
+			font-weight: 600;
+			font-size: 14.5px;
+			border-radius: 10px;
+			border-right: 3px solid transparent;
+			transition: all 0.25s ease;
+		}
+
+		.right-nav-dock a.wsite-menu-item:hover,
+		.right-nav-dock a.wsite-menu-item.active {
+			color: #39ff14;
+			background: rgba(57, 255, 20, 0.1);
+			border-right: 3px solid #39ff14;
+			transform: translateX(-3px);
+			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+		}
+
+		/* Wrapper */
+		.page-wrapper {
+			max-width: 1100px;
+			margin: 60px auto;
+			padding: 0 20px;
+		}
+
+		.join-container {
+			padding: 60px 20px;
+			text-align: center;
+			background: rgba(0, 0, 0, 0.55);
+			border: 2px dashed #39ff14;
+			border-radius: 20px;
+			position: relative;
+			backdrop-filter: blur(10px);
+			box-shadow: 0 0 40px rgba(57, 255, 20, 0.15);
+		}
+
+		.join-title {
+			font-size: 3.3em;
+			color: #39ff14;
+			margin: 0 0 45px 0;
+			font-family: 'Abril Fatface', serif;
+			text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+		}
+
+		.join-grid {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+
+		/* Cards */
+		.cyber-join-card {
+			flex: 1;
+			min-width: 290px;
+			max-width: 340px;
+			perspective: 1000px;
+		}
+
+		.cyber-card-inner {
+			background: linear-gradient(135deg, #013220, #002233);
+			border: 2px solid #39ff14;
+			border-radius: 18px;
+			padding: 28px 24px;
+			position: relative;
+			overflow: hidden;
+			box-shadow: 0 0 30px rgba(57, 255, 20, 0.3), inset 0 0 25px rgba(0, 0, 0, 0.6);
+			transition: transform 0.4s ease, box-shadow 0.4s ease;
+			height: 100%;
+			text-align: center;
+			color: #fff;
+		}
+
+		.cyber-join-card:hover .cyber-card-inner {
+			transform: translateY(-8px) scale(1.03);
+			box-shadow: 0 0 45px rgba(57, 255, 20, 0.6), inset 0 0 30px rgba(57, 255, 20, 0.2);
+		}
+
+		.scan-line {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.15), transparent);
+			animation: scanMove 3.5s linear infinite;
+			pointer-events: none;
+		}
+
+		@keyframes scanMove { 
+			0% { transform: translateY(-100%); } 
+			100% { transform: translateY(300%); } 
+		}
+
+		.corner-elements span {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			border: 2px solid #39ff14;
+			z-index: 2;
+		}
+
+		.corner-elements span:nth-child(1) { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+		.corner-elements span:nth-child(2) { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+		.corner-elements span:nth-child(3) { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+		.corner-elements span:nth-child(4) { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+		.cyber-join-card:hover .corner-elements span {
+			border-color: #39ff14;
+			box-shadow: 0 0 12px #39ff14;
+		}
+
+		.card-glare {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(125deg, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%);
+			opacity: 0;
+			transition: opacity 0.6s;
+			pointer-events: none;
+		}
+
+		.cyber-join-card:hover .card-glare { opacity: 1; }
+
+		.ip-box, .port-box, .bot-box {
+			background: rgba(0, 0, 0, 0.45);
+			padding: 12px 20px;
+			border-radius: 10px;
+			margin: 16px 0;
+			border: 1px solid rgba(57, 255, 20, 0.4);
+		}
+
+		.ip-text {
+			font-size: 1.22em;
+			font-weight: bold;
+			color: #39ff14;
+			word-break: break-all;
+			line-height: 1.3;
+		}
+
+		.port-box {
+			font-size: 1.3em;
+			font-weight: bold;
+			color: #39ff14;
+		}
+
+		.bot-box {
+			font-size: 2em;
+			font-weight: bold;
+			color: #39ff14;
+			letter-spacing: 3px;
+			background: #000;
+			padding: 14px 36px;
+			border: 2px solid #39ff14;
+			display: inline-block;
+			margin: 12px 0 18px;
+		}
+
+		/* Footer */
+		.site-footer {
+			text-align: center;
+			padding: 18px 20px;
+			background: rgba(0, 0, 0, 0.9);
+			border-top: 1px solid rgba(57, 255, 20, 0.2);
+			font-size: 11.5px;
+			letter-spacing: 0.6px;
+			color: rgb(213, 213, 213);
+		}
+
+		/* Mobile Responsive Rules */
+		@media (max-width: 900px) {
+			.floating-logo {
+				position: static;
+				display: flex;
+				justify-content: center;
+				padding: 20px 0 5px;
+			}
+
+			.right-nav-dock {
+				position: sticky;
+				top: 10px;
+				right: auto;
+				transform: none;
+				margin: 10px auto 0;
+				width: max-width;
+				max-width: 94%;
+				padding: 8px 12px;
+			}
+
+			.right-nav-dock ul {
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 6px;
+			}
+
+			.right-nav-dock a.wsite-menu-item {
+				padding: 6px 12px;
+				font-size: 13.5px;
+				border-right: none;
+				border-bottom: 2px solid transparent;
+			}
+
+			.right-nav-dock a.wsite-menu-item:hover,
+			.right-nav-dock a.wsite-menu-item.active {
+				transform: translateY(-2px);
+				border-right: none;
+				border-bottom: 2px solid #39ff14;
+			}
+
+			.page-wrapper {
+				margin: 30px 15px;
+			}
+
+			.join-container {
+				padding: 40px 15px;
+			}
+
+			.join-title { font-size: 2.7em !important; }
+			.cyber-join-card { min-width: 100%; max-width: 100%; }
+			.cyber-card-inner { padding: 24px 20px; }
+		}
+	</style>
+</head>
+<body>
+	<!-- Cursor LiME -->
+	<div id="cursor-i">i</div>
+
+	<!-- Logo -->
+	<div class="floating-logo">
+		<a href="./index.html">
+			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='LiME';" />
+		</a>
+	</div>
+
+	<!-- Right-side floating buttons -->
+	<nav class="right-nav-dock">
+		<ul>
+			<li><a href="./index.html" class="wsite-menu-item">info</a></li>
+			<li><a href="https://limenetwork.dev/join" class="wsite-menu-item active">Join</a></li>
+			<li><a href="https://limenetwork.dev/rules" class="wsite-menu-item">Rules</a></li>
+			<li><a href="https://limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
+			<li><a href="https://limenetwork.dev/staff" class="wsite-menu-item">Staff</a></li>
+			<li><a href="#" class="wsite-menu-item">Feedback</a></li>
+		</ul>
+	</nav>
+
+	<!-- How to join -->
+	<div class="page-wrapper">
+		<div class="join-container">
+			<h1 class="join-title">How to Join LiME</h1>
+
+			<div class="join-grid">
+
+				<!-- Java <3 -->
+				<div class="cyber-join-card">
+					<div class="cyber-card-inner">
+						<div class="scan-line"></div>
+						<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+						<div class="card-glare"></div>
+						<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Java Edition</h2>
+						<div class="ip-box">
+							<strong>IP:</strong><br>
+							<span class="ip-text">thelimenetwork.minecraft.best</span>
+						</div>
+						<p style="color: #aaa; margin-top: 25px; line-height: 1.5; font-size: 1.05em;">
+							Same IP works for Questcraft & Vivecraft VR players.
+						</p>
+					</div>
+				</div>
+
+				<!-- Bedrock -->
+				<div class="cyber-join-card">
+					<div class="cyber-card-inner">
+						<div class="scan-line"></div>
+						<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+						<div class="card-glare"></div>
+						<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Bedrock Edition</h2>
+						<div class="ip-box">
+							<strong>IP:</strong><br>
+							<span class="ip-text">thelimenetwork.minecraft.best</span>
+						</div>
+						<div class="port-box">
+							<strong>Port:</strong> 19132
+						</div>
+						<p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
+							You can use apps like MC Server Connector or Bedrock Together to join on PlayStation/Xbox.
+						</p>
+					</div>
+				</div>
+
+				<!-- Console -->
+				<div class="cyber-join-card">
+					<div class="cyber-card-inner">
+						<div class="scan-line"></div>
+						<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+						<div class="card-glare"></div>
+						<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Console</h2>
+						<p style="margin: 12px 0 8px 0; color: #ddd; font-size: 1.1em;">Add our bot as a friend:</p>
+						<div class="bot-box">LiME2237</div>
+						<p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
+							Bot shows a world in your friends list.<br>
+							Join it → instantly connects to LiME (may take a couple tries).
+						</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="site-footer">
+		NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
+	</footer>
+
+	<script>
+		// Custom cursor 
+		const cursor = document.getElementById('cursor-i');
+		document.addEventListener('mousemove', (e) => {
+			cursor.style.left = e.clientX + 'px';
+			cursor.style.top  = e.clientY + 'px';
+		});
+		document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+		document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+	</script>
+</body>
+</html>
