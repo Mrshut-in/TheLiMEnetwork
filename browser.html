@@ -449,7 +449,7 @@
       <div class="win98-controls">
         <div class="win98-button win98-minimize" onclick="searchInIframe()" title="Search in iframe">_</div>
         <div class="win98-button win98-maximize" onclick="searchNormal()" title="Search normally">□</div>
-        <div class="win98-button win98-close" onclick="window.location.href='https://www.limenetwork.info/Arcade.html'" title="Go to Arcade">×</div>
+        <div class="win98-button win98-close" onclick="window.location.href='https://limenetwork.dev/arcade.html'" title="Go to Arcade">×</div>
       </div>
     </div>
     <div class="win98-content">
@@ -549,7 +549,6 @@ menuItems.forEach(item => {
   });
 });
 
-// Optional: Make it so pressing Enter in the input field also uses the normal search mode
 document.getElementById('search-form').addEventListener('submit', function(e) {
   if (this.target === 'results-frame') return; // Let it submit to iframe if already set
   e.preventDefault();
