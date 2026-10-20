@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiME Network • Nightz mc</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Orbitron:wght@700;900&family=Press+Start+2P&display=swap');
+
+    :root {
+      /* Default to redDND to prevent flash of unstyled colors and match mini-profile */
+      --theme-main: #cc133c;
+      --theme-main-rgb: 204, 19, 60;
+      --theme-dark: #8b0000;
+      --theme-dark-rgb: 139, 0, 0;
+      --theme-accent: #ff2a55;
+      --theme-accent-rgb: 255, 42, 85;
+      --theme-light: #ff99a8;
+      --theme-lighter: #ffdce0;
+
+      --hero-bg: #0c0a0c;
+      --section-bg: rgba(12, 10, 12, 0.55);
+      --text-main: #f5f0f0;
+    }
+
+    /* --- Live theme based off dc --- */
+    .nightz-profile-wrapper.online {
+      --theme-main: #23a55a;
+      --theme-main-rgb: 35, 165, 90;
+      --theme-dark: #146e37;
+      --theme-dark-rgb: 20, 110, 55;
+      --theme-accent: #3be382;
+      --theme-accent-rgb: 59, 227, 130;
+      --theme-light: #70dc9c;
+      --theme-lighter: #cbf4d9;
+    }
+
+    .nightz-profile-wrapper.idle {
+      --theme-main: #f0961e;
+      --theme-main-rgb: 240, 150, 30;
+      --theme-dark: #b45f00;
+      --theme-dark-rgb: 180, 95, 0;
+      --theme-accent: #ffb93c;
+      --theme-accent-rgb: 255, 185, 60;
+      --theme-light: #ffc470;
+      --theme-lighter: #ffe8c7;
+    }
+
+    .nightz-profile-wrapper.dnd {
+      --theme-main: #cc133c;
+      --theme-main-rgb: 204, 19, 60;
+      --theme-dark: #8b0000;
+      --theme-dark-rgb: 139, 0, 0;
+      --theme-accent: #f5434f;
+      --theme-accent-rgb: 245, 67, 79;
+      --theme-light: #ff99a8;
+      --theme-lighter: #ffdce0;
+    }
+
+    .nightz-profile-wrapper.offline {
+      --theme-main: #80848e;
+      --theme-main-rgb: 128, 132, 142;
+      --theme-dark: #313338;
+      --theme-dark-rgb: 49, 51, 56;
+      --theme-accent: #9ca3af;
+      --theme-accent-rgb: 156, 163, 175;
+      --theme-light: #b0b4ba;
+      --theme-lighter: #e3e5e8;
+    }
+
+    /* Weebly fixer */
+    .nightz-profile-wrapper {
+      font-family: 'Press Start 2P', system-ui;
+      background: transparent !important;
+      color: var(--text-main);
+      line-height: 1.75;
+      padding: 25px 15px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.8s ease; /* Smooth transition between statuses */
+    }
+
+    .nightz-profile-wrapper * {
+      box-sizing: border-box;
+    }
+
+    .nightz-container {
+      max-width: 1050px;
+      margin: 0 auto;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Glow */
+    @keyframes globalGlowShift {
+      0%, 100% {
+        box-shadow: 0 0 65px rgba(var(--theme-main-rgb), 0.65), 
+                    0 0 40px rgba(var(--theme-dark-rgb), 0.55), 
+                    inset 0 0 25px rgba(var(--theme-main-rgb), 0.3);
+      }
+      50% {
+        box-shadow: 0 0 100px rgba(var(--theme-accent-rgb), 0.8), 
+                    0 0 60px rgba(var(--theme-main-rgb), 0.75), 
+                    inset 0 0 35px rgba(var(--theme-main-rgb), 0.4);
+      }
+    }
+
+    .card-bridge {
+      width: 75%;
+      height: 38px;
+      margin: 0 auto;
+      background: linear-gradient(90deg, rgba(var(--theme-main-rgb), 0.12) 0%, rgba(15, 5, 8, 0.45) 50%, rgba(var(--theme-main-rgb), 0.12) 100%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-left: 3px solid var(--theme-main);
+      border-right: 3px solid var(--theme-main);
+      box-shadow: 0 0 25px rgba(var(--theme-main-rgb), 0.25), inset 0 0 15px rgba(var(--theme-main-rgb), 0.2);
+      position: relative;
+      z-index: 1;
+      transition: all 0.8s ease;
+    }
+
+    .card-bridge::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--theme-main);
+      transform: translateX(-50%);
+      box-shadow: 0 0 12px var(--theme-main), 0 0 20px var(--theme-main);
+      opacity: 0.75;
+      transition: all 0.8s ease;
+    }
+
+    .nightz-hero {
+      display: flex;
+      align-items: center;
+      gap: 55px;
+      padding: 45px 50px;
+      background: var(--hero-bg);
+      border: 3px solid var(--theme-main);
+      border-radius: 18px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      animation: globalGlowShift 4s infinite ease-in-out;
+      transition: border-color 0.8s ease;
+    }
+
+    .avatar-container {
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .avatar {
+      width: 240px;
+      height: 240px;
+      border: 3px solid rgba(var(--theme-main-rgb), 0.5) !important;
+      border-radius: 50%;
+      overflow: hidden;
+      background: transparent;
+      animation: globalGlowShift 4s infinite ease-in-out;
+      transition: border-color 0.8s ease;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .hero-text .title {
+      color: var(--theme-main);
+      font-size: 3.2em;
+      letter-spacing: 6px;
+      text-shadow: 0 0 35px var(--theme-main);
+      line-height: 1.15;
+      margin: 0 0 12px 0;
+      transition: all 0.8s ease;
+    }
+
+    .hero-text .subtitle {
+      font-size: 1.35em;
+      color: var(--theme-light);
+      margin-bottom: 18px;
+      text-shadow: 0 0 18px var(--theme-main);
+      transition: all 0.8s ease;
+    }
+
+    .hero-text p {
+      font-size: 1.05em;
+      color: var(--theme-lighter);
+      text-shadow: 0 0 10px rgba(var(--theme-main-rgb), 0.4);
+      max-width: 540px;
+      margin: 0 0 25px 0;
+      word-break: break-word;
+      transition: all 0.8s ease;
+    }
+
+    .nightz-profile-wrapper.offline .nightz-hero,
+    .nightz-profile-wrapper.offline .avatar,
+    .nightz-profile-wrapper.offline .nightz-section {
+      animation: none;
+      box-shadow: 0 0 25px rgba(var(--theme-main-rgb), 0.15), 0 0 10px rgba(0, 0, 0, 0.85);
+    }
+
+    .cyber-container {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 10px;
+      text-decoration: none;
+    }
+
+    .radio-wrapper {
+      position: relative;
+      height: 45px;
+      width: 140px;
+      margin: 3px;
+      cursor: pointer;
+    }
+
+    .btn {
+      --primary: var(--theme-accent);
+      --shadow-primary: var(--theme-dark);
+      --color: #ffffff;
+      --font-size: 12px;
+      --shadow-secondary: #000000;
+      --clip: polygon(11% 0, 95% 0, 100% 25%, 90% 90%, 95% 90%, 85% 90%, 85% 100%, 7% 100%, 0 80%);
+      --border: 5px;
+      --shimmy-distance: 5;
+      --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
+      --clip-two: polygon(0 78%, 100% 78%, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 78%);
+      --clip-three: polygon(0 44%, 100% 44%, 100% 54%, 95% 54%, 95% 54%, 85% 54%, 85% 54%, 8% 54%, 0 54%);
+      --clip-four: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+      --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
+      --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
+      --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
+      color: var(--color);
+      text-transform: uppercase;
+      font-size: var(--font-size);
+      letter-spacing: 3px;
+      position: relative;
+      font-weight: 900;
+      width: 100%;
+      height: 100%;
+      line-height: 45px;
+      text-align: center;
+      transition: background 0.2s, 0.3s, font-size 0.2s;
+      font-family: "Orbitron", sans-serif;
+    }
+
+    .radio-wrapper:hover .btn {
+      --primary: var(--theme-main);
+      --font-size: 13px;
+    }
+
+    .btn:after, .btn:before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      clip-path: var(--clip);
+      z-index: -1;
+    }
+
+    .btn:before {
+      background: var(--shadow-primary);
+      transform: translate(var(--border), 0);
+    }
+
+    .btn:after {
+      background: var(--primary);
+    }
+
+    .btn__glitch {
+      position: absolute;
+      top: calc(var(--border) * -1);
+      left: calc(var(--border) * -1);
+      right: calc(var(--border) * -1);
+      bottom: calc(var(--border) * -1);
+      background: var(--shadow-primary);
+      text-shadow: 2px 2px var(--shadow-primary), -2px -2px var(--shadow-secondary);
+      clip-path: var(--clip);
+      animation: glitch 2s infinite;
+      display: none;
+    }
+
+    .radio-wrapper:hover .btn .btn__glitch { display: block; }
+
+    .btn__glitch:before {
+      content: "";
+      position: absolute;
+      top: calc(var(--border) * 1); right: calc(var(--border) * 1);
+      bottom: calc(var(--border) * 1); left: calc(var(--border) * 1);
+      clip-path: var(--clip);
+      background: var(--primary);
+      z-index: -1;
+    }
+
+    @keyframes glitch {
+      0% { clip-path: var(--clip-one); }
+      2%, 8% { clip-path: var(--clip-two); transform: translate(calc(var(--shimmy-distance) * -1%), 0); }
+      6% { clip-path: var(--clip-two); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+      9% { clip-path: var(--clip-two); transform: translate(0, 0); }
+      10% { clip-path: var(--clip-three); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+      13% { clip-path: var(--clip-three); transform: translate(0, 0); }
+      14%, 21% { clip-path: var(--clip-four); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+      25% { clip-path: var(--clip-five); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+      30% { clip-path: var(--clip-five); transform: translate(calc(var(--shimmy-distance) * -1%), 0); }
+      35%, 45% { clip-path: var(--clip-six); transform: translate(calc(var(--shimmy-distance) * -1%)); }
+      40% { clip-path: var(--clip-six); transform: translate(calc(var(--shimmy-distance) * 1%)); }
+      50% { clip-path: var(--clip-six); transform: translate(0, 0); }
+      55% { clip-path: var(--clip-seven); transform: translate(calc(var(--shimmy-distance) * 1%), 0); }
+      60% { clip-path: var(--clip-seven); transform: translate(0, 0); }
+      31%, 61%, 100% { clip-path: var(--clip-four); }
+    }
+
+    .number {
+      background: var(--shadow-primary);
+      color: #fff;
+      font-size: 6px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      position: absolute;
+      width: 18px;
+      height: 8px;
+      top: 0; left: 81%;
+      line-height: 8px;
+    }
+
+    .nightz-section {
+      background: var(--section-bg);
+      border: 3px solid var(--theme-main);
+      border-radius: 16px;
+      padding: 42px 48px;
+      animation: globalGlowShift 4s infinite ease-in-out;
+      transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease, border-color 0.8s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .nightz-section:hover {
+      transform: translateY(-7px);
+      border-color: var(--theme-accent);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.65), 0 0 35px rgba(var(--theme-accent-rgb), 0.4) !important;
+    }
+
+    .nightz-section h2 {
+      color: var(--theme-main) !important;
+      font-family: 'Press Start 2P', system-ui !important;
+      font-size: 1.75em !important;
+      margin: 0 0 28px 0 !important;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px var(--theme-main);
+      transition: color 0.8s ease, text-shadow 0.8s ease;
+    }
+
+    .nightz-section p, .nightz-section ul {
+      font-size: 1.08em;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .nightz-section ul {
+      padding-left: 10px;
+      list-style: none;
+    }
+
+    .nightz-section li { margin-bottom: 18px; }
+
+    .button-wrap {
+      margin-top: 28px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .button {
+      display: flex;
+      flex-wrap: nowrap;
+      border: 2px solid var(--theme-main);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(var(--theme-main-rgb), 0.5);
+      cursor: pointer;
+      user-select: none;
+      transition: border-color 0.8s ease, box-shadow 0.8s ease;
+    }
+
+    .box {
+      width: 38px; height: 44px;
+      display: flex; justify-content: center; align-items: center;
+      font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900;
+      color: #fff; transition: all .8s; cursor: pointer; position: relative;
+      background: var(--theme-main); overflow: hidden;
+    }
+
+    .box:before {
+      position: absolute; top: 0; background: #0a0a0a; color: var(--theme-main);
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      transform: translateY(100%); transition: transform .4s, color 0.8s ease;
+    }
+
+    .box:nth-child(1)::before { content: 'H'; }
+    .box:nth-child(2)::before { transform: translateY(-100%); content: 'I'; }
+    .box:nth-child(3)::before { content: 'D'; }
+    .box:nth-child(4)::before { transform: translateY(-100%); content: 'E'; }
+    .box:nth-child(5)::before { content: ' '; }
+    .box:nth-child(6)::before { transform: translateY(-100%); content: 'G'; }
+    .box:nth-child(7)::before { content: 'A'; }
+    .box:nth-child(8)::before { transform: translateY(-100%); content: 'M'; }
+    .box:nth-child(9)::before { content: 'E'; }
+    .box:nth-child(10)::before { transform: translateY(-100%); content: 'S'; }
+
+    .button:hover .box:before, .button.active .box:before { transform: translateY(0); }
+
+    .games-list-container {
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.8s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.4s ease;
+    }
+
+    .games-list-container.open {
+      max-height: 4000px; opacity: 1; margin-top: 40px;
+    }
+
+    .games-grid {
+      display: flex; flex-wrap: wrap; gap: 35px;
+      justify-content: center; padding: 20px 10px 45px;
+    }
+
+    .card-link {
+      text-decoration: none !important; color: inherit !important;
+      display: inline-block; border: none !important;
+    }
+
+    .card {
+      width: 220px; height: 140px; padding: 0.75rem;
+      background-color: rgba(20, 10, 12, 0.85);
+      background-image: linear-gradient(180deg, rgba(10, 5, 8, 0.35) 0%, rgba(10, 5, 8, 0.92) 100%), var(--bg-img);
+      background-size: cover; background-position: center; border-radius: 10px;
+      backdrop-filter: blur(5px);
+      border-bottom: 3px solid rgba(var(--theme-main-rgb), 0.65);
+      border-left: 2px rgba(var(--theme-main-rgb), 0.8) outset;
+      box-shadow: -25px 35px 28px rgba(0, 0, 0, 0.65), 0 0 18px rgba(var(--theme-main-rgb), 0.25);
+      transform: skewX(10deg); transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden; color: white; font-family: 'Lato', sans-serif;
+      position: relative; display: flex; flex-direction: column;
+      justify-content: flex-start; cursor: pointer;
+    }
+
+    .card:hover {
+      height: 265px; transform: skew(0deg) translateY(-6px);
+      border-bottom-color: var(--theme-accent);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(var(--theme-main-rgb), 0.65);
+      background-image: linear-gradient(180deg, rgba(10, 5, 8, 0.55) 0%, rgba(10, 5, 8, 0.96) 100%), var(--bg-img);
+    }
+
+    .align {
+      padding: 0.4rem 0.5rem; display: flex; flex-direction: row;
+      gap: 6px; align-self: flex-start; z-index: 2;
+    }
+
+    .red { width: 10px; height: 10px; border-radius: 50%; background-color: #ff605c; box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.5); }
+    .yellow { width: 10px; height: 10px; border-radius: 50%; background-color: #ffbd44; box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.5); }
+    .green { width: 10px; height: 10px; border-radius: 50%; background-color: #00ca4e; box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.5); }
+
+    .card h1 {
+      text-align: center; margin: 1.4rem 0.4rem 0.6rem;
+      font-family: 'Press Start 2P', system-ui; font-size: 0.85rem !important; line-height: 1.45; color: #ffffff;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.95), 0 0 12px var(--theme-main);
+      z-index: 2; transition: text-shadow 0.8s ease;
+    }
+
+    .card p {
+      font-family: 'Lato', sans-serif; font-size: 0.92rem !important; line-height: 1.45;
+      color: var(--theme-lighter); text-align: center; padding: 0 0.5rem; margin-top: 0.4rem;
+      opacity: 0; transition: opacity 0.35s ease 0.1s, color 0.8s ease; z-index: 2;
+    }
+
+    .card:hover p { opacity: 1; }
+
+    /* --- Mobile fix --- */
+    @media (max-width: 900px) {
+      .nightz-hero { padding: 40px 30px; gap: 35px; }
+      .avatar { width: 200px; height: 200px; }
+      .hero-text .title { font-size: 2.5em; }
+      .nightz-section { padding: 35px 30px; }
+      .card-bridge { width: 82%; height: 30px; }
+    }
+
+    @media (max-width: 600px) {
+      .nightz-hero { padding: 35px 20px; text-align: center; justify-content: center; }
+      .cyber-container { justify-content: center; }
+      .avatar { width: 175px; height: 175px; }
+      .hero-text .title { font-size: 2em; letter-spacing: 4px; }
+      .nightz-section { padding: 28px 20px; }
+      .box { width: 29px; height: 38px; font-size: 13px; }
+      .card { transform: skewX(4deg); }
+      .card-bridge { width: 88%; height: 25px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme controller -->
+  <div class="nightz-profile-wrapper dnd">
+    <div class="nightz-container">
+
+      <div class="nightz-hero">
+        <div class="avatar-container">
+          <div id="avatarGlow" class="avatar" title="Discord Status">
+            <img id="discordAvatar" src="https://cdn.discordapp.com/avatars/1106041900303134831/fd4f1fcee787e256c4fd427d30d67417.webp?size=1536" alt="Nightz mc Avatar">
+          </div>
+        </div>
+
+        <div class="hero-text">
+          <h1 class="title">Nightz mc</h1>
+          <div class="subtitle">Admin • LiME Network</div>
+          <p id="discordCustomStatus">Loading status...</p>
+
+          <a href="https://www.tiktok.com/@randomguy81.9?lang=en" target="_blank" class="cyber-container" title="Visit Nightz mc's TikTok">
+            <div class="radio-wrapper">
+              <div class="btn">
+                <span aria-hidden="true">_</span>Tiktoc
+                <span aria-hidden="true" class="btn__glitch">_Tiktoc□</span>
+                <label class="number">r1</label>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="card-bridge"></div>
+
+      <!-- Bio -->
+      <div class="nightz-section">
+        <h2>BIO</h2>
+        <p>
+          I like playing Minecraft, hanging out with friends, talking about stuff and trying to improve at Minecraft pvp.
+        </p>
+      </div>
+
+      <div class="card-bridge"></div>
+
+      <!-- Admin stuff -->
+      <div class="nightz-section">
+        <h2>WHAT I DO AS ADMIN</h2>
+        <p>
+          As Admin of LiME my main job is making sure LiME stays a great place for everyone. That means:
+        </p>
+        <ul>
+          <li>✅ Helping players with questions, issues, and support</li>
+          <li>✅ Moderating the server and Discord to keep things friendly</li>
+          <li>✅ Enforcing rules fairly and dealing with any problems</li>
+          <li>✅ Assisting with events and community activities</li>
+          <li>✅ Supporting the Owner and Dev team to improve the server</li>
+        </ul>
+      </div>
+
+      <div class="card-bridge"></div>
+
+      <!-- Games -->
+      <div class="nightz-section">
+        <h2>VIDEO GAMSS</h2>
+        <p>
+          Minecraft is one of my favorites, but i also play these
+        </p>
+
+        <div class="button-wrap">
+          <div class="button" id="toggleGamesBtn" role="button" tabindex="0" aria-expanded="false">
+            <div class="box">S</div>
+            <div class="box">H</div>
+            <div class="box">O</div>
+            <div class="box">W</div>
+            <div class="box">&nbsp;</div>
+            <div class="box">G</div>
+            <div class="box">A</div>
+            <div class="box">M</div>
+            <div class="box">E</div>
+            <div class="box">S</div>
+          </div>
+        </div>
+
+        <div id="gamesList" class="games-list-container">
+          <div class="games-grid">
+            <a href="https://store.steampowered.com/app/1888930/The_Last_of_Us_Part_I/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>THE LAST OF US</h1>
+                <p>Action-adventure survival horror across a post-apocalyptic world.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/489830/The_Elder_Scrolls_V_Skyrim_Special_Edition/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/489830/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>SKYRIM</h1>
+                <p>Epic open-world fantasy RPG filled with dragons, magic, and quests.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/3357650/PRAGMATA/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://static.gosugamers.net/13/20/6d/c00ddb33b3f41d3112e86807cfbf2bcd2dd2cb0c8e9fd6e1d7d8803636.webp?w=1440');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>PRAGMATA</h1>
+                <p>Sci-fi action-adventure set in a dystopian near-future lunar world.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/1962700/Subnautica_2/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1962700/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>SUBNAUTICA 2</h1>
+                <p>Next-gen underwater alien ocean survival and deep-sea exploration.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/4704690/MECCHA_CHAMELEON/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4704690/163e2a742e5fb8e1f5d1e3a890da98f04ab809d4/header.jpg?t=1789464996');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>MECCHA CHAMELEON</h1>
+                <p>Advanced hide and seek where you need to paint yourself to stay hidden.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/1237970/Titanfall_2/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1237970/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>TITANFALL</h1>
+                <p>High-speed parkour pilot warfare paired with massive mech combat.</p>
+              </div>
+            </a>
+            <a href="https://www.roblox.com/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://images.rbxcdn.com/d66ae37d46e00a1ecacfe9531986690a.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>ROBLOX</h1>
+                <p>Endless multiplayer worlds, custom modes, and hanging out with friends.</p>
+              </div>
+            </a>
+            <a href="https://www.fortnite.com/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://cdn2.unrealengine.com/14br-consoles-1920x1080-wlogo-1920x1080-432974386.jpg'), url('https://upload.wikimedia.org/wikipedia/commons/7/7c/Fortnite_F_lettermark_logo.png');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>FORTNITE</h1>
+                <p>Fast-paced battle royale action, zero build fights, and custom islands.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/2406770/Bodycam/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2406770/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>BODYCAM</h1>
+                <p>Ultra-realistic multiplayer first-person shooter built with next-gen bodycam perspective.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/1332010/Stray/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1332010/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>STRAY</h1>
+                <p>Explore a neon-lit cybercity and unravel an ancient mystery as a lost stray cat.</p>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/322170/Geometry_Dash/" target="_blank" class="card-link">
+              <div class="card" style="--bg-img: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322170/header.jpg');">
+                <div class="align"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+                <h1>GEOMETRY DASH</h1>
+                <p>Rhythm-based action platforming — jump and fly your way through intense obstacle courses.</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var toggleBtn = document.getElementById('toggleGamesBtn');
+      var gamesList = document.getElementById('gamesList');
+
+      if (toggleBtn && gamesList) {
+        toggleBtn.addEventListener('click', function() {
+          gamesList.classList.toggle('open');
+          toggleBtn.classList.toggle('active');
+          var isOpen = gamesList.classList.contains('open');
+          toggleBtn.setAttribute('aria-expanded', isOpen);
+        });
+      }
+
+      // Live discord integration via Lanyard
+      var DISCORD_USER_ID = '1106041900303134831';
+      var LANYARD_URL = 'https://api.lanyard.rest/v1/users/' + DISCORD_USER_ID;
+
+      var wrapperEl = document.querySelector('.nightz-profile-wrapper');
+      var avatarGlow = document.getElementById('avatarGlow');
+      var avatarImg = document.getElementById('discordAvatar');
+      var customStatusEl = document.getElementById('discordCustomStatus');
+
+      var statusNames = {
+        online: 'Online',
+        idle: 'Idle',
+        dnd: 'Do Not Disturb',
+        offline: 'Offline'
+      };
+
+      function fetchDiscordStatus() {
+        fetch(LANYARD_URL)
+          .then(function(res) { return res.json(); })
+          .then(function(json) {
+            if (!json || !json.success || !json.data) return;
+            var data = json.data;
+
+            if (data.discord_user && data.discord_user.avatar && avatarImg) {
+              var ext = data.discord_user.avatar.startsWith('a_') ? 'gif' : 'webp';
+              avatarImg.src = 'https://cdn.discordapp.com/avatars/' + DISCORD_USER_ID + '/' + data.discord_user.avatar + '.' + ext + '?size=512';
+            }
+
+            var state = data.discord_status || 'offline';
+
+   
+            if (wrapperEl) {
+              wrapperEl.className = 'nightz-profile-wrapper ' + state;
+            }
+
+            if (avatarGlow) {
+              avatarGlow.title = ' ' + (statusNames[state] || 'Offline');
+            }
+
+            // Offline bio
+            if (state === 'offline') {
+              if (customStatusEl) customStatusEl.textContent = "";
+              return;
+            }
+
+            var activities = data.activities || [];
+            var customActivity = null;
+            var gameActivity = null;
+
+            for (var i = 0; i < activities.length; i++) {
+              if (activities[i].type === 4) {
+                customActivity = activities[i];
+              } else if (activities[i].type === 0 && !gameActivity) {
+                gameActivity = activities[i];
+              }
+            }
+
+            var statusLines = [];
+
+            if (customActivity) {
+              var emojiPrefix = (customActivity.emoji && customActivity.emoji.name && !customActivity.emoji.id)
+                ? customActivity.emoji.name + ' '
+                : '';
+              if (customActivity.state) {
+                statusLines.push(emojiPrefix + customActivity.state);
+              } else if (emojiPrefix) {
+                statusLines.push(emojiPrefix.trim());
+              }
+            }
+
+            if (gameActivity && gameActivity.name) {
+              statusLines.push('□ Playing ' + gameActivity.name);
+            } else if (data.listening_to_spotify && data.spotify) {
+              statusLines.push('□ Listening to ' + data.spotify.song + ' by ' + data.spotify.artist);
+            }
+
+            if (customStatusEl) {
+              if (statusLines.length > 0) {
+                customStatusEl.textContent = statusLines.join(' • ');
+              } else {
+                customStatusEl.textContent = '';
+              }
+            }
+          })
+          .catch(function() {
+            if (wrapperEl) wrapperEl.className = 'nightz-profile-wrapper offline';
+            if (customStatusEl) customStatusEl.textContent = "";
+          });
+      }
+
+      fetchDiscordStatus();
+      setInterval(fetchDiscordStatus, 5000);
+    })();
+  </script>
+
+</body>
+</html>

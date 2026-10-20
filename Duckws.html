@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiME Network • Staff Profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    :root {
+      --blue: #00ccff;
+      --red: #ff2a6d;
+      --dark: #232323;
+      --light: #ffffff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Press Start 2P', system-ui;
+      background: transparent !important;
+      color: var(--light);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    .profile-container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: rgba(35,35,35,0.98);
+      border: 6px solid var(--blue);
+      border-radius: 30px;
+      box-shadow: 0 0 80px rgba(0,204,255,0.5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* === Pfp === */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      padding: 70px 60px;
+      background: linear-gradient(90deg, #111, #1e1e1e);
+      flex-wrap: wrap;
+    }
+    .avatar-container {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .avatar {
+      width: 260px;
+      height: 260px;
+      border: 12px solid var(--blue);
+      border-radius: 50%;
+      box-shadow: 0 0 70px rgba(0,204,255,0.85),
+                  inset 0 0 40px rgba(0,204,255,0.5);
+      overflow: hidden;
+      background: #000;
+      animation: glowShift 5s infinite ease-in-out;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-text {
+      flex: 1;
+      min-width: 320px;
+    }
+    .title {
+      color: var(--blue);
+      font-size: 3.6em;
+      letter-spacing: 9px;
+      text-shadow: 0 0 35px var(--blue);
+      margin-bottom: 12px;
+      line-height: 1.05;
+    }
+    .subtitle {
+      font-size: 1.55em;
+      color: #aaffff;
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px var(--blue);
+    }
+    .hero-text p {
+      font-size: 1.25em;
+      max-width: 520px;
+      color: #ccffff;
+      text-shadow: 0 0 10px rgba(0,204,255,0.4);
+    }
+
+    /* Main */
+    .content {
+      padding: 50px 40px;
+    }
+    h2 {
+      color: var(--blue);
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px var(--blue);
+    }
+    p {
+      font-size: 1.15em;
+      margin-bottom: 28px;
+      color: #f0ffff;
+      text-shadow: 0 0 6px rgba(0,204,255,0.3);
+    }
+    .section {
+      margin-bottom: 50px;
+    }
+    ul {
+      color:#f0ffff;
+      padding-left: 30px;
+      margin-bottom: 25px;
+      font-size: 1.1em;
+    }
+    li {
+      margin-bottom: 12px;
+    }
+    .footer {
+      background: #1a1a1a;
+      padding: 30px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #aaa;
+      border-top: 3px solid var(--blue);
+    }
+    @keyframes glowShift {
+      0%, 100% { box-shadow: 0 0 70px rgba(0,204,255,0.85); }
+      50% { box-shadow: 0 0 110px rgba(0,204,255,1); }
+    }
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 40px;
+        gap: 40px;
+      }
+      .avatar { width: 200px; height: 200px; }
+      .title { font-size: 2.7em; }
+    }
+    @media (max-width: 768px) {
+      .title { font-size: 2.2em; }
+      .content { padding: 40px 25px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <!-- Pfp 2 ??? -->
+    <div class="hero">
+      <div class="avatar-container">
+        <div class="avatar">
+          <img src="https://cdn.discordapp.com/attachments/1361536954054873253/1558579577910067231/c8a882849069929ebd5cd257c652540eb638a195970cb61df6a5e203784f2178.png?ex=6acbf3d8&is=6acaa258&hm=99288def67ac485c683293f05423a6ea21030d82d1c4e52529e82f80b71ea459" alt="Duckws Avatar">
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1 class="title">Duckws</h1>
+        <div class="subtitle">Admin • LiME Network</div>
+        <p>Your favorite Duck!</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <h2>WHO I AM</h2>
+        <p>
+          Hey everyone! I'm <strong style="color:#00ccff;">Duckws</strong>, Admin of LiME Network.
+          I help keep the server running smooth, and staying fun.
+        </p>
+        <p>
+          From helping the community to managing LiME, I'm here to support the community and make LiME even better.
+        </p>
+      </div>
+      <div class="section">
+        <h2>WHAT I DO AS ADMIN</h2>
+        <p>
+          As Admin my main job is:
+        </p>
+        <ul>
+          <li>✅ Helping players and keeping the server friendly</li>
+          <li>✅ Helping the staff team, and keeping this place safe.</li>
+          <li>✅ Testing new stuff for LiME</li>
+          <li>✅ Supporting the Dev and Owner team with making new stuff</li>
+          <li>✅ Making sure everyone feels welcome and informed</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>WHY IS LiME IMPORTANT TO ME</h2>
+        <p>
+          LiME is a huge part of my life — a place where I met amazing people and love the community.
+        </p>
+        <p>
+          And I can nuke things
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer">
+      © LiME Network • 2026 • Independent &amp; Proudly Following Minecraft Usage Guidelines<br>
+      <span style="color:#00ccff;">Not affiliated with Mojang or Microsoft • Just here to vibe □</span>
+    </div>
+  </div>
+</body>
+</html>
