@@ -1,542 +1,1067 @@
-<div id="lime-staff-app">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>LiME - Staff</title>
+	<meta property="og:site_name" content="LIME" />
+	<meta property="og:title" content="Staff - LIME" />
+	<meta property="og:description" content="Meet the LiME Network Staff, Ownership, and Administration Team." />
+	<meta property="og:image" content="https://limenetwork.dev/lime-logo-nobg.png" />
+	<meta property="og:url" content="https://limenetwork.dev/staff" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" type="image/png" href="./favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Droid+Sans:wght@400;700&family=Abril+Fatface&family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    #lime-staff-app {
-      font-family: 'Press Start 2P', system-ui;
-      color: #f0fff0;
-      line-height: 1.75;
-      padding: 20px 10px;
-      max-width: 1100px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
+	<style>
+		/* --- New theme  --- */
+		*, *::before, *::after {
+			box-sizing: border-box;
+			cursor: none !important;
+		}
 
-    #lime-staff-app * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+		body, html {
+			margin: 0;
+			padding: 0;
+			min-height: 100vh;
+			font-family: 'Droid Sans', sans-serif;
+			background-color: #0b0e14;
+			color: #d5d5d5;
+			overflow-x: hidden;
+			display: flex;
+			flex-direction: column;
+		}
 
-    .staff-radio { display: none; }
+		/* Custom cursor */
+		#cursor-i {
+			position: fixed;
+			pointer-events: none;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: bold;
+			color: #000;
+			background: #39ff14;
+			border-radius: 50%;
+			box-shadow: 0 0 10px #39ff14, 0 0 20px rgba(57, 255, 20, 0.65);
+			transform: translate(-50%, -50%);
+			z-index: 999999;
+			user-select: none;
+			transition: opacity 0.15s ease;
+		}
 
-    .theme-kainy  { --main: #1e90ff; --border: #8a2be2; --glow1: rgba(138,43,226,0.75); --glow2: rgba(30,144,255,0.4); --badge-bg: #1e90ff; --badge-text: #fff; }
-    .theme-savage { --main: #39ff14; --border: #ff2d55; --glow1: rgba(57,255,20,0.65); --glow2: rgba(255,45,85,0.4);  --badge-bg: #ff9500; --badge-text: #111; }
-    .theme-earth  { --main: #39ff14; --border: #00ffcc; --glow1: rgba(57,255,20,0.65); --glow2: rgba(0,255,204,0.4);  --badge-bg: #ff9500; --badge-text: #111; }
-    .theme-priced { --main: #00ccff; --border: #00ccff; --glow1: rgba(0,204,255,0.6);  --glow2: rgba(0,204,255,0.3);  --badge-bg: transparent; --badge-text: transparent; }
-    .theme-nightz { --main: #cc133c; --border: #cc133c; --glow1: rgba(204,19,60,0.75);  --glow2: rgba(139,0,0,0.5);    --badge-bg: transparent; --badge-text: transparent; }
-    .theme-duck   { --main: #00ccff; --border: #00ccff; --glow1: rgba(0,204,255,0.6);  --glow2: rgba(0,204,255,0.3);  --badge-bg: #ff2a6d; --badge-text: #111; }
+		/* Hide custom cursor on da phones */
+		@media (hover: none) and (pointer: coarse) {
+			*, *::before, *::after { cursor: auto !important; }
+			#cursor-i { display: none !important; }
+		}
 
-    .uiverse-pixel-radio-group {
-      display: flex;
-      flex-wrap: wrap; 
-      justify-content: center;
-      gap: 25px 35px;
-      margin-bottom: 50px;
-      padding: 15px;
-    }
+		/* LiME logo */
+		.floating-logo {
+			position: fixed;
+			top: 25px;
+			left: 35px;
+			z-index: 1000;
+		}
 
-    .uiverse-pixel-radio {
-      display: flex;
-      align-items: center;
-      gap: 0.75em;
-      cursor: pointer;
-      font-size: 1em;
-      font-weight: bold;
-      color: #fff;
-      text-shadow: 1px 1px #000;
-      position: relative;
-    }
+		.floating-logo a {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			color: #39ff14;
+			font-family: 'Abril Fatface', serif;
+			font-size: 1.8em;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.35);
+		}
 
-    .pixel-radio-btn {
-      display: inline-block;
-      width: 1.5em;
-      height: 1.5em;
-      background: var(--radio-bg, #ff6b35);
-      border: none;
-      box-shadow:
-        0 0 0 0.15em #000,
-        0 0 0 0.3em #fff,
-        0 0 0 0.45em #000;
-      image-rendering: pixelated;
-      margin: 0;
-      transition: all 0.1s steps(1);
-      position: relative;
-    }
+		.floating-logo img {
+			height: 48px;
+			width: auto;
+			display: block;
+			filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
+		}
 
-    .pixel-radio-btn::before {
-      content: "";
-      display: block;
-      width: 0.75em;
-      height: 0.75em;
-      background: #fff;
-      margin: auto;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      transition: transform 0.1s ease-out;
-      box-shadow: 0 0 0 1px #000;
-    }
+		/* Floating right buttons */
+		.right-nav-dock {
+			position: fixed;
+			top: 50%;
+			right: 25px;
+			transform: translateY(-50%);
+			background: rgba(0, 0, 0, 0.72);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(57, 255, 20, 0.28);
+			border-radius: 16px;
+			padding: 12px 10px;
+			z-index: 1000;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 15px rgba(57, 255, 20, 0.08);
+		}
 
-    .uiverse-pixel-radio:hover .pixel-radio-btn {
-      filter: brightness(1.2);
-    }
+		.right-nav-dock ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			text-align: right;
+		}
 
-    .uiverse-pixel-radio:active .pixel-radio-btn {
-      filter: brightness(0.8);
-      transform: translateY(0.125em);
-    }
+		.right-nav-dock a.nav-menu-item {
+			display: block;
+			padding: 9px 16px;
+			color: #ddd;
+			text-decoration: none;
+			font-family: 'Inter', sans-serif;
+			font-weight: 600;
+			font-size: 14.5px;
+			border-radius: 10px;
+			border-right: 3px solid transparent;
+			transition: all 0.25s ease;
+		}
 
-    #staff-kainy:checked ~ .uiverse-pixel-radio-group [for="staff-kainy"] .pixel-radio-btn::before,
-    #staff-savage:checked ~ .uiverse-pixel-radio-group [for="staff-savage"] .pixel-radio-btn::before,
-    #staff-earth:checked ~ .uiverse-pixel-radio-group [for="staff-earth"] .pixel-radio-btn::before,
-    #staff-priced:checked ~ .uiverse-pixel-radio-group [for="staff-priced"] .pixel-radio-btn::before,
-    #staff-nightz:checked ~ .uiverse-pixel-radio-group [for="staff-nightz"] .pixel-radio-btn::before,
-    #staff-duck:checked ~ .uiverse-pixel-radio-group [for="staff-duck"] .pixel-radio-btn::before {
-      transform: translate(-50%, -50%) scale(1);
-      background: #000;
-    }
+		.right-nav-dock a.nav-menu-item:hover,
+		.right-nav-dock a.nav-menu-item.active {
+			color: #39ff14;
+			background: rgba(57, 255, 20, 0.1);
+			border-right: 3px solid #39ff14;
+			transform: translateX(-3px);
+			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+		}
 
-    .staff-profile-wrap {
-      display: none;
-      animation: fadeIn 0.4s ease-in-out;
-    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+		.staff-intro-section {
+			background: radial-gradient(circle at 50% 30%, rgba(12, 208, 22, 0.15) 0%, rgba(9, 88, 184, 0.15) 50%, #0b0e14 100%);
+			border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+			padding: 100px 20px 70px;
+		}
 
-    #staff-kainy:checked ~ #wrap-kainy { display: block; }
-    #staff-savage:checked ~ #wrap-savage { display: block; }
-    #staff-earth:checked ~ #wrap-earth { display: block; }
-    #staff-priced:checked ~ #wrap-priced { display: block; }
-    #staff-nightz:checked ~ #wrap-nightz { display: block; }
-    #staff-duck:checked ~ #wrap-duck { display: block; }
+		.staff-intro-container {
+			max-width: 960px;
+			margin: 0 auto;
+			text-align: center;
+		}
 
-    .profile-container {
-      background: rgba(20, 20, 20, 0.95);
-      border: 8px solid var(--border);
-      border-radius: 24px;
-      box-shadow: 0 0 80px var(--glow1);
-      overflow: hidden;
-      position: relative;
-    }
+		.staff-page-title {
+			font-family: 'Inter', sans-serif;
+			font-size: 4.2em;
+			color: #39ff14;
+			margin: 0 0 35px 0;
+			text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+		}
 
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      padding: 50px 40px 40px;
-      background: linear-gradient(135deg, #111 0%, #1e1e1e 100%);
-      flex-wrap: wrap;
-    }
+		.staff-welcome-card {
+			text-align: left;
+			padding: 40px 45px;
+			background: rgba(0, 0, 0, 0.55);
+			border-radius: 20px;
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(57, 255, 20, 0.28);
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(57, 255, 20, 0.06);
+			font-family: 'Inter', sans-serif;
+			line-height: 1.7;
+			font-size: 1.08em;
+			color: #e0e0e0;
+		}
 
-    .avatar-container {
-      flex-shrink: 0;
-      position: relative;
-    }
+		.staff-welcome-card h3 {
+			color: #39ff14;
+			font-size: 1.35em;
+			margin: 28px 0 12px 0;
+			text-shadow: 0 0 10px rgba(57, 255, 20, 0.25);
+		}
 
-    .avatar {
-      width: 240px;
-      height: 240px;
-      border: 10px solid var(--border);
-      border-radius: 50%;
-      box-shadow: 0 0 40px var(--glow1), inset 0 0 15px var(--glow2); 
-      overflow: hidden;
-      background: #111;
-    }
-    
-    .avatar a {
-      display: block;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
+		.staff-welcome-card h3:first-child {
+			margin-top: 0;
+			font-size: 1.5em;
+		}
 
-    .avatar img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      transition: transform 0.3s ease;
-    }
-    
-    .avatar:hover img {
-      transform: scale(1.1);
-    }
+		.staff-welcome-card p {
+			margin: 0 0 16px 0;
+		}
 
-    .avatar-badge {
-      position: absolute;
-      bottom: 15px;
-      right: 10px;
-      background: var(--badge-bg);
-      color: var(--badge-text);
-      font-size: 0.85em;
-      padding: 8px 20px;
-      border-radius: 30px;
-      font-weight: bold;
-      box-shadow: 0 0 25px var(--badge-bg);
-      letter-spacing: 2px;
-      transform: rotate(8deg);
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 2;
-    }
+		.staff-welcome-card p:last-child {
+			margin-bottom: 0;
+		}
 
-    .theme-priced .avatar-badge, 
-    .theme-nightz .avatar-badge { display: none; }
+		.staff-role-list {
+			list-style: none;
+			padding: 0;
+			margin: 0 0 16px 0;
+		}
 
-    .hero-text { flex: 1; min-width: 200px; padding-top: 10px; }
-    
-    .hero-text h1 { 
-      color: var(--main); 
-      font-size: clamp(1.8em, 4vw + 1rem, 3em); 
-      letter-spacing: 2px; 
-      text-shadow: 0 0 30px var(--main); 
-      margin-bottom: 12px; 
-      line-height: 1.4; 
-      overflow-wrap: anywhere; 
-      word-break: break-word; 
-    }
-    
-    .hero-text .subtitle { font-size: 1.3em; color: #fff; opacity: 0.9; margin-bottom: 20px; text-shadow: 0 0 15px var(--main); }
-    .hero-text p { font-size: 1.1em; color: #ddd; max-width: 500px; line-height: 1.6; }
+		.staff-role-list li {
+			margin-bottom: 10px;
+			padding-left: 14px;
+			border-left: 3px solid #39ff14;
+		}
 
-    .content { padding: 0 40px 50px; display: flex; flex-direction: column; gap: 30px; }
-    
-    .section {
-      background: rgba(25,25,25,0.85);
-      border: 3px solid var(--main);
-      border-radius: 16px;
-      padding: 30px 35px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: transform 0.3s ease;
-    }
-    .section:hover { transform: translateY(-4px); box-shadow: 0 15px 40px var(--glow2); }
-    
-    .section h2 { color: var(--main); font-size: 1.4em; margin-bottom: 20px; letter-spacing: 3px; text-shadow: 0 0 15px var(--main); }
-    .section p { font-size: 1.05em; color: #f0fff0; margin-bottom: 15px; }
-    .section ul { padding-left: 30px; font-size: 1.05em; color: #f0fff0; }
-    .section li { margin-bottom: 12px; }
-    .section a { color: var(--main); text-decoration: none; border-bottom: 1px solid var(--main); }
-    .section a:hover { color: #fff; text-shadow: 0 0 10px var(--main); }
+		.staff-role-list strong {
+			color: #fff;
+		}
 
-    .footer {
-      background: #0f0f0f;
-      padding: 30px 40px;
-      text-align: center;
-      font-size: 0.8em;
-      color: #888;
-      border-top: 6px solid var(--border);
-    }
-    .footer span { color: var(--main); }
+		/* Mini-profiles */
+		.staff-profiles-section {
+			flex: 1;
+			background: linear-gradient(161deg, rgba(12, 208, 22, 0.12) 0%, rgba(9, 88, 184, 0.18) 100%), #0b0e14;
+			background-attachment: fixed;
+			padding: 60px 20px 80px;
+		}
 
-    /* Mobile fix, prob dose not work */
-    @media (max-width: 900px) {
-      .hero { 
-        padding: 40px 30px; 
-        gap: 30px; 
-        justify-content: center; 
-        text-align: center; 
-        flex-direction: column; 
-      }
-      .avatar-container {
-        order: -1; 
-      }
-      .hero-text h1 { font-size: clamp(1.8em, 5vw, 2.4em); }
-      .content { padding: 0 30px 40px; }
-      .section { padding: 25px; }
-    }
-    @media (max-width: 600px) {
-      .avatar { width: 180px; height: 180px; border-width: 8px; }
-      .hero-text h1 { font-size: 1.8em; letter-spacing: 2px; }
-      .hero-text .subtitle { font-size: 1.1em; }
-      .content { padding: 0 20px 30px; }
-      .section h2 { font-size: 1.2em; }
-    }
-  </style>
+		.profiles-heading {
+			text-align: center;
+			font-family: 'Droid Sans', sans-serif;
+			font-size: 30px;
+			color: #ffffff;
+			margin: 0 auto 10px;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.3);
+		}
 
-  <input type="radio" name="staff_metro" id="staff-kainy" class="staff-radio" checked>
-  <input type="radio" name="staff_metro" id="staff-savage" class="staff-radio">
-  <input type="radio" name="staff_metro" id="staff-earth" class="staff-radio">
-  <input type="radio" name="staff_metro" id="staff-priced" class="staff-radio">
-  <input type="radio" name="staff_metro" id="staff-nightz" class="staff-radio">
-  <input type="radio" name="staff_metro" id="staff-duck" class="staff-radio">
 
-  <div class="uiverse-pixel-radio-group">
-    
-    <label for="staff-kainy" class="uiverse-pixel-radio" style="--radio-bg: #1e90ff;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Kainyx</span>
-    </label>
-    
-    <label for="staff-savage" class="uiverse-pixel-radio" style="--radio-bg: #ff2d55;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Savage</span>
-    </label>
+		/* Info for dummys */
+		.lime-tooltip-bar {
+			max-width: 1100px;
+			margin: 0 auto;
+			padding: 75px 10px 10px 35px;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			box-sizing: border-box;
+		}
 
-    <label for="staff-earth" class="uiverse-pixel-radio" style="--radio-bg: #00ffcc;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Earth</span>
-    </label>
+		/* Got the idea for this little peace on Uiverse.io */
+		.lime-tooltip-bar .tooltip-container {
+			--background: #fefbff;
+			--inner-shadow: #9faef9;
+			--inner-outline: #34217d;
+			--inner-outline-bottom: #fafcfe;
+			--inner-outline-middle: #8880d5;
+			--inner-outline-outer-top: #fefcff;
+			--inner-outline-outer-bottom-1: #29107b;
+			--inner-outline-outer-bottom-2: #5b42c4;
+			--inner-outline-outer-bottom-3: #200265;
+			--line-1: #8676c9;
+			--line-2: #5c69ca;
+			position: relative;
+			display: inline-block;
+			background: var(--background);
+			cursor: pointer;
+			transition: all 0.2s;
+			font-size: 17px;
+			padding: 0.7em 1.8em;
+			border-radius: 5px;
+			box-shadow: inset 0px 1px 8px 1px var(--inner-shadow),
+				0px 2px 0px 0px var(--inner-outline-bottom),
+				0px -2px 0px 0px var(--inner-outline),
+				-2px -2px 0px 0px var(--inner-outline),
+				2px -2px 0px 0px var(--inner-outline),
+				0px 0px 0px 6px var(--inner-outline-middle),
+				0px -2px 0px 7px var(--inner-outline-outer-top),
+				0px 4px 0px 7px var(--inner-outline-outer-bottom-1);
+		}
 
-    <label for="staff-priced" class="uiverse-pixel-radio" style="--radio-bg: #00ccff;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Priced</span>
-    </label>
+		.lime-tooltip-bar .tooltip-icon {
+			display: inline-block;
+			vertical-align: top;
+			width: 1.6em;
+			flex-shrink: 0;
+		}
 
-    <label for="staff-nightz" class="uiverse-pixel-radio" style="--radio-bg: #cc133c;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Nightz</span>
-    </label>
+		.lime-tooltip-bar .tooltip-icon path {
+			stroke-width: 2px;
+			stroke: var(--inner-outline);
+			stroke-linejoin: round;
+		}
 
-    <label for="staff-duck" class="uiverse-pixel-radio" style="--radio-bg: #ff2a6d;">
-      <span class="pixel-radio-btn"></span>
-      <span class="label-text">Duckws</span>
-    </label>
+		.lime-tooltip-bar .tooltip-lines {
+			display: flex;
+			flex-direction: column;
+			gap: 0.4em;
+		}
 
-  </div>
+		.lime-tooltip-bar .tooltip-line-1 {
+			height: 0.2em;
+			width: 4em;
+			border-radius: 10em;
+			display: inline-block;
+			background: var(--line-1);
+		}
 
-  <!-- LiMEfiles, made by OpticEarth <3 -->
-  <div class="staff-profile-wrap theme-kainy" id="wrap-kainy">
-    <div class="profile-container">
-      <div class="hero">
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://www.limenetwork.info/kainyx.html" title="View full profile">
-              <!-- Kainys pfp keeps breaking over and over -->
-              <img src="https://cdn.discordapp.com/avatars/1389758746665685005/0ded0365520eeff22cc219dc15faf9e7.webp?size=1536" alt="Kainyx">
-            </a>
-          </div>
-          <div class="avatar-badge">OWNER</div>
-        </div>
-        <div class="hero-text">
-          <h1>Kainyx</h1>
-          <div class="subtitle">Owner • LiME Network</div>
-          <p>Yes it's me Kainy</p>
-        </div>
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>WHO I AM</h2>
-          <p>Hey everyone! I'm <strong style="color:#8a2be2;">Kainyx</strong>, Owner of LiME Network. Ever since I found Minecraft I wanted to make something that people would play. When I found the server I found what I wanted to do — so now we're here saving and helping LiME grow.</p>
-          <p>Outside of games I enjoy [Legos, TikTok lives, hiking, music, etc.]. From a person who didn't know how to code anything to someone who knows a bit more thanks to Optic — a true friend. This server is our project together.</p>
-        </div>
-        <div class="section">
-          <h2>WHAT I DO AS OWNER</h2>
-          <p>As Owner my main job is making LiME a safe and respectful place and making sure nothing breaks:</p>
-          <ul>
-            <li>✅ Building &amp; maintaining the spawn, hubs, and community areas</li>
-            <li>✅ Working with the team to create new events, minigames &amp; seasons</li>
-            <li>✅ Keeping the server fair, friendly, and drama-free</li>
-            <li>✅ Listening to player feedback and turning ideas into real features</li>
-            <li>✅ Making sure Java, Bedrock &amp; VR players all feel at home</li>
-          </ul>
-          <p style="margin-top:20px;">I also help run the Discord, design custom maps, and make sure we always follow <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank">Minecraft's official guidelines</a>.</p>
-        </div>
-        <div class="section">
-          <h2>WHY IS LiME IMPORTANT TO ME</h2>
-          <p>LiME wasn't just another project for me — it was a piece of my childhood that I couldn't let go. It's also a safe space where I can vent or chill after a long day.</p>
-          <p>LiME isn't just a community… it's a family. We support each other no matter who you are.</p>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		.lime-tooltip-bar .tooltip-line-2 {
+			height: 0.2em;
+			width: 3em;
+			border-radius: 10em;
+			display: inline-block;
+			background: var(--line-2);
+		}
 
-  <div class="staff-profile-wrap theme-savage" id="wrap-savage">
-    <div class="profile-container">
-      <div class="hero">
-        
-        <div class="hero-text">
-          <h1>Savageangel7749</h1>
-          <div class="subtitle">Co-Owner/Head Dev • LiME Network</div>
-          <p>Your favorite bug fixer</p>
-        </div>
+		.lime-tooltip-bar .tooltip-popup-text {
+			font-family: 'Press Start 2P', system-ui, sans-serif;
+			font-size: 9.5px;
+			line-height: 1.45;
+			color: var(--inner-outline);
+			width: 175px;
+			text-align: left;
+		}
 
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://www.limenetwork.info/savageangel7749.html" title="View full profile">
-              <img src="https://cdn.discordapp.com/avatars/776526576728539206/d5853ed39f8923bd6bf49aa81e5d6134.webp?size=1536" alt="Savage">
-            </a>
-          </div>
-          <div class="avatar-badge">DEVELOPER</div>
-        </div>
+		.lime-tooltip-bar .tooltip {
+			position: absolute;
+			display: flex;
+			gap: 0.55em;
+			align-items: center;
+			top: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			padding: 0.65em 0.9em;
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			transition: all 0.3s;
+			background: var(--background);
+			border-radius: 0.7em;
+			z-index: 50;
+			box-shadow: inset 0px 1px 8px 1px var(--inner-shadow),
+				0px 2px 0px 0px var(--inner-outline-bottom),
+				0px -2px 0px 0px var(--inner-outline),
+				-2px -2px 0px 0px var(--inner-outline),
+				2px -2px 0px 0px var(--inner-outline),
+				0px 0px 0px 6px var(--inner-outline-middle),
+				0px -2px 0px 7px var(--inner-outline-outer-top),
+				0px 4px 0px 7px var(--inner-outline-outer-bottom-1),
+				0px 7px 0px 7px var(--inner-outline-outer-bottom-2),
+				0px 10px 0px 7px var(--inner-outline-outer-bottom-3);
+		}
 
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>WHO I AM</h2>
-          <p>Hey everyone! I'm <strong style="color:var(--main);">Savageangel7749</strong>, Co-Owner &amp; Head-Developer of LiME Network. I help run the server and build all the cool stuff behind the scenes.</p>
-          <p>From coding new features to keeping everything running smooth, I'm all in on making LiME the best community possible.</p>
-        </div>
-        <div class="section">
-          <h2>WHAT I DO AS HEAD DEVELOPER</h2>
-          <p>As Head Developer my main job is:</p>
-          <ul>
-            <li>✅ Leading most development and coding for the server</li>
-            <li>✅ Creating new features, minigames, and updates</li>
-            <li>✅ Keeping the server stable and bug-free</li>
-            <li>✅ Working with the team to turn ideas into real content</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		.lime-tooltip-bar .tooltip::before {
+			content: "";
+			position: absolute;
+			height: 1em;
+			width: 1em;
+			bottom: -0.2em;
+			left: 50%;
+			transform: translate(-50%) translateY(2px) rotate(45deg);
+			background: var(--background);
+			border-radius: 0.2em;
+			box-shadow: 1px 1px 0px white,
+				5px 5px 0px rgb(136, 128, 213),
+				9px 9px 0px rgb(41, 16, 123),
+				12px 12px 0px #5b42c4,
+				14px 14px 0px rgb(41, 16, 123),
+				inset -3px -3px 3px #9faef97a;
+		}
 
-  <div class="staff-profile-wrap theme-earth" id="wrap-earth">
-    <div class="profile-container">
-      <div class="hero">
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://limenetwork.dev/OpticEarth.html" title="View full profile">
-              <img src="https://cdn.discordapp.com/avatars/1315755656854114345/2731045a937d2977ef5ea4442681a9b1.webp?size=1536" alt="OpticEarth">
-            </a>
-          </div>
-          <div class="avatar-badge">DEVELOPER</div>
-        </div>
-        <div class="hero-text">
-          <h1>OpticEarth</h1>
-          <div class="subtitle">Photographer • Robotics Engineer</div>
-          <p>Thinking</p>
-        </div>
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>WHO I AM</h2>
-          <p>Hey everyone! I'm <strong style="color:var(--main);">OpticEarth</strong>.</p>
-          <p>I sometimes like playing the guitar, I'm not a social person, I enjoy the outdoors, I like camping, i'm a night owl, I don't really sleep much, and when I do, I tend to sleep a lot; and don't really wake up.</p>
-          <p style="color:#00ffcc; font-style:italic;">Trust in God &lt;3</p>
-        </div>
-        <div class="section">
-          <h2>THINGS I LIKE</h2>
-          <ul>
-            <li><strong style="color:var(--main);">Photography:</strong> I take pictures of the world. :&gt;</li>
-            <li><strong style="color:var(--main);">codinggggg:</strong> I like making things.</li>
-            <li><strong style="color:var(--main);">Skating:</strong> I go skateboarding to clear my mind. (Or go for a walk).</li>
-            <li><strong style="color:var(--main);">Minecraft:</strong> Working alongside Kainyx and Savageangel, we own this server!</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		.lime-tooltip-bar .tooltip-container:hover .tooltip {
+			top: -4.8em;
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+		}
 
-  <div class="staff-profile-wrap theme-priced" id="wrap-priced">
-    <div class="profile-container">
-      <div class="hero">
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://www.limenetwork.info/pricedbear.html" title="View full profile">
-              <img src="https://cdn.discordapp.com/attachments/1431929356170821672/1506781678536753203/4f19e4b6d346f8901ee2949177b4e9bf1ccc45640546f9c5ca86f8493d95bc86.png?ex=6a117d8a&is=6a102c0a&hm=2e83e4408907dd29540f3dd191e6cc4b9a7a9b9a52d470d20e7f6ffda9ed0c5d" alt="Pricedbear">
-            </a>
-          </div>
-          <div class="avatar-badge">ADMIN</div>
-        </div>
-        <div class="hero-text">
-          <h1>Pricedbear</h1>
-          <div class="subtitle">Admin • LiME Network</div>
-          <p>Your favorite Waffle</p>
-        </div>
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>WHO I AM</h2>
-          <p>Hey everyone! I'm <strong style="color:var(--main);">Pricedbear</strong>, Admin of LiME Network. I help keep the server running smooth and make sure everyone has a great time.</p>
-          <p>From answering questions to helping with issues, I'm here to support the community.</p>
-        </div>
-        <div class="section">
-          <h2>WHAT I DO AS ADMIN</h2>
-          <p>As Admin my main job is:</p>
-          <ul>
-            <li>✅ Helping players and keeping the server friendly</li>
-            <li>✅ Enforcing rules fairly and resolving issues</li>
-            <li>✅ Supporting the Dev and Owner team</li>
-            <li>✅ Making sure everyone feels welcome</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		/* --- Staff app styles --- */
+		#lime-staff-app {
+			font-family: 'Press Start 2P', system-ui;
+			color: #f0fff0;
+			line-height: 1.75;
+			padding: 20px 10px;
+			max-width: 1100px;
+			margin: 0 auto;
+			box-sizing: border-box;
+		}
 
-  <div class="staff-profile-wrap theme-nightz" id="wrap-nightz">
-    <div class="profile-container">
-      <div class="hero">
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://www.limenetwork.info/nightz-mc.html" title="View full profile">
-              <img src="https://cdn.discordapp.com/avatars/1106041900303134831/fd4f1fcee787e256c4fd427d30d67417.webp?size=1536" alt="Nightz mc">
-            </a>
-          </div>
-          <div class="avatar-badge">ADMIN</div>
-        </div>
-        <div class="hero-text">
-          <h1>Nightz mc</h1>
-          <div class="subtitle">Admin • LiME Network</div>
-          <p>Status goes here</p>
-        </div>
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>BIO</h2>
-          <p>I like playing Minecraft, hanging out with friends, talking about stuff and trying to improve at Minecraft pvp.</p>
-        </div>
-        <div class="section">
-          <h2>WHAT I DO AS ADMIN</h2>
-          <p>As Admin of LiME my main job is making sure LiME stays a great place for everyone. That means:</p>
-          <ul>
-            <li>✅ Helping players with questions, issues, and support</li>
-            <li>✅ Moderating the server and Discord to keep things friendly</li>
-            <li>✅ Enforcing rules fairly and dealing with any problems</li>
-            <li>✅ Assisting with events and community activities</li>
-            <li>✅ Supporting the Owner and Dev team to improve the server</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		#lime-staff-app * {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
 
-  <div class="staff-profile-wrap theme-duck" id="wrap-duck">
-    <div class="profile-container">
-      <div class="hero">
-        <div class="avatar-container">
-          <div class="avatar">
-            <a href="https://www.limenetwork.info/duckws.html" title="View full profile">
-              <img src="https://cdn.discordapp.com/attachments/1361536954054873253/1558579577910067231/c8a882849069929ebd5cd257c652540eb638a195970cb61df6a5e203784f2178.png?ex=6acbf3d8&is=6acaa258&hm=99288def67ac485c683293f05423a6ea21030d82d1c4e52529e82f80b71ea459" alt="Duckws">
-            </a>
-          </div>
-          <div class="avatar-badge"></div>
-        </div>
-        <div class="hero-text">
-          <h1>Duckws</h1>
-          <div class="subtitle">Admin • LiME Network</div>
-          <p>Your favorite Duck!</p>
-        </div>
-      </div>
-      <div class="content">
-        <div class="section">
-          <h2>WHO I AM</h2>
-          <p>Hey everyone! I'm <strong style="color:var(--main);">Duckws</strong>, Admin of LiME Network. I help keep the server running smooth while managing some of the social media and content.</p>
-          <p>From helping create awesome posts to helping players, I'm here to support the community and make LiME even better.</p>
-        </div>
-        <div class="section">
-          <h2>WHAT I DO AS ADMIN</h2>
-          <p>As Admin my main job is:</p>
-          <ul>
-            <li>✅ Helping players and keeping the server friendly</li>
-            <li>✅ Managing social media, videos, posts &amp; announcements</li>
-            <li>✅ Creating and editing content for the LiME community</li>
-            <li>✅ Supporting the Dev and Owner team with media projects</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
-    </div>
-  </div>
+		.staff-radio { display: none; }
 
-</div>
+		.theme-kainy  { --main: #1e90ff; --border: #8a2be2; --glow1: rgba(138,43,226,0.75); --glow2: rgba(30,144,255,0.4); --badge-bg: #1e90ff; --badge-text: #fff; }
+		.theme-savage { --main: #39ff14; --border: #ff2d55; --glow1: rgba(57,255,20,0.65); --glow2: rgba(255,45,85,0.4);  --badge-bg: #ff9500; --badge-text: #111; }
+		.theme-earth  { --main: #39ff14; --border: #00ffcc; --glow1: rgba(57,255,20,0.65); --glow2: rgba(0,255,204,0.4);  --badge-bg: #ff9500; --badge-text: #111; }
+		.theme-priced { --main: #00ccff; --border: #00ccff; --glow1: rgba(0,204,255,0.6);  --glow2: rgba(0,204,255,0.3);  --badge-bg: transparent; --badge-text: transparent; }
+		.theme-nightz { --main: #cc133c; --border: #cc133c; --glow1: rgba(204,19,60,0.75);  --glow2: rgba(139,0,0,0.5);    --badge-bg: transparent; --badge-text: transparent; }
+		.theme-duck   { --main: #00ccff; --border: #00ccff; --glow1: rgba(0,204,255,0.6);  --glow2: rgba(0,204,255,0.3);  --badge-bg: #ff2a6d; --badge-text: #111; }
+
+		.uiverse-pixel-radio-group {
+			display: flex;
+			flex-wrap: wrap; 
+			justify-content: center;
+			gap: 25px 35px;
+			margin-bottom: 50px;
+			padding: 15px;
+		}
+
+		.uiverse-pixel-radio {
+			display: flex;
+			align-items: center;
+			gap: 0.75em;
+			cursor: pointer;
+			font-size: 1em;
+			font-weight: bold;
+			color: #fff;
+			text-shadow: 1px 1px #000;
+			position: relative;
+		}
+
+		.pixel-radio-btn {
+			display: inline-block;
+			width: 1.5em;
+			height: 1.5em;
+			background: var(--radio-bg, #ff6b35);
+			border: none;
+			box-shadow:
+				0 0 0 0.15em #000,
+				0 0 0 0.3em #fff,
+				0 0 0 0.45em #000;
+			image-rendering: pixelated;
+			margin: 0;
+			transition: all 0.1s steps(1);
+			position: relative;
+		}
+
+		.pixel-radio-btn::before {
+			content: "";
+			display: block;
+			width: 0.75em;
+			height: 0.75em;
+			background: #fff;
+			margin: auto;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0);
+			transition: transform 0.1s ease-out;
+			box-shadow: 0 0 0 1px #000;
+		}
+
+		.uiverse-pixel-radio:hover .pixel-radio-btn {
+			filter: brightness(1.2);
+		}
+
+		.uiverse-pixel-radio:active .pixel-radio-btn {
+			filter: brightness(0.8);
+			transform: translateY(0.125em);
+		}
+
+		#staff-kainy:checked ~ .uiverse-pixel-radio-group [for="staff-kainy"] .pixel-radio-btn::before,
+		#staff-savage:checked ~ .uiverse-pixel-radio-group [for="staff-savage"] .pixel-radio-btn::before,
+		#staff-earth:checked ~ .uiverse-pixel-radio-group [for="staff-earth"] .pixel-radio-btn::before,
+		#staff-priced:checked ~ .uiverse-pixel-radio-group [for="staff-priced"] .pixel-radio-btn::before,
+		#staff-nightz:checked ~ .uiverse-pixel-radio-group [for="staff-nightz"] .pixel-radio-btn::before,
+		#staff-duck:checked ~ .uiverse-pixel-radio-group [for="staff-duck"] .pixel-radio-btn::before {
+			transform: translate(-50%, -50%) scale(1);
+			background: #000;
+		}
+
+		.staff-profile-wrap {
+			display: none;
+			animation: fadeIn 0.4s ease-in-out;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		#staff-kainy:checked ~ #wrap-kainy { display: block; }
+		#staff-savage:checked ~ #wrap-savage { display: block; }
+		#staff-earth:checked ~ #wrap-earth { display: block; }
+		#staff-priced:checked ~ #wrap-priced { display: block; }
+		#staff-nightz:checked ~ #wrap-nightz { display: block; }
+		#staff-duck:checked ~ #wrap-duck { display: block; }
+
+		.profile-container {
+			background: rgba(20, 20, 20, 0.95);
+			border: 8px solid var(--border);
+			border-radius: 24px;
+			box-shadow: 0 0 80px var(--glow1);
+			overflow: hidden;
+			position: relative;
+		}
+
+		.hero {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 40px;
+			padding: 50px 40px 40px;
+			background: linear-gradient(135deg, #111 0%, #1e1e1e 100%);
+			flex-wrap: wrap;
+		}
+
+		.avatar-container {
+			flex-shrink: 0;
+			position: relative;
+		}
+
+		.avatar {
+			width: 240px;
+			height: 240px;
+			border: 10px solid var(--border);
+			border-radius: 50%;
+			box-shadow: 0 0 40px var(--glow1), inset 0 0 15px var(--glow2); 
+			overflow: hidden;
+			background: #111;
+		}
+		
+		.avatar a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+
+		.avatar img { 
+			width: 100%; 
+			height: 100%; 
+			object-fit: cover; 
+			transition: transform 0.3s ease;
+		}
+		
+		.avatar:hover img {
+			transform: scale(1.1);
+		}
+
+		.avatar-badge {
+			position: absolute;
+			bottom: 15px;
+			right: 10px;
+			background: var(--badge-bg);
+			color: var(--badge-text);
+			font-size: 0.85em;
+			padding: 8px 20px;
+			border-radius: 30px;
+			font-weight: bold;
+			box-shadow: 0 0 25px var(--badge-bg);
+			letter-spacing: 2px;
+			transform: rotate(8deg);
+			white-space: nowrap;
+			pointer-events: none;
+			z-index: 2;
+		}
+
+		.theme-priced .avatar-badge, 
+		.theme-nightz .avatar-badge { display: none; }
+
+		.hero-text { flex: 1; min-width: 200px; padding-top: 10px; }
+		
+		.hero-text h1 { 
+			color: var(--main); 
+			font-size: clamp(1.8em, 4vw + 1rem, 3em); 
+			letter-spacing: 2px; 
+			text-shadow: 0 0 30px var(--main); 
+			margin-bottom: 12px; 
+			line-height: 1.4; 
+			overflow-wrap: anywhere; 
+			word-break: break-word; 
+		}
+		
+		.hero-text .subtitle { font-size: 1.3em; color: #fff; opacity: 0.9; margin-bottom: 20px; text-shadow: 0 0 15px var(--main); }
+		.hero-text p { font-size: 1.1em; color: #ddd; max-width: 500px; line-height: 1.6; }
+
+		.content { padding: 0 40px 50px; display: flex; flex-direction: column; gap: 30px; }
+		
+		.section {
+			background: rgba(25,25,25,0.85);
+			border: 3px solid var(--main);
+			border-radius: 16px;
+			padding: 30px 35px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+			transition: transform 0.3s ease;
+		}
+		.section:hover { transform: translateY(-4px); box-shadow: 0 15px 40px var(--glow2); }
+		
+		.section h2 { color: var(--main); font-size: 1.4em; margin-bottom: 20px; letter-spacing: 3px; text-shadow: 0 0 15px var(--main); }
+		.section p { font-size: 1.05em; color: #f0fff0; margin-bottom: 15px; }
+		.section ul { padding-left: 30px; font-size: 1.05em; color: #f0fff0; }
+		.section li { margin-bottom: 12px; }
+		.section a { color: var(--main); text-decoration: none; border-bottom: 1px solid var(--main); }
+		.section a:hover { color: #fff; text-shadow: 0 0 10px var(--main); }
+
+		.footer {
+			background: #0f0f0f;
+			padding: 30px 40px;
+			text-align: center;
+			font-size: 0.8em;
+			color: #888;
+			border-top: 6px solid var(--border);
+		}
+		.footer span { color: var(--main); }
+
+		/* Footer */
+		.site-footer {
+			text-align: center;
+			padding: 18px 20px;
+			background: rgba(0, 0, 0, 0.9);
+			border-top: 1px solid rgba(57, 255, 20, 0.2);
+			font-size: 11.5px;
+			letter-spacing: 0.6px;
+			color: rgb(213, 213, 213);
+		}
+
+		/* Mobile fixes */
+		@media (max-width: 900px) {
+			.floating-logo {
+				position: static;
+				display: flex;
+				justify-content: center;
+				padding: 20px 0 5px;
+			}
+
+			.right-nav-dock {
+				position: sticky;
+				top: 10px;
+				right: auto;
+				transform: none;
+				margin: 10px auto 0;
+				width: max-content;
+				max-width: 94%;
+				padding: 8px 12px;
+			}
+
+			.right-nav-dock ul {
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 6px;
+			}
+
+			.right-nav-dock a.nav-menu-item {
+				padding: 6px 12px;
+				font-size: 13.5px;
+				border-right: none;
+				border-bottom: 2px solid transparent;
+			}
+
+			.right-nav-dock a.nav-menu-item:hover,
+			.right-nav-dock a.nav-menu-item.active {
+				transform: translateY(-2px);
+				border-right: none;
+				border-bottom: 2px solid #39ff14;
+			}
+
+			.staff-intro-section {
+				padding-top: 40px;
+			}
+
+			.staff-page-title {
+				font-size: 2.8em;
+			}
+
+			.staff-welcome-card {
+				padding: 25px;
+			}
+
+			.hero { 
+				padding: 40px 30px; 
+				gap: 30px; 
+				justify-content: center; 
+				text-align: center; 
+				flex-direction: column; 
+			}
+			.avatar-container {
+				order: -1; 
+			}
+			.hero-text h1 { font-size: clamp(1.8em, 5vw, 2.4em); }
+			.content { padding: 0 30px 40px; }
+			.section { padding: 25px; }
+		}
+
+		@media (max-width: 600px) {
+			.avatar { width: 180px; height: 180px; border-width: 8px; }
+			.hero-text h1 { font-size: 1.8em; letter-spacing: 2px; }
+			.hero-text .subtitle { font-size: 1.1em; }
+			.content { padding: 0 20px 30px; }
+			.section h2 { font-size: 1.2em; }
+		}
+	</style>
+</head>
+<body>
+	<!-- Cursor i -->
+	<div id="cursor-i">i</div>
+
+	<!-- Top-left logo -->
+	<div class="floating-logo">
+		<a href="https://limenetwork.dev/index.html">
+			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='i';" />
+		</a>
+	</div>
+
+	<!-- Right side navigation buttons -->
+	<nav class="right-nav-dock">
+		<ul>
+			<li><a href="https://limenetwork.dev/index.html" class="nav-menu-item">Info</a></li>
+			<li><a href="https://limenetwork.dev/join" class="nav-menu-item">Join</a></li>
+			<li><a href="https://limenetwork.dev/rules" class="nav-menu-item">Rules</a></li>
+			<li><a href="https://limenetwork.dev/browser" class="nav-menu-item">Browser</a></li>
+			<li><a href="https://limenetwork.dev/staff" class="nav-menu-item active">Staff</a></li>
+			<li><a href="#" class="nav-menu-item">Feedback</a></li>
+		</ul>
+	</nav>
+
+	<!-- Top section: title & community / staff team overview -->
+	<section class="staff-intro-section">
+		<div class="staff-intro-container">
+			<h1 class="staff-page-title">&#120186;&#120218;&#120215; &#120190;&#120217;&#120198;&#120203;&#120203;</h1>
+
+			<div class="staff-welcome-card">
+				<h3>Welcome to the LiME Community. Welcome to LiME!</h3>
+				<p>
+					We’re proud to be a growing community built around respectful players, helpful staff members, and a fun environment for everyone to enjoy. Our goal is to create a safe and welcoming place where players can connect, have fun, and feel supported at all times. Whether you are brand new to the community or have been with us for a long time, we want every player to feel included and valued.
+				</p>
+				<p>
+					Our staff team works hard every day to keep the server running smoothly, assist players when needed, and make sure everyone has the best experience possible. If you ever need help with anything — including server issues, questions, reports, bugs, or general support — please don’t hesitate to contact one of our staff members. We are always happy to help whenever we can.
+				</p>
+
+				<h3>Staff Team — Ownership Team</h3>
+				<ul class="staff-role-list">
+					<li><strong>Kainyx</strong> — Owner</li>
+					<li><strong>OpticEarth</strong> — Co-Owner</li>
+					<li><strong>SavageAngel</strong> — Co-Owner (also Head of Development Team)</li>
+				</ul>
+
+				<h3>Administration Team</h3>
+				<ul class="staff-role-list">
+					<li><strong>Losername</strong> — Head Admin (Supervises the administration team and helps maintain community moderation)</li>
+					<li><strong>Admins:</strong> Axolotl, Nightz, Duckws, and Pricedbear</li>
+				</ul>
+				<p>
+					Our administration team helps moderate the community, assist players, and ensure the server remains friendly and enjoyable for everyone.
+				</p>
+				<p>
+					<strong>Thank you for being part of LiME. We appreciate every member of the community and look forward to continuing to grow together!</strong>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Mini-profiles pt.2 -->
+	<section class="staff-profiles-section">
+		<h2 class="profiles-heading">Our LiME profiles! (not all staff have a profile)</h2>
+
+
+		<div class="lime-tooltip-bar">
+			<div class="tooltip-container">
+				<span class="tooltip">
+					<span>
+						<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="tooltip-icon">
+							<defs>
+								<linearGradient id="lime-tip-gradient" x2="0" y2="1">
+									<stop offset="0%" stop-color="#96a1e8"></stop>
+									<stop offset="100%" stop-color="#5061be"></stop>
+								</linearGradient>
+							</defs>
+							<path fill="url(#lime-tip-gradient)" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
+						</svg>
+					</span>
+					<span class="tooltip-popup-text">
+						Click the pfp to view full profile
+					</span>
+				</span>
+				<span class="text">
+					<span class="tooltip-lines">
+						<span class="tooltip-line-1"></span>
+						<span class="tooltip-line-2"></span>
+					</span>
+				</span>
+			</div>
+		</div>
+
+		<!-- Staff selector -->
+		<div id="lime-staff-app">
+			<input type="radio" name="staff_metro" id="staff-kainy" class="staff-radio" checked>
+			<input type="radio" name="staff_metro" id="staff-savage" class="staff-radio">
+			<input type="radio" name="staff_metro" id="staff-earth" class="staff-radio">
+			<input type="radio" name="staff_metro" id="staff-priced" class="staff-radio">
+			<input type="radio" name="staff_metro" id="staff-nightz" class="staff-radio">
+			<input type="radio" name="staff_metro" id="staff-duck" class="staff-radio">
+
+			<div class="uiverse-pixel-radio-group">
+				<label for="staff-kainy" class="uiverse-pixel-radio" style="--radio-bg: #1e90ff;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Kainyx</span>
+				</label>
+				
+				<label for="staff-savage" class="uiverse-pixel-radio" style="--radio-bg: #ff2d55;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Savage</span>
+				</label>
+
+				<label for="staff-earth" class="uiverse-pixel-radio" style="--radio-bg: #00ffcc;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Earth</span>
+				</label>
+
+				<label for="staff-priced" class="uiverse-pixel-radio" style="--radio-bg: #00ccff;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Priced</span>
+				</label>
+
+				<label for="staff-nightz" class="uiverse-pixel-radio" style="--radio-bg: #cc133c;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Nightz</span>
+				</label>
+
+				<label for="staff-duck" class="uiverse-pixel-radio" style="--radio-bg: #ff2a6d;">
+					<span class="pixel-radio-btn"></span>
+					<span class="label-text">Duckws</span>
+				</label>
+			</div>
+
+			<!-- LiMEfiles, made by OpticEarth <3 -->
+			<div class="staff-profile-wrap theme-kainy" id="wrap-kainy">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/Kainyx.html" title="View full profile">
+									<!-- Kainys pfp keeps breaking over and over -->
+									<img src="https://cdn.discordapp.com/avatars/1389758746665685005/0ded0365520eeff22cc219dc15faf9e7.webp?size=1536" alt="Kainyx">
+								</a>
+							</div>
+							<div class="avatar-badge">OWNER</div>
+						</div>
+						<div class="hero-text">
+							<h1>Kainyx</h1>
+							<div class="subtitle">Owner • LiME Network</div>
+							<p>Yes it's me Kainy</p>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>WHO I AM</h2>
+							<p>Hey everyone! I'm <strong style="color:#8a2be2;">Kainyx</strong>, Owner of LiME Network. Ever since I found Minecraft I wanted to make something that people would play. When I found the server I found what I wanted to do — so now we're here saving and helping LiME grow.</p>
+							<p>Outside of games I enjoy [Legos, TikTok lives, hiking, music, etc.]. From a person who didn't know how to code anything to someone who knows a bit more thanks to Optic — a true friend. This server is our project together.</p>
+						</div>
+						<div class="section">
+							<h2>WHAT I DO AS OWNER</h2>
+							<p>As Owner my main job is making LiME a safe and respectful place and making sure nothing breaks:</p>
+							<ul>
+								<li>✅ Building &amp; maintaining the spawn, hubs, and community areas</li>
+								<li>✅ Working with the team to create new events, minigames &amp; seasons</li>
+								<li>✅ Keeping the server fair, friendly, and drama-free</li>
+								<li>✅ Listening to player feedback and turning ideas into real features</li>
+								<li>✅ Making sure Java, Bedrock &amp; VR players all feel at home</li>
+							</ul>
+							<p style="margin-top:20px;">I also help run the Discord, design custom maps, and make sure we always follow <a href="https://www.minecraft.net/en-us/usage-guidelines" target="_blank">Minecraft's official guidelines</a>.</p>
+						</div>
+						<div class="section">
+							<h2>WHY IS LiME IMPORTANT TO ME</h2>
+							<p>LiME wasn't just another project for me — it was a piece of my childhood that I couldn't let go. It's also a safe space where I can vent or chill after a long day.</p>
+							<p>LiME isn't just a community… it's a family. We support each other no matter who you are.</p>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+
+			<div class="staff-profile-wrap theme-savage" id="wrap-savage">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="hero-text">
+							<h1>Savageangel7749</h1>
+							<div class="subtitle">Co-Owner/Head Dev • LiME Network</div>
+							<p>Your favorite bug fixer</p>
+						</div>
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/Savageangel.html" title="View full profile">
+									<img src="https://cdn.discordapp.com/avatars/776526576728539206/d5853ed39f8923bd6bf49aa81e5d6134.webp?size=1536" alt="Savage">
+								</a>
+							</div>
+							<div class="avatar-badge">DEVELOPER</div>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>WHO I AM</h2>
+							<p>Hey everyone! I'm <strong style="color:var(--main);">Savageangel7749</strong>, Co-Owner &amp; Head-Developer of LiME Network. I help run the server and build all the cool stuff behind the scenes.</p>
+							<p>From coding new features to keeping everything running smooth, I'm all in on making LiME the best community possible.</p>
+						</div>
+						<div class="section">
+							<h2>WHAT I DO AS HEAD DEVELOPER</h2>
+							<p>As Head Developer my main job is:</p>
+							<ul>
+								<li>✅ Leading most development and coding for the server</li>
+								<li>✅ Creating new features, minigames, and updates</li>
+								<li>✅ Keeping the server stable and bug-free</li>
+								<li>✅ Working with the team to turn ideas into real content</li>
+							</ul>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+
+			<div class="staff-profile-wrap theme-earth" id="wrap-earth">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/OpticEarth.html" title="View full profile">
+									<img src="https://cdn.discordapp.com/avatars/1315755656854114345/2731045a937d2977ef5ea4442681a9b1.webp?size=1536" alt="OpticEarth">
+								</a>
+							</div>
+							<div class="avatar-badge">DEVELOPER</div>
+						</div>
+						<div class="hero-text">
+							<h1>OpticEarth</h1>
+							<div class="subtitle">Photographer • Robotics Engineer</div>
+							<p>Thinking</p>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>WHO I AM</h2>
+							<p>Hey everyone! I'm <strong style="color:var(--main);">OpticEarth</strong>.</p>
+							<p>I sometimes like playing the guitar, I'm not a social person, I enjoy the outdoors, I like camping, i'm a night owl, I don't really sleep much, and when I do, I tend to sleep a lot; and don't really wake up.</p>
+							<p style="color:#00ffcc; font-style:italic;">Trust in God &lt;3</p>
+						</div>
+						<div class="section">
+							<h2>THINGS I LIKE</h2>
+							<ul>
+								<li><strong style="color:var(--main);">Photography:</strong> I take pictures of the world. :&gt;</li>
+								<li><strong style="color:var(--main);">codinggggg:</strong> I like making things.</li>
+								<li><strong style="color:var(--main);">Skating:</strong> I go skateboarding to clear my mind. (Or go for a walk).</li>
+								<li><strong style="color:var(--main);">Minecraft:</strong> Working alongside Kainyx and Savageangel, we own this server!</li>
+							</ul>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+
+			<div class="staff-profile-wrap theme-priced" id="wrap-priced">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/Pricedbear.html" title="View full profile">
+									<img src="https://cdn.discordapp.com/attachments/1431929356170821672/1506781678536753203/4f19e4b6d346f8901ee2949177b4e9bf1ccc45640546f9c5ca86f8493d95bc86.png?ex=6a117d8a&is=6a102c0a&hm=2e83e4408907dd29540f3dd191e6cc4b9a7a9b9a52d470d20e7f6ffda9ed0c5d" alt="Pricedbear">
+								</a>
+							</div>
+							<div class="avatar-badge">ADMIN</div>
+						</div>
+						<div class="hero-text">
+							<h1>Pricedbear</h1>
+							<div class="subtitle">Admin • LiME Network</div>
+							<p>Your favorite Waffle</p>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>WHO I AM</h2>
+							<p>Hey everyone! I'm <strong style="color:var(--main);">Pricedbear</strong>, Admin of LiME Network. I help keep the server running smooth and make sure everyone has a great time.</p>
+							<p>From answering questions to helping with issues, I'm here to support the community.</p>
+						</div>
+						<div class="section">
+							<h2>WHAT I DO AS ADMIN</h2>
+							<p>As Admin my main job is:</p>
+							<ul>
+								<li>✅ Helping players and keeping the server friendly</li>
+								<li>✅ Enforcing rules fairly and resolving issues</li>
+								<li>✅ Supporting the Dev and Owner team</li>
+								<li>✅ Making sure everyone feels welcome</li>
+							</ul>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+
+			<div class="staff-profile-wrap theme-nightz" id="wrap-nightz">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/NightzMC.html" title="View full profile">
+									<img src="https://cdn.discordapp.com/avatars/1106041900303134831/fd4f1fcee787e256c4fd427d30d67417.webp?size=1536" alt="Nightz mc">
+								</a>
+							</div>
+							<div class="avatar-badge">ADMIN</div>
+						</div>
+						<div class="hero-text">
+							<h1>Nightz mc</h1>
+							<div class="subtitle">Admin • LiME Network</div>
+							<p>Status goes here</p>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>BIO</h2>
+							<p>I like playing Minecraft, hanging out with friends, talking about stuff and trying to improve at Minecraft pvp.</p>
+						</div>
+						<div class="section">
+							<h2>WHAT I DO AS ADMIN</h2>
+							<p>As Admin of LiME my main job is making sure LiME stays a great place for everyone. That means:</p>
+							<ul>
+								<li>✅ Helping players with questions, issues, and support</li>
+								<li>✅ Moderating the server and Discord to keep things friendly</li>
+								<li>✅ Enforcing rules fairly and dealing with any problems</li>
+								<li>✅ Assisting with events and community activities</li>
+								<li>✅ Supporting the Owner and Dev team to improve the server</li>
+							</ul>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+
+			<div class="staff-profile-wrap theme-duck" id="wrap-duck">
+				<div class="profile-container">
+					<div class="hero">
+						<div class="avatar-container">
+							<div class="avatar">
+								<a href="https://limenetwork.dev/Duckws.html" title="View full profile">
+									<img src="https://cdn.discordapp.com/attachments/1361536954054873253/1558579577910067231/c8a882849069929ebd5cd257c652540eb638a195970cb61df6a5e203784f2178.png?ex=6acbf3d8&is=6acaa258&hm=99288def67ac485c683293f05423a6ea21030d82d1c4e52529e82f80b71ea459" alt="Duckws">
+								</a>
+							</div>
+							<div class="avatar-badge"></div>
+						</div>
+						<div class="hero-text">
+							<h1>Duckws</h1>
+							<div class="subtitle">Admin • LiME Network</div>
+							<p>Your favorite Duck!</p>
+						</div>
+					</div>
+					<div class="content">
+						<div class="section">
+							<h2>WHO I AM</h2>
+							<p>Hey everyone! I'm <strong style="color:var(--main);">Duckws</strong>, Admin of LiME Network. I help keep the server running smooth while managing some of the social media and content.</p>
+							<p>From helping create awesome posts to helping players, I'm here to support the community and make LiME even better.</p>
+						</div>
+						<div class="section">
+							<h2>WHAT I DO AS ADMIN</h2>
+							<p>As Admin my main job is:</p>
+							<ul>
+								<li>✅ Helping players and keeping the server friendly</li>
+								<li>✅ Managing social media, videos, posts &amp; announcements</li>
+								<li>✅ Creating and editing content for the LiME community</li>
+								<li>✅ Supporting the Dev and Owner team with media projects</li>
+							</ul>
+						</div>
+					</div>
+					<div class="footer">© LiME Network • 2026 • Independent<br><span>Not affiliated with Mojang or Microsoft • Just here to vibe □</span></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="site-footer">
+		NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
+	</footer>
+
+	<script>
+		// Custom cursor
+		const cursor = document.getElementById('cursor-i');
+		document.addEventListener('mousemove', (e) => {
+			cursor.style.left = e.clientX + 'px';
+			cursor.style.top  = e.clientY + 'px';
+		});
+		document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+		document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+	</script>
+</body>
+</html>
