@@ -23,14 +23,25 @@
       padding: 0;
       min-height: 100%;
       background-color: var(--dark-bg);
-      background-image: url('./IMG_9675.jpg');
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
       overflow-x: hidden;
     }
 
+    /* True Parallax Image Layer */
+    .parallax-bg {
+      position: fixed;
+      top: -15%;
+      left: -5%;
+      width: 110%;
+      height: 130%;
+      background-image: url('./IMG_9675.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: 0;
+      pointer-events: none;
+      will-change: transform;
+      transform: translate3d(0, 0, 0) scale(1.05);
+    }
 
     .floating-logo {
       position: fixed;
@@ -56,7 +67,6 @@
       filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
     }
 
-
     .right-nav-trigger {
       position: fixed;
       top: 0;
@@ -70,7 +80,6 @@
       position: fixed;
       top: 50%;
       right: 25px;
-
       transform: translate(calc(100% + 9px), -50%);
       opacity: 0.85;
       background: rgba(0, 0, 0, 0.78);
@@ -103,7 +112,7 @@
       text-align: right;
     }
 
-    .right-nav-dock a.wsite-menu-item {
+    .right-nav-dock a.nav-menu-item {
       display: block;
       padding: 9px 16px;
       color: #ddd;
@@ -116,8 +125,8 @@
       transition: all 0.25s ease;
     }
 
-    .right-nav-dock a.wsite-menu-item:hover,
-    .right-nav-dock a.wsite-menu-item.active {
+    .right-nav-dock a.nav-menu-item:hover,
+    .right-nav-dock a.nav-menu-item.active {
       color: #39ff14;
       background: rgba(57, 255, 20, 0.1);
       border-right: 3px solid #39ff14;
@@ -146,14 +155,14 @@
       padding: 0;
     }
 
-    /* Matrix background */
+    /* Matrix background with parallax support */
     .matrix-bg {
       position: fixed;
-      top: 0;
+      top: -10%;
       left: 0;
       width: 100vw;
-      height: 100vh;
-      z-index: 0;
+      height: 125vh;
+      z-index: 1;
       overflow: hidden;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
@@ -164,6 +173,7 @@
       justify-content: center;
       align-content: start;
       pointer-events: none;
+      will-change: transform;
     }
 
     .matrix-overlay {
@@ -172,8 +182,8 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at center, rgba(5, 5, 10, 0.25) 0%, rgba(5, 5, 10, 0.7) 100%);
-      z-index: 1;
+      background: radial-gradient(circle at center, rgba(5, 5, 10, 0.2) 0%, rgba(5, 5, 10, 0.65) 100%);
+      z-index: 2;
       pointer-events: none;
     }
 
@@ -591,7 +601,6 @@
       justify-content: center;
     }
 
-
     .card-link {
       text-decoration: none;
       display: inline-block;
@@ -778,16 +787,13 @@
 
     /* Mobile fix */
     @media (max-width: 900px) {
-      body, html {
-        background-attachment: scroll;
-      }
-
       .floating-logo {
-        position: static;
+        position: relative;
+        top: 0;
+        left: 0;
         display: flex;
         justify-content: center;
         padding: 20px 0 5px;
-        position: relative;
         z-index: 1000;
       }
 
@@ -817,15 +823,15 @@
         gap: 6px;
       }
 
-      .right-nav-dock a.wsite-menu-item {
+      .right-nav-dock a.nav-menu-item {
         padding: 6px 12px;
         font-size: 13.5px;
         border-right: none;
         border-bottom: 2px solid transparent;
       }
 
-      .right-nav-dock a.wsite-menu-item:hover,
-      .right-nav-dock a.wsite-menu-item.active {
+      .right-nav-dock a.nav-menu-item:hover,
+      .right-nav-dock a.nav-menu-item.active {
         transform: translateY(-2px);
         border-right: none;
         border-bottom: 2px solid #39ff14;
@@ -857,6 +863,9 @@
 </head>
 <body>
 
+  <!-- Dedicated Parallax Background Image Layer -->
+  <div class="parallax-bg" id="parallaxBg"></div>
+
   <!-- Top-left logo -->
   <div class="floating-logo">
     <a href="https://limenetwork.dev/">
@@ -868,12 +877,12 @@
   <div class="right-nav-trigger">
     <nav class="right-nav-dock">
       <ul>
-        <li><a href="https://limenetwork.dev/" class="wsite-menu-item">Info</a></li>
-        <li><a href="https://limenetwork.dev/join" class="wsite-menu-item">Join</a></li>
-        <li><a href="https://limenetwork.dev/rules" class="wsite-menu-item">Rules</a></li>
-        <li><a href="https://limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
-        <li><a href="https://limenetwork.dev/staff" class="wsite-menu-item active">Staff</a></li>
-        <li><a href="#" class="wsite-menu-item">Feedback</a></li>
+        <li><a href="https://limenetwork.dev/" class="nav-menu-item">Info</a></li>
+        <li><a href="https://limenetwork.dev/join" class="nav-menu-item">Join</a></li>
+        <li><a href="https://limenetwork.dev/rules" class="nav-menu-item">Rules</a></li>
+        <li><a href="https://limenetwork.dev/browser" class="nav-menu-item">Browser</a></li>
+        <li><a href="https://limenetwork.dev/staff" class="nav-menu-item active">Staff</a></li>
+        <li><a href="#" class="nav-menu-item">Feedback</a></li>
       </ul>
     </nav>
   </div>
@@ -1209,7 +1218,7 @@
             </div>
           </a>
 
-          <!--  Call of duty -->
+          <!-- Call of duty -->
           <a href="https://store.steampowered.com/app/1938090/Call_of_Duty/" target="_blank" class="card-link">
             <div class="card">
               <div class="GameImg">
@@ -1249,8 +1258,35 @@
       const matrixBg = document.getElementById('matrixBg');
       if (!matrixBg) return;
       const baseSpans = matrixBg.innerHTML;
-      // Repeat enough times to cover up everything
-      matrixBg.innerHTML = baseSpans.repeat(28);
+      matrixBg.innerHTML = baseSpans.repeat(34);
+    })();
+
+  
+    (function initParallax() {
+      const parallaxBg = document.getElementById('parallaxBg');
+      const matrixBg = document.getElementById('matrixBg');
+      let ticking = false;
+
+      function updateParallax() {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (parallaxBg) {
+          // Background image shifts smoothly
+          parallaxBg.style.transform = `translate3d(0, ${-scrollY * 0.22}px, 0) scale(1.05)`;
+        }
+        if (matrixBg) {
+   
+          matrixBg.style.transform = `translate3d(0, ${-scrollY * 0.10}px, 0)`;
+        }
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }, { passive: true });
     })();
 
     document.getElementById('toggleGamesBtn').addEventListener('click', function() {
