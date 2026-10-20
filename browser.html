@@ -3,11 +3,16 @@
 <head>
 	<meta charset="utf-8" />
 	<title>LiME - Browser</title>
-	<meta property="og:site_name" content="LIME" />
+
+
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="LiME Network" />
 	<meta property="og:title" content="LiME - Browser" />
 	<meta property="og:description" content="LiME Browser - our retro-themed search portal" />
-	<meta property="og:image" content="https://www.limenetwork.info/lime-logo-nobg.png" />
+	<meta property="og:image" content="https://limenetwork.dev/favicon.png" />
 	<meta property="og:url" content="https://limenetwork.dev/browser" />
+	<meta name="theme-color" content="#39ff14" />
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" type="image/png" href="./favicon.png">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Droid+Sans:wght@400;700&family=Abril+Fatface&display=swap" rel="stylesheet">
@@ -25,6 +30,11 @@
 			min-height: 100vh;
 			font-family: 'Droid Sans', sans-serif;
 			background-color: #0b0e14;
+			background-image: url('./BrowserBACK.png');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
 			color: #d5d5d5;
 			overflow-x: hidden;
 			display: flex;
@@ -129,14 +139,14 @@
 			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
 		}
 
-		/* Main background wrapper to match our home page */
+		/* Main background wrapper - semi-transparent (not really) overlay so background shows through */
 		.portal-section {
 			flex: 1;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			padding: 100px 20px 80px;
-			background: radial-gradient(circle at 50% 30%, rgba(12, 208, 22, 0.15) 0%, rgba(9, 88, 184, 0.15) 50%, #0b0e14 100%);
+			background: radial-gradient(circle at 50% 30%, rgba(12, 208, 22, 0.15) 0%, rgba(9, 88, 184, 0.15) 50%, rgba(11, 14, 20, 0.75) 100%);
 		}
 
 		/* Footer */
@@ -647,7 +657,7 @@
 
 	<!-- Floating logo -->
 	<div class="floating-logo">
-		<a href="https://www.limenetwork.dev/">
+		<a href="https://limenetwork.dev/">
 			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='i';" />
 		</a>
 	</div>
@@ -655,7 +665,7 @@
 	<!-- Right side navigation buttons -->
 	<nav class="right-nav-dock">
 		<ul>
-			<li><a href="https://www.limenetwork.dev/" class="wsite-menu-item">Info</a></li>
+			<li><a href="https://limenetwork.dev/" class="wsite-menu-item">Info</a></li>
 			<li><a href="https://limenetwork.dev/join" class="wsite-menu-item">Join</a></li>
 			<li><a href="https://limenetwork.dev/rules" class="wsite-menu-item">Rules</a></li>
 			<li><a href="https://limenetwork.dev/browser" class="wsite-menu-item active">Browser</a></li>
