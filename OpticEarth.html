@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpticEarth • Profile</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&family=Abril+Fatface&display=swap');
     
     :root {
       --lime: #39ff14;
@@ -27,14 +27,136 @@
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: var(--accent) !important;
+      background-color: var(--accent);
       color: var(--text);
       line-height: 1.6;
-      padding: 20px 10px;
+      padding: 90px 20px 40px;
       min-height: 100vh;
       overflow-x: hidden;
       font-size: 16px; 
+      position: relative;
     }
+
+    .parallax-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 135vh;
+      background: 
+        linear-gradient(180deg, rgba(11, 14, 20, 0.55) 0%, rgba(11, 14, 20, 0.78) 100%),
+        url('./loveLiME.jpg') center center / cover no-repeat;
+      z-index: -1;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .floating-logo {
+      position: fixed;
+      top: 25px;
+      left: 35px;
+      z-index: 1000;
+    }
+
+    .floating-logo a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #39ff14;
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.8em;
+      text-shadow: 0 0 12px rgba(57, 255, 20, 0.35);
+    }
+
+    .floating-logo img {
+      height: 48px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
+    }
+
+    .right-nav-dock {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translate(calc(100% - 10px), -50%);
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(57, 255, 20, 0.35);
+      border-right: none;
+      border-radius: 16px 0 0 16px;
+      padding: 12px 12px 12px 16px;
+      z-index: 1000;
+      box-shadow: -4px 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(57, 255, 20, 0.12);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.35s ease;
+    }
+
+    .right-nav-dock::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      bottom: -20px;
+      left: -28px;
+      width: 38px;
+    }
+
+    .right-nav-dock::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 38px;
+      border-radius: 3px;
+      background: #39ff14;
+      box-shadow: 0 0 8px #39ff14;
+      opacity: 0.75;
+      transition: opacity 0.25s ease;
+    }
+
+    .right-nav-dock:hover {
+      transform: translate(-15px, -50%);
+      border-right: 1px solid rgba(57, 255, 20, 0.35);
+      border-radius: 16px;
+    }
+
+    .right-nav-dock:hover::after {
+      opacity: 0;
+    }
+
+    .right-nav-dock ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: right;
+    }
+
+    .right-nav-dock a.wsite-menu-item {
+      display: block;
+      padding: 9px 16px;
+      color: #ddd;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14.5px;
+      border-radius: 10px;
+      border-right: 3px solid transparent;
+      transition: all 0.25s ease;
+    }
+
+    .right-nav-dock a.wsite-menu-item:hover,
+    .right-nav-dock a.wsite-menu-item.active {
+      color: #39ff14;
+      background: rgba(57, 255, 20, 0.1);
+      border-right: 3px solid #39ff14;
+      transform: translateX(-3px);
+      text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+    }
+
     .layout-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -52,7 +174,8 @@
       justify-content: space-between;
       gap: 30px;
       padding: 34px 40px;
-      background: linear-gradient(135deg, #111 0%, #1e1e1e 100%);
+      background: linear-gradient(135deg, rgba(17, 17, 17, 0.9) 0%, rgba(30, 30, 30, 0.9) 100%);
+      backdrop-filter: blur(8px);
       border-radius: 24px;
       border: 2px solid rgba(0, 255, 204, 0.2);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 40px rgba(57, 255, 20, 0.05);
@@ -945,7 +1068,57 @@
     .svg-game-card .card-title { flex: 1; font-size: 0.95em; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff;}
     .svg-game-card .card-menu { display: flex; gap: 4px; margin-inline: auto; }
     .svg-game-card .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--dot-clr); }
+
     @media (max-width: 900px) {
+      body { padding: 15px 10px 40px; }
+
+      .floating-logo {
+        position: static;
+        display: flex;
+        justify-content: center;
+        padding: 5px 0 10px;
+      }
+
+      .right-nav-dock,
+      .right-nav-dock:hover {
+        position: sticky;
+        top: 10px;
+        right: auto;
+        transform: none;
+        border: 1px solid rgba(57, 255, 20, 0.28);
+        border-radius: 16px;
+        margin: 0 auto 25px;
+        width: max-content;
+        max-width: 94%;
+        padding: 8px 12px;
+      }
+
+      .right-nav-dock::before,
+      .right-nav-dock::after {
+        display: none;
+      }
+
+      .right-nav-dock ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .right-nav-dock a.wsite-menu-item {
+        padding: 6px 12px;
+        font-size: 13.5px;
+        border-right: none;
+        border-bottom: 2px solid transparent;
+      }
+
+      .right-nav-dock a.wsite-menu-item:hover,
+      .right-nav-dock a.wsite-menu-item.active {
+        transform: translateY(-2px);
+        border-right: none;
+        border-bottom: 2px solid #39ff14;
+      }
+
       .hero { flex-direction: column; text-align: center; gap: 40px; }
       .hero-text { align-items: center; }
       .cards-grid-3d { grid-template-columns: 1fr; grid-template-areas: "info" "favs" "play"; }
@@ -971,6 +1144,25 @@
   </style>
 </head>
 <body>
+  <div class="parallax-bg" id="parallax-bg"></div>
+
+  <div class="floating-logo">
+    <a href="./index.html">
+      <img src="./lime-logo-nobg.png" alt="i" onerror="this.style.display='none'; this.parentElement.innerText='i';" />
+    </a>
+  </div>
+
+  <nav class="right-nav-dock">
+    <ul>
+      <li><a href="./index.html" class="wsite-menu-item">info</a></li>
+      <li><a href="https://limenetwork.dev/join" class="wsite-menu-item">Join</a></li>
+      <li><a href="https://limenetwork.dev/rules" class="wsite-menu-item">Rules</a></li>
+      <li><a href="https://limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
+      <li><a href="https://limenetwork.dev/staff" class="wsite-menu-item">Staff</a></li>
+      <li><a href="#" class="wsite-menu-item">Feedback</a></li>
+    </ul>
+  </nav>
+
   <div class="layout-container">
     <div class="hero">
       <section class="info-btn-section">
@@ -1360,6 +1552,14 @@
   </svg>
 
   <script>
+    const parallaxBg = document.getElementById('parallax-bg');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+      const maxOffset = window.innerHeight * 0.32;
+      const offset = Math.min(scrolled * 0.18, maxOffset);
+      parallaxBg.style.transform = `translate3d(0, -${offset}px, 0)`;
+    }, { passive: true });
+
     const infoBtn = document.getElementById('info-btn');
     const mechanicsPopup = document.getElementById('mechanics-popup');
     const mechanicsClose = document.getElementById('mechanics-close');
