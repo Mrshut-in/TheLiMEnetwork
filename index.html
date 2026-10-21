@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>LiME - Info</title>
+	<title>LiME Network</title>
 	
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="LiME Network" />
-	<meta property="og:title" content="LiME - Info" />
+	<meta property="og:title" content="LiME Network" />
 	<meta property="og:description" content="True Crossplay — Java, Bedrock in the same world Full VR Support — Native Vivecraft (including QuestCraft) Player-Built Cities — Neighborhoods, apartments, shops, skyscrapers Real Economy &amp;..." />
 	<meta property="og:image" content="https://limenetwork.dev/favicon.png" />
 	<meta property="og:url" content="https://limenetwork.dev/" />
@@ -57,7 +57,7 @@
 			transition: opacity 0.15s ease;
 		}
 
-		/* Hide custom cursor on touchscreens (ai did this too, I did not know about) */
+		/* Hide custom cursor on mobile */
 		@media (hover: none) and (pointer: coarse) {
 			*, *::before, *::after { cursor: auto !important; }
 			#cursor-i { display: none !important; }
@@ -88,7 +88,7 @@
 			filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.25));
 		}
 
-		/* floating buttons (ai did this, not what I asked, but better then what I wanted) */
+		/* Floating side buttons */
 		.right-nav-dock {
 			position: fixed;
 			top: 50%;
@@ -113,7 +113,7 @@
 			text-align: right;
 		}
 
-		.right-nav-dock a.wsite-menu-item {
+		.right-nav-dock a.nav-item {
 			display: block;
 			padding: 9px 16px;
 			color: #ddd;
@@ -126,8 +126,8 @@
 			transition: all 0.25s ease;
 		}
 
-		.right-nav-dock a.wsite-menu-item:hover,
-		.right-nav-dock a.wsite-menu-item.active {
+		.right-nav-dock a.nav-item:hover,
+		.right-nav-dock a.nav-item.active {
 			color: #39ff14;
 			background: rgba(57, 255, 20, 0.1);
 			border-right: 3px solid #39ff14;
@@ -135,7 +135,7 @@
 			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
 		}
 
-		/* Top part background - semi-transparent overlay so MainBACK.png shows through */
+		/* Top part background - semi-transparent overlay so the background shows */
 		.hero-section {
 			background: radial-gradient(circle at 50% 30%, rgba(12, 208, 22, 0.15) 0%, rgba(9, 88, 184, 0.15) 50%, rgba(11, 14, 20, 0.75) 100%);
 			border-bottom: 1px solid rgba(57, 255, 20, 0.2);
@@ -144,7 +144,7 @@
 		.lime-container {
 			max-width: 1200px;
 			margin: 0 auto;
-			padding: 100px 20px 80px;
+			padding: 90px 20px 80px;
 			text-align: center;
 			background: transparent;
 			min-height: 92vh;
@@ -156,43 +156,124 @@
 			align-items: center;
 		}
 
-		.lime-title {
-			font-size: 4.8em;
+		/* Transparent, Borderless News Feed (Replaces LiME 2.0) */
+		.news-wrapper {
+			width: 100%;
+			max-width: 680px;
+			margin: 0 auto 10px;
+			background: transparent;
+			border: none;
+			box-shadow: none;
+		}
+
+		.news-header-label {
+			font-size: 0.9em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 3px;
 			color: #39ff14;
-			margin: 0 0 25px 0;
-			text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+			margin-bottom: 6px;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.45);
 		}
 
-		.lime-desc {
-			font-size: 1.55em;
-			max-width: 720px;
-			margin: 0 auto 30px;
-			line-height: 1.6;
-			color: #ddd;
-			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+		.news-scroll-box {
+			max-height: 210px;
+			overflow-y: auto;
+			padding: 10px 15px;
+			background: transparent;
+			border: none;
+			scrollbar-width: thin;
+			scrollbar-color: rgba(57, 255, 20, 0.35) transparent;
+			/* Soft fade on top/bottom so there are no sharp edges when scrolling */
+			-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%);
+			mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 88%, transparent 100%);
 		}
 
-		/* Status */
+		.news-scroll-box::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		.news-scroll-box::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		.news-scroll-box::-webkit-scrollbar-thumb {
+			background: rgba(57, 255, 20, 0.35);
+			border-radius: 10px;
+		}
+
+		.news-item {
+			padding: 14px 0 22px;
+			margin-bottom: 10px;
+			border: none;
+			background: transparent;
+		}
+
+		.news-badge {
+			display: inline-block;
+			font-size: 0.75em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+			color: #39ff14;
+			margin-bottom: 6px;
+			opacity: 0.9;
+		}
+
+		.news-item:not(:first-child) .news-badge {
+			color: #80c0ff;
+		}
+
+		.news-title {
+			font-size: 2.1em;
+			font-weight: 700;
+			color: #ffffff;
+			margin: 0 0 8px 0;
+			text-shadow: 0 0 18px rgba(57, 255, 20, 0.3), 0 2px 6px rgba(0, 0, 0, 0.9);
+		}
+
+		.news-item:not(:first-child) .news-title {
+			font-size: 1.5em;
+			color: #e0e0e0;
+		}
+
+		.news-body {
+			font-size: 1.08em;
+			line-height: 1.55;
+			color: #d5d5d5;
+			margin: 0 auto;
+			max-width: 600px;
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+		}
+
+		.news-scroll-hint {
+			font-size: 0.78em;
+			color: rgba(255, 255, 255, 0.45);
+			letter-spacing: 1px;
+			margin-top: 2px;
+		}
+
+
 		.status-widget {
-			margin: 0 auto 35px;
-			padding: 12px 25px;
-			border: 1px solid rgba(57, 255, 20, 0.3);
-			border-radius: 50px;
+			margin: 8px auto 28px;
+			padding: 4px 10px;
+			border: none;
+			background: transparent;
+			box-shadow: none;
+			backdrop-filter: none;
 			display: inline-flex;
 			align-items: center;
-			background: rgba(0, 0, 0, 0.6);
-			backdrop-filter: blur(4px);
-			box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
 		}
 
 		.status-content {
 			color: #ddd;
-			font-size: 1.1em;
+			font-size: 1.15em;
 			font-weight: 600;
 			letter-spacing: 0.5px;
 			display: flex;
 			align-items: center;
 			gap: 8px;
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 		}
 
 		.status-pulse {
@@ -205,8 +286,17 @@
 			75%, 100% { transform: scale(1.2); opacity: 0; }
 		}
 
-		.status-divider { color: #555; margin: 0 4px; }
-		.status-highlight { color: #39ff14; font-weight: bold; }
+		.status-divider { color: #888; margin: 0 4px; }
+		.status-highlight { color: #39ff14; font-weight: bold; text-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+
+		.lime-desc {
+			font-size: 1.45em;
+			max-width: 720px;
+			margin: 0 auto 30px;
+			line-height: 1.6;
+			color: #ddd;
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+		}
 
 		/* Join */
 		.btn-join {
@@ -257,10 +347,10 @@
 		.btn-join:hover::before { left: 0; }
 		.btn-join:hover .btn-join-text { color: #000; }
 
-		/* Calendar button */
+
 		.btn-calendar {
 			position: absolute;
-			bottom: 40px;
+			top: 25px;
 			right: 40px;
 			padding: 12px 20px;
 			background: rgba(0, 120, 255, 0.15);
@@ -564,7 +654,7 @@
 			backdrop-filter: blur(4px);
 		}
 
-		/* reddit button stuff */
+		/* Reddit button */
 		.rd-floating {
 			position: absolute;
 			bottom: 45px;
@@ -663,7 +753,7 @@
 			);
 		}
 
-		/* Key parts of LiME - semi-transparent gradient so backgound shows through, found some of the backgound pics :> */
+		/* Key parts of LiME */
 		.features-section {
 			background: linear-gradient(161deg, rgba(12, 208, 22, 0.25) 0%, rgba(9, 88, 184, 0.25) 100%);
 			padding: 70px 20px;
@@ -714,7 +804,7 @@
 			color: rgb(213, 213, 213);
 		}
 
-		/* Mobile fix, just like on weebly */
+		/* Mobile fix */
 		@media (max-width: 900px) {
 			.floating-logo {
 				position: static;
@@ -741,25 +831,25 @@
 				gap: 6px;
 			}
 
-			.right-nav-dock a.wsite-menu-item {
+			.right-nav-dock a.nav-item {
 				padding: 6px 12px;
 				font-size: 13.5px;
 				border-right: none;
 				border-bottom: 2px solid transparent;
 			}
 
-			.right-nav-dock a.wsite-menu-item:hover,
-			.right-nav-dock a.wsite-menu-item.active {
+			.right-nav-dock a.nav-item:hover,
+			.right-nav-dock a.nav-item.active {
 				transform: translateY(-2px);
 				border-right: none;
 				border-bottom: 2px solid #39ff14;
 			}
 
 			.lime-container {
-				padding-top: 40px;
+				padding-top: 30px;
 			}
 
-			.lime-title { font-size: 3.2em; }
+			.news-title { font-size: 1.7em; }
 			.lime-desc { font-size: 1.2em; }
 
 			.btn-calendar {
@@ -785,31 +875,46 @@
 	<!-- Cursor i -->
 	<div id="cursor-i">i</div>
 
-	<!-- Top-left floating logo -->
+	<!-- Top-left floating logo put has LiME to replace LiME 2.0 -->
 	<div class="floating-logo">
 		<a href="./index.html">
-			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='i';" />
+			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='LiME';" />
 		</a>
 	</div>
 
-	<!-- left side buttons, I moved to the right -->
+	<!-- Right side navigation buttons -->
 	<nav class="right-nav-dock">
 		<ul>
-			<li><a href="./index.html" class="wsite-menu-item active">Info</a></li>
-			<li><a href="https://limenetwork.dev/join" class="wsite-menu-item">Join</a></li>
-			<li><a href="https://limenetwork.dev/join#rules" class="wsite-menu-item">Rules</a></li>
-			<li><a href="https://limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
-			<li><a href="https://limenetwork.dev/staff" class="wsite-menu-item">Staff</a></li>
-			<!-- I'm going to replace "#" once we get a scure feedback  -->
-			<li><a href="#" class="wsite-menu-item">Feedback</a></li>
+			<li><a href="./index.html" class="nav-item active">Info</a></li>
+			<li><a href="https://limenetwork.dev/join" class="nav-item">Join</a></li>
+			<li><a href="https://limenetwork.dev/join#rules" class="nav-item">Rules</a></li>
+			<li><a href="https://limenetwork.dev/browser" class="nav-item">Browser</a></li>
+			<li><a href="https://limenetwork.dev/staff" class="nav-item">Staff</a></li>
+			<!-- Replace "#" once secure feedback is ready -->
+			<li><a href="#" class="nav-item">Feedback</a></li>
 		</ul>
 	</nav>
 
 
 	<section class="hero-section">
-		<!-- Made by OpticEarth. I had to fight weebly, I used ai to help me -->
+		<!-- Made by OpticEarth (I used ai for a bit of this, mainly the news) -->
 		<div class="lime-container">
-			<h1 class="lime-title">LiME 2.0</h1>
+
+			<!-- Transparent, Edge-Free Scrollable News Feed -->
+			<div class="news-wrapper">
+				<div class="news-scroll-box" id="lime-news-feed">
+					<!-- Populated automatically from the EASY NEWS EDITOR in the script below -->
+				</div>
+				<div class="news-scroll-hint">↓ Scroll inside news for previous updates ↓</div>
+			</div>
+
+			<!-- LiME Stats -->
+			<div class="status-widget">
+				<span class="status-content">
+					<span id="status-icon" class="status-pulse">⟳</span>
+					<span id="status-text">Pinging server...</span>
+				</span>
+			</div>
 
 			<p class="lime-desc">
 				LiME is a chill crossplay survival server where you can just hang out and meet cool people.<br><br>
@@ -817,13 +922,6 @@
 				Build cities together, work jobs, run shops, or just relax and talk with friends.
 				No pressure, no pay-to-win, no drama — just a fun place to be yourself and make memories.
 			</p>
-
-			<div class="status-widget">
-				<span class="status-content">
-					<span id="status-icon" class="status-pulse">⟳</span>
-					<span id="status-text">Pinging server...</span>
-				</span>
-			</div>
 
 			<button class="btn-join" onclick="window.location.href='https://limenetwork.dev/join'">
 				<span class="btn-join-text">Join LiME</span>
@@ -908,7 +1006,7 @@
 				</button>
 			</div>
 
-			<!-- Cal -->
+			<!-- Calendar I moved up -->
 			<button class="btn-calendar" onclick="window.location.href='./calendar.html'">
 				<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
 				<span>Calendar</span>
@@ -934,12 +1032,12 @@
 		</div>
 	</section>
 
-	<!-- Footer so website dose not look weird -->
+	<!-- Footer -->
 	<footer class="site-footer">
 		NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
 	</footer>
 
-	<!-- We dont own minecraft sorry, wish we did -->
+	<!-- Disclaimer -->
 	<div id="lime-popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
 		<div style="background: rgba(35,35,35,0.98); border: 4px solid #39ff14; border-radius: 20px; max-width: 480px; width: 92%; padding: 40px 32px; text-align: center; box-shadow: 0 0 60px rgba(57,255,20,0.45); position: relative;">
 			<h2 style="color: #39ff14 !important; font-size: 2.25em; margin: 0 0 20px 0; letter-spacing: 3px;">NOT OFFICIAL</h2>
@@ -964,6 +1062,64 @@
 	</div>
 
 	<script>
+		// =========================================================================
+		// 📰 EASY NEWS EDITOR - I had Ai convert news into main page.
+		// The first item at the top shows as "Current News", and scrolling down
+		// inside the news area shows all previous news items below it.
+		// =========================================================================
+		const LIME_NEWS = [
+			{
+				badge: "Current News",
+				title: "New website!",
+				body: "Our brand new custom website is officially live! Check out the updated Join & Rules page, faster loading speeds, and (some) updated staff profiles."
+			},
+			{
+				badge: "Previous Update",
+				title: "Server maintenance over Due to some plugins not being updated to the latest version, and some world bugs for 26.3",
+				body: "Due to mod bugs LiME was down for a bit. Fixed and back open!"
+			},
+			{
+				badge: "Previous Update",
+				title: "Version 26.2 still (26.3 Soon!)",
+				body: "Minecraft now supports join on the new Bedrock v26.50(26.3) for the new Wilderness Bound updated(26.3 java) The server update will be released on the later date if there are Any bugs or issues, feel free to open a ticket in our discord or you can report any bugs by doing. Ibug (bug message)"
+			}
+		];
+
+		//  we can set up a free Cloudflare Worker for live Discord #announcements,
+		// paste URL inside the quotes below and it will pull from Discord!
+		const DISCORD_FEED_URL = ""; 
+		// =========================================================================
+
+		function renderNews(items) {
+			const feed = document.getElementById('lime-news-feed');
+			if (!feed) return;
+			feed.innerHTML = items.map((item, idx) => `
+				<div class="news-item">
+					<div class="news-badge">${item.badge || (idx === 0 ? 'Current News' : 'Previous News')}</div>
+					<h2 class="news-title">${item.title}</h2>
+					<p class="news-body">${item.body}</p>
+				</div>
+			`).join('');
+		}
+
+		// Load news (uses Discord feed if configured, otherwise uses LIME_NEWS above)
+		(function initNews() {
+			if (DISCORD_FEED_URL) {
+				fetch(DISCORD_FEED_URL)
+					.then(res => res.json())
+					.then(data => {
+						if (Array.isArray(data) && data.length > 0) {
+							renderNews(data);
+						} else {
+							renderNews(LIME_NEWS);
+						}
+					})
+					.catch(() => renderNews(LIME_NEWS));
+			} else {
+				renderNews(LIME_NEWS);
+			}
+		})();
+
 		// Custom cursor
 		const cursor = document.getElementById('cursor-i');
 		document.addEventListener('mousemove', (e) => {
@@ -973,7 +1129,7 @@
 		document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
 		document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
 
-		// LiME
+		// Live Server Status
 		(function() {
 			function fetchStatus() {
 				const ip = "thelimenetwork.minecraft.best";
@@ -1016,7 +1172,7 @@
 			}
 		})();
 
-		// Disclaimer popup & more steaufffff
+		// Disclaimer popup
 		function showLimePopup() {
 			const overlay = document.getElementById('lime-popup-overlay');
 			overlay.style.display = 'flex';
