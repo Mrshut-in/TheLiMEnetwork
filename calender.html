@@ -227,7 +227,6 @@
 			color: rgb(213, 213, 213);
 		}
 
-
 		@media (max-width: 900px) {
 			.floating-logo {
 				position: static;
@@ -332,7 +331,7 @@
 				</div>
 
 				<p class="calendar-caption">
-					I did it Savage, its time zone based, not locked to mine. idk why was so hard -Earth (<span id="tz-display"></span>)<br>
+					I did it Savage, its time zone based, not locked to mine. idk why was so hard -Earth (<span id="tz-display">Pacific Time</span>)<br>
 					<a href="https://calendar.google.com/calendar/u/0?cid=9d14193a5170fe18dbbb50d4f176eb94ae54852c78b42c7fd2cf72b847a038a9%40group.calendar.google.com" target="_blank">
 						Add LiME to your Calendar!
 					</a>
@@ -363,7 +362,9 @@
 				if (userTz) {
 					const iframe = document.getElementById('lime-calendar-iframe');
 					const tzDisplay = document.getElementById('tz-display');
-					
+
+					if (tzDisplay) {
+						tzDisplay.textContent = userTz.replace(/_/g, ' ');
 					}
 
 					// For you Savage
