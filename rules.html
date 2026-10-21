@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>LIME - Rules</title>
+	<title>LIME - Join & Rules</title>
 	<meta property="og:site_name" content="LIME" />
-	<meta property="og:title" content="LIME - Rules" />
-	<meta property="og:description" content="LiME Community and Minecraft Server Rules." />
-	<meta property="og:url" content="https://limenetwork.dev/rules" />
+	<meta property="og:title" content="LIME - Join & Rules" />
+	<meta property="og:description" content="How to join LiME Network across Java, Bedrock, and Consoles, plus our Community Rules." />
+	<meta property="og:url" content="https://www.limenetwork.dev/rules" />
+	<meta property="og:image" content="https://www.limenetwork.dev/favicon.png" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" type="image/png" href="./favicon.png">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Droid+Sans:wght@400;700&family=Abril+Fatface&display=swap" rel="stylesheet">
@@ -25,6 +26,7 @@
 			background-color: #0b0e14;
 			color: #d5d5d5;
 			overflow-x: hidden;
+			scroll-behavior: smooth;
 		}
 
 		/* Custom cursor */
@@ -125,28 +127,190 @@
 			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
 		}
 
-		/* Cards */
-		.page-container {
-			max-width: 900px;
-			margin: 60px auto 80px;
-			padding: 50px 45px;
-			background: rgba(0, 0, 0, 0.55);
-			border-radius: 16px;
-			backdrop-filter: blur(10px);
-			border: 1px solid rgba(57, 255, 20, 0.25);
-			font-family: 'Inter', sans-serif;
+
+		.join-section {
+			background-image: url('./1000030796.png');
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			padding: 90px 20px;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
-		h1 {
+		.page-wrapper {
+			max-width: 1100px;
+			width: 100%;
+			margin: 0 auto;
+		}
+
+		.join-container {
+			padding: 60px 20px;
+			text-align: center;
+			background: rgba(0, 0, 0, 0.55);
+			border: 2px dashed #39ff14;
+			border-radius: 20px;
+			position: relative;
+			backdrop-filter: blur(10px);
+			box-shadow: 0 0 40px rgba(57, 255, 20, 0.15);
+		}
+
+		.join-title {
+			font-size: 3.3em;
+			color: #39ff14;
+			margin: 0 0 45px 0;
+			font-family: 'Abril Fatface', serif;
+			text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+		}
+
+		.join-grid {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+
+		/* Joining cards */
+		.cyber-join-card {
+			flex: 1;
+			min-width: 290px;
+			max-width: 340px;
+			perspective: 1000px;
+		}
+
+		.cyber-card-inner {
+			background: linear-gradient(135deg, #013220, #002233);
+			border: 2px solid #39ff14;
+			border-radius: 18px;
+			padding: 28px 24px;
+			position: relative;
+			overflow: hidden;
+			box-shadow: 0 0 30px rgba(57, 255, 20, 0.3), inset 0 0 25px rgba(0, 0, 0, 0.6);
+			transition: transform 0.4s ease, box-shadow 0.4s ease;
+			height: 100%;
+			text-align: center;
+			color: #fff;
+		}
+
+		.cyber-join-card:hover .cyber-card-inner {
+			transform: translateY(-8px) scale(1.03);
+			box-shadow: 0 0 45px rgba(57, 255, 20, 0.6), inset 0 0 30px rgba(57, 255, 20, 0.2);
+		}
+
+		.scan-line {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.15), transparent);
+			animation: scanMove 3.5s linear infinite;
+			pointer-events: none;
+		}
+
+		@keyframes scanMove { 
+			0% { transform: translateY(-100%); } 
+			100% { transform: translateY(300%); } 
+		}
+
+		.corner-elements span {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			border: 2px solid #39ff14;
+			z-index: 2;
+		}
+
+		.corner-elements span:nth-child(1) { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+		.corner-elements span:nth-child(2) { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+		.corner-elements span:nth-child(3) { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+		.corner-elements span:nth-child(4) { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+		.cyber-join-card:hover .corner-elements span {
+			border-color: #39ff14;
+			box-shadow: 0 0 12px #39ff14;
+		}
+
+		.card-glare {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(125deg, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%);
+			opacity: 0;
+			transition: opacity 0.6s;
+			pointer-events: none;
+		}
+
+		.cyber-join-card:hover .card-glare { opacity: 1; }
+
+		.ip-box, .port-box, .bot-box {
+			background: rgba(0, 0, 0, 0.45);
+			padding: 12px 20px;
+			border-radius: 10px;
+			margin: 16px 0;
+			border: 1px solid rgba(57, 255, 20, 0.4);
+		}
+
+		.ip-text {
+			font-size: 1.22em;
+			font-weight: bold;
+			color: #39ff14;
+			word-break: break-all;
+			line-height: 1.3;
+		}
+
+		.port-box {
+			font-size: 1.3em;
+			font-weight: bold;
+			color: #39ff14;
+		}
+
+		.bot-box {
+			font-size: 2em;
+			font-weight: bold;
+			color: #39ff14;
+			letter-spacing: 3px;
+			background: #000;
+			padding: 14px 36px;
+			border: 2px solid #39ff14;
+			display: inline-block;
+			margin: 12px 0 18px;
+		}
+
+
+		.rules-section {
+			background: linear-gradient(135deg, #071f36 0%, #0a3d4f 35%, #0d5c3a 70%, #177a2e 100%);
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			padding: 80px 20px 100px;
+			min-height: 100vh;
+			border-top: 2px solid rgba(57, 255, 20, 0.3);
+		}
+
+
+		.rules-container {
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 10px 25px;
+			background: transparent;
+			border: none;
+			backdrop-filter: none;
+			font-family: 'Inter', sans-serif;
+			text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
+		}
+
+		.rules-container h1 {
 			text-align: center;
 			color: #39ff14;
 			font-size: 38px;
+			margin-top: 0;
 			margin-bottom: 15px;
 			font-family: 'Abril Fatface', serif;
 			text-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
 		}
 
-		h2 {
+		.rules-container h2 {
 			color: #39ff14;
 			border-bottom: 2px solid rgba(57, 255, 20, 0.4);
 			padding-bottom: 8px;
@@ -154,25 +318,26 @@
 			font-size: 24px;
 		}
 
-		p {
+		.rules-container p {
 			color: #ccc;
 			font-size: 1.1em;
 			line-height: 1.6;
 		}
 
-		ol, ul {
+		.rules-container ol,
+		.rules-container ul {
 			padding-left: 20px;
 			color: #fff;
 		}
 
-		li {
+		.rules-container li {
 			margin-bottom: 18px;
 			line-height: 1.6;
 			font-size: 1.05em;
 			color: #d5d5d5;
 		}
 
-		li strong {
+		.rules-container li strong {
 			color: #39ff14;
 		}
 
@@ -187,7 +352,7 @@
 			color: rgb(213, 213, 213);
 		}
 
-		/* Mobile rules */
+		/* Mobile fix */
 		@media (max-width: 900px) {
 			.floating-logo {
 				position: static;
@@ -228,9 +393,24 @@
 				border-bottom: 2px solid #39ff14;
 			}
 
-			.page-container {
-				margin: 30px 15px;
-				padding: 30px 20px;
+			.join-section {
+				padding: 40px 15px 60px;
+			}
+
+			.join-container {
+				padding: 40px 15px;
+			}
+
+			.join-title { font-size: 2.7em !important; }
+			.cyber-join-card { min-width: 100%; max-width: 100%; }
+			.cyber-card-inner { padding: 24px 20px; }
+
+			.rules-section {
+				padding: 50px 15px 70px;
+			}
+
+			.rules-container {
+				padding: 10px 5px;
 			}
 		}
 	</style>
@@ -241,72 +421,140 @@
 
 	<!-- Logo -->
 	<div class="floating-logo">
-		<a href="./index.html">
+		<a href="https://www.limenetwork.dev">
 			<img src="./lime-logo-nobg.png" alt="LiME" onerror="this.style.display='none'; this.parentElement.innerText='i';" />
 		</a>
 	</div>
 
-	<!-- Buttons navigation -->
+	<!-- Right-side floating buttons -->
 	<nav class="right-nav-dock">
 		<ul>
-			<li><a href="./index.html" class="wsite-menu-item">info</a></li>
-			<li><a href="https://limenetwork.dev/join" class="wsite-menu-item">Join</a></li>
-			<li><a href="https://limenetwork.dev/rules" class="wsite-menu-item active">Rules</a></li>
-			<li><a href="https://limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
-			<li><a href="https://limenetwork.dev/staff" class="wsite-menu-item">Staff</a></li>
+			<li><a href="https://www.limenetwork.dev" class="wsite-menu-item">info</a></li>
+			<li><a href="https://www.limenetwork.dev/rules" class="wsite-menu-item active">Join</a></li>
+			<li><a href="#rules" class="wsite-menu-item">Rules</a></li>
+			<li><a href="https://www.limenetwork.dev/browser" class="wsite-menu-item">Browser</a></li>
+			<li><a href="https://www.limenetwork.dev/staff" class="wsite-menu-item">Staff</a></li>
 			<li><a href="#" class="wsite-menu-item">Feedback</a></li>
 		</ul>
 	</nav>
 
-	<!-- Community rules -->
-	<div class="page-container">
-		<h1>LiME Community Rules</h1>
-		<p style="text-align: center; font-size: 1.25em; margin-bottom: 40px;">Welcome to LiME! These rules keep our community fun, fair, and welcoming for everyone.</p>
 
-		<h2>General Community Rules</h2>
-		<p>These rules apply everywhere in the LiME Network — Discord, Minecraft Server, website, and all related spaces.</p>
-		
-		<ol>
-			<li><strong>Be Respectful to Everyone</strong><br>Treat all members with kindness. Harassment, hate speech, discrimination, bullying, or toxicity of any kind is not allowed.</li>
-			<li><strong>Keep Content Family-Friendly (SFW)</strong><br>No sexual, gory, violent, explicit, or otherwise inappropriate content or builds.</li>
-			<li><strong>No Advertising</strong><br>Advertising other servers, realms, social media, products, or services is not allowed without staff approval.</li>
-			<li><strong>No Drama or Personal Conflicts</strong><br>Keep personal arguments out of public chats and the server. Take issues to DMs or contact staff privately.</li>
-			<li><strong>No Political or Religious Debates</strong><br>These topics can cause unnecessary conflict and are not permitted in public areas.</li>
-			<li><strong>Respect Staff Decisions</strong><br>All staff instructions and decisions are final. Do not argue with or publicly criticize staff actions. (Except maybe Pricedbear)</li>
-			<li><strong>No Evading Punishments</strong><br>Using alternate accounts, VPNs, name changes, or any other method to bypass mutes, bans, or punishments is strictly prohibited.</li>
-			<li><strong>Protect Privacy</strong><br>Do not share or leak anyone’s personal information, private messages, screenshots, or sensitive details without permission.</li>
-			<li><strong>Respect Personal Boundaries</strong><br>No creepy, harassing, or unwanted messages to other members — in public or DMs.</li>
-		</ol>
+	<section id="join" class="join-section">
+		<div class="page-wrapper">
+			<div class="join-container">
+				<h1 class="join-title">How to Join LiME</h1>
 
-		<h2>Minecraft Server Rules <span style="font-size: 16px; color: #888;">(Java Edition – Bedrock Compatible)</span></h2>
-		<p>These rules are specific to the LiME in-game server in Minecraft.</p>
-		
-		<ol>
-			<li><strong>No Cheating or Unauthorized Mods</strong><br>Hacked clients, unfair advantage tools, or unapproved mods are not allowed. Performance-enhancing mods are okay if approved by staff.</li>
-			<li><strong>No Offensive Builds</strong><br>Builds, signs, symbols, or map art that are offensive, sexual, political, or discriminatory are not allowed.</li>
-			<li><strong>No Exploits or Glitches</strong><br>Report bugs to staff. Using glitches, exploits, or unintended mechanics for unfair advantage is forbidden.</li>
-			<li><strong>PvP Rules</strong><br>Player-versus-player combat is only allowed in designated areas or with mutual consent. Spawn-killing and harassment PvP are not allowed.</li>
-			<li><strong>No Lag Machines or Excessive Farms</strong><br>Large redstone contraptions, AFK farms, or anything that causes lag must be staff-approved.</li>
-			<li><strong>Respect the Server Atmosphere</strong><br>Avoid disruptive or out-of-theme behavior that breaks immersion.</li>
-		</ol>
+				<div class="join-grid">
 
-		<h2>Important Notes</h2>
-		<ul style="list-style: disc;">
-			<li>All punishments are at staff discretion and can vary based on severity and player history.</li>
-			<li>Staff decisions are final.</li>
-			<li>If you have questions or concerns, contact a staff member politely.</li>
-		</ul>
+					<!-- Java <3 -->
+					<div class="cyber-join-card">
+						<div class="cyber-card-inner">
+							<div class="scan-line"></div>
+							<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+							<div class="card-glare"></div>
+							<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Java Edition</h2>
+							<div class="ip-box">
+								<strong>IP:</strong><br>
+								<span class="ip-text">thelimenetwork.minecraft.best</span>
+							</div>
+							<p style="color: #aaa; margin-top: 25px; line-height: 1.5; font-size: 1.05em;">
+								Same IP works for Questcraft & Vivecraft VR players.
+							</p>
+						</div>
+					</div>
 
-		<p style="text-align: center; margin-top: 50px; color: #39ff14; font-size: 1.15em; font-weight: 600;">By joining LiME Network (our Minecraft server) you agree to follow these rules. Thank you for helping keep our community awesome!</p>
-	</div>
+					<!-- Bedrock -->
+					<div class="cyber-join-card">
+						<div class="cyber-card-inner">
+							<div class="scan-line"></div>
+							<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+							<div class="card-glare"></div>
+							<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Bedrock Edition</h2>
+							<div class="ip-box">
+								<strong>IP:</strong><br>
+								<span class="ip-text">thelimenetwork.minecraft.best</span>
+							</div>
+							<div class="port-box">
+								<strong>Port:</strong> 19132
+							</div>
+							<p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
+								You can use apps like MC Server Connector or Bedrock Together to join on PlayStation/Xbox.
+							</p>
+						</div>
+					</div>
 
-	<!-- Footer text -->
+					<!-- Console -->
+					<div class="cyber-join-card">
+						<div class="cyber-card-inner">
+							<div class="scan-line"></div>
+							<div class="corner-elements"><span></span><span></span><span></span><span></span></div>
+							<div class="card-glare"></div>
+							<h2 style="color: #39ff14; margin: 0 0 22px 0; font-size: 1.95em; text-shadow: 0 0 15px #39ff14;">Console</h2>
+							<p style="margin: 12px 0 8px 0; color: #ddd; font-size: 1.1em;">Add our bot as a friend:</p>
+							<div class="bot-box">LiME2237</div>
+							<p style="color: #aaa; margin-top: 22px; line-height: 1.5; font-size: 1.05em;">
+								Bot shows a world in your friends list.<br>
+								Join it → instantly connects to LiME (may take a couple tries).
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section id="rules" class="rules-section">
+		<div class="rules-container">
+			<h1>LiME Community Rules</h1>
+			<p style="text-align: center; font-size: 1.25em; margin-bottom: 40px;">Welcome to LiME! These rules keep our community fun, fair, and welcoming for everyone.</p>
+
+			<h2>General Community Rules</h2>
+			<p>These rules apply everywhere in the LiME Network — Discord, Minecraft Server, website, and all related spaces.</p>
+			
+			<ol>
+				<li><strong>Be Respectful to Everyone</strong><br>Treat all members with kindness. Harassment, hate speech, discrimination, bullying, or toxicity of any kind is not allowed.</li>
+				<li><strong>Keep Content Family-Friendly (SFW)</strong><br>No sexual, gory, violent, explicit, or otherwise inappropriate content or builds.</li>
+				<li><strong>No Advertising</strong><br>Advertising other servers, realms, social media, products, or services is not allowed without staff approval.</li>
+				<li><strong>No Drama or Personal Conflicts</strong><br>Keep personal arguments out of public chats and the server. Take issues to DMs or contact staff privately.</li>
+				<li><strong>No Political or Religious Debates</strong><br>These topics can cause unnecessary conflict and are not permitted in public areas.</li>
+				<li><strong>Respect Staff Decisions</strong><br>All staff instructions and decisions are final. Do not argue with or publicly criticize staff actions. (Except maybe Pricedbear)</li>
+				<li><strong>No Evading Punishments</strong><br>Using alternate accounts, VPNs, name changes, or any other method to bypass mutes, bans, or punishments is strictly prohibited.</li>
+				<li><strong>Protect Privacy</strong><br>Do not share or leak anyone’s personal information, private messages, screenshots, or sensitive details without permission.</li>
+				<li><strong>Respect Personal Boundaries</strong><br>No creepy, harassing, or unwanted messages to other members — in public or DMs.</li>
+			</ol>
+
+			<h2>Minecraft Server Rules <span style="font-size: 16px; color: #b5e8d5;">(Java Edition – Bedrock Compatible)</span></h2>
+			<p>These rules are specific to the LiME in-game server in Minecraft.</p>
+			
+			<ol>
+				<li><strong>No Cheating or Unauthorized Mods</strong><br>Hacked clients, unfair advantage tools, or unapproved mods are not allowed. Performance-enhancing mods are okay if approved by staff.</li>
+				<li><strong>No Offensive Builds</strong><br>Builds, signs, symbols, or map art that are offensive, sexual, political, or discriminatory are not allowed.</li>
+				<li><strong>No Exploits or Glitches</strong><br>Report bugs to staff. Using glitches, exploits, or unintended mechanics for unfair advantage is forbidden.</li>
+				<li><strong>PvP Rules</strong><br>Player-versus-player combat is only allowed in designated areas or with mutual consent. Spawn-killing and harassment PvP are not allowed.</li>
+				<li><strong>No Lag Machines or Excessive Farms</strong><br>Large redstone contraptions, AFK farms, or anything that causes lag must be staff-approved.</li>
+				<li><strong>Respect the Server Atmosphere</strong><br>Avoid disruptive or out-of-theme behavior that breaks immersion.</li>
+			</ol>
+
+			<h2>Important Notes</h2>
+			<ul style="list-style: disc;">
+				<li>All punishments are at staff discretion and can vary based on severity and player history.</li>
+				<li>Staff decisions are final.</li>
+				<li>If you have questions or concerns, contact a staff member politely.</li>
+			</ul>
+
+			<p style="text-align: center; margin-top: 50px; color: #39ff14; font-size: 1.15em; font-weight: 600;">By joining LiME Network (our Minecraft server) you agree to follow these rules. Thank you for helping keep our community awesome!</p>
+		</div>
+	</section>
+
+	<!-- Footer -->
 	<footer class="site-footer">
 		NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
 	</footer>
 
 	<script>
-		// Cursor movement
+		// Custom cursor 
 		const cursor = document.getElementById('cursor-i');
 		document.addEventListener('mousemove', (e) => {
 			cursor.style.left = e.clientX + 'px';
@@ -314,6 +562,21 @@
 		});
 		document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
 		document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+		// Automatically swap between join or rules in the sidebar based on scroll position
+		const navLinks = document.querySelectorAll('.right-nav-dock a.wsite-menu-item');
+		const rulesSection = document.getElementById('rules');
+
+		window.addEventListener('scroll', () => {
+			const scrollPos = window.scrollY + window.innerHeight / 3;
+			if (scrollPos >= rulesSection.offsetTop) {
+				navLinks[1].classList.remove('active');
+				navLinks[2].classList.add('active');
+			} else {
+				navLinks[1].classList.add('active');
+				navLinks[2].classList.remove('active');
+			}
+		});
 	</script>
 </body>
 </html>
