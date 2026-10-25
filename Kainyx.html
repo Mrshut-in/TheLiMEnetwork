@@ -16,6 +16,8 @@
       --blue-dim: rgba(30, 144, 255, 0.3);
       --purple: #8a2be2;
       --purple-glow: rgba(138, 43, 226, 0.8);
+      --status-color: #1e90ff;
+      --status-glow: rgba(30, 144, 255, 0.8);
       --card-bg: rgba(15, 15, 20, 0.75); 
       --text-main: #f0f0f0;
       --dark-bg: #05050a;
@@ -29,7 +31,7 @@
       overflow-x: hidden;
     }
 
-    /* True Parallax Image Layer */
+    /* True parallax image layer */
     .parallax-bg {
       position: fixed;
       top: -15%;
@@ -97,7 +99,6 @@
       transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, border-left 0.3s ease;
     }
 
-    /* Right-side buttons */
     .right-nav-trigger:hover .right-nav-dock,
     .right-nav-dock:hover {
       transform: translate(0, -50%);
@@ -177,6 +178,7 @@
       align-content: start;
       pointer-events: none;
       will-change: transform;
+      transition: color 0.6s ease;
     }
 
     .matrix-overlay {
@@ -192,7 +194,7 @@
 
     .matrix-bg > span {
       text-align: center;
-      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+      text-shadow: 0 0 5px var(--blue-dim);
       user-select: none;
       transition: color 0.5s, text-shadow 0.5s;
       line-height: 42px;
@@ -200,7 +202,7 @@
 
     .matrix-bg > span:nth-child(19n + 2) { animation: smooth-pulse 3.5s ease-in-out infinite 0.2s; }
     .matrix-bg > span:nth-child(29n + 1) { animation: smooth-pulse 4.1s ease-in-out infinite 0.7s; }
-    .matrix-bg > span:nth-child(11n) { color: rgba(30, 144, 255, 0.6); animation: smooth-pulse 2.9s ease-in-out infinite 1.1s; }
+    .matrix-bg > span:nth-child(11n) { color: var(--blue); animation: smooth-pulse 2.9s ease-in-out infinite 1.1s; }
     .matrix-bg > span:nth-child(37n + 10) { animation: smooth-pulse 5.3s ease-in-out infinite 1.5s; }
     .matrix-bg > span:nth-child(41n + 1) { animation: smooth-pulse 3.9s ease-in-out infinite 0.4s; }
     .matrix-bg > span:nth-child(17n + 9) { animation: smooth-pulse 2.8s ease-in-out infinite 0.9s; }
@@ -214,15 +216,15 @@
     @keyframes smooth-pulse {
       0%, 100% {
         color: var(--blue-dim);
-        text-shadow: 0 0 5px rgba(30, 144, 255, 0.4);
+        text-shadow: 0 0 5px var(--blue-dim);
       }
       30% {
         color: var(--blue);
         text-shadow: 0 0 10px var(--blue), 0 0 15px var(--blue);
       }
       50% {
-        color: var(--purple);
-        text-shadow: 0 0 10px var(--purple), 0 0 15px var(--purple);
+        color: var(--status-color);
+        text-shadow: 0 0 10px var(--status-color), 0 0 15px var(--status-glow);
       }
       70% {
         color: rgba(255, 255, 255, 0.9);
@@ -244,17 +246,17 @@
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(138, 43, 226, 0.3);
+      border: 1px solid var(--blue-dim);
       border-radius: 16px;
       padding: 40px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(30, 144, 255, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px var(--blue-dim);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.4s ease;
     }
 
     .glass-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(138, 43, 226, 0.2);
-      border-color: rgba(138, 43, 226, 0.6);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--status-glow);
+      border-color: var(--status-color);
     }
 
     .profile-header {
@@ -273,47 +275,660 @@
       height: 220px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid var(--purple);
-      box-shadow: 0 0 25px var(--purple-glow);
+      border: 4px solid var(--status-color);
+      box-shadow: 0 0 25px var(--status-glow);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .avatar-badge {
       position: absolute;
       bottom: 5px;
       right: 15px;
-      background: var(--blue);
+      background: var(--status-color);
       color: #fff;
       font-family: 'Press Start 2P', system-ui;
       font-size: 0.6em;
       padding: 8px 16px;
       border-radius: 20px;
       letter-spacing: 2px;
-      box-shadow: 0 0 15px var(--blue);
+      box-shadow: 0 0 15px var(--status-color);
       text-transform: uppercase;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .header-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-top-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-main-col {
+      flex: 1;
+      min-width: 0;
     }
 
     .header-info h1 {
       font-family: 'Press Start 2P', system-ui;
       font-size: 2.2em;
       color: #fff;
-      text-shadow: 0 0 15px var(--blue);
+      text-shadow: 0 0 15px var(--status-color);
       margin-bottom: 15px;
       letter-spacing: 4px;
+      transition: text-shadow 0.4s ease;
     }
 
     .header-info .subtitle {
       font-size: 1.3em;
       font-weight: 700;
-      color: var(--purple);
+      color: var(--status-color);
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 15px;
+      transition: color 0.4s ease;
     }
 
-    .header-info p {
-      font-size: 1.1em;
-      color: rgba(255, 255, 255, 0.8);
+    .header-info p.live-discord-status {
+      font-size: 1.15em;
+      color: rgba(255, 255, 255, 0.9);
       font-style: italic;
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--status-color);
+      border-radius: 0 10px 10px 0;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.4s ease;
+    }
+
+   
+    .lever-stage {
+      position: relative;
+      width: 110px;
+      height: 155px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    /* Toggle panels */
+    .toggle-panel {
+      margin-top: 5px;
+      transition: opacity 0.3s ease;
+    }
+
+    .toggle-panel.hidden {
+      display: none !important;
+    }
+
+  
+    .switch div {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .simple-text {
+      position: absolute;
+      bottom: -195px;
+      width: 160px;
+      color: white;
+      left: -15px;
+      font-size: 22pt;
+      font-weight: 800;
+      font-family: monospace;
+      pointer-events: none;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .switch {
+      position: relative;
+      top: -28px;
+      left: -28px;
+      transform: scale(0.52);
+      display: inline-block;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: relative;
+      display: flex;
+      cursor: pointer;
+    }
+
+    /* Target ONLY the leaf pixel divs so face containers keep their dimensions */
+    .lever-base.inner > div,
+    .lever-base .face-top > div,
+    .lever-base .face-front > div,
+    .lever-base .face-side > div,
+    .lever-stick .face-top > div,
+    .lever-stick .face-front > div,
+    .lever-stick .face-side > div {
+      width: 21px;
+      height: 21px;
+      margin: -0.5px;
+    }
+
+    .lever-stick {
+      position: absolute;
+      width: 20px;
+      height: 200px;
+      z-index: 1;
+      transition: transform 0.25s ease;
+      transform: scale(0.8) rotateZ(32deg) translateY(-145px);
+    }
+
+    .lever-stick .face-top {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 40px;
+      height: 20px;
+      opacity: 0;
+      transform: rotateX(60deg) rotateZ(-45deg) translateY(-50px) translateX(-80px);
+    }
+
+    .lever-stick .face-top div:nth-child(1) { background-color: #cbd6df; }
+    .lever-stick .face-top div:nth-child(2) { background-color: #f2fafd; }
+    .lever-stick .face-top div:nth-child(3) { background-color: #a6b0b9; }
+    .lever-stick .face-top div:nth-child(4) { background-color: #cfdae2; }
+
+    .lever-stick .face-front {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 40px;
+      height: 180px;
+      z-index: 1;
+      transform: skewY(16.5deg) rotateY(45deg) translateY(-12px) translateX(48px);
+    }
+
+    .lever-stick .face-front div:nth-child(1) { background-color: #454e57; }
+    .lever-stick .face-front div:nth-child(2) { background-color: #606974; }
+    .lever-stick .face-front div:nth-child(3) { background-color: #656e79; }
+    .lever-stick .face-front div:nth-child(4) { background-color: #7d8691; }
+    .lever-stick .face-front div:nth-child(5) { background-color: #634720; }
+    .lever-stick .face-front div:nth-child(6) { background-color: #795828; }
+    .lever-stick .face-front div:nth-child(7) { background-color: #5c4421; }
+    .lever-stick .face-front div:nth-child(8) { background-color: #6e5126; }
+    .lever-stick .face-front div:nth-child(9) { background-color: #523c1e; }
+    .lever-stick .face-front div:nth-child(10) { background-color: #654b24; }
+    .lever-stick .face-front div:nth-child(11) { background-color: #573f20; }
+    .lever-stick .face-front div:nth-child(12) { background-color: #664b24; }
+    .lever-stick .face-front div:nth-child(13) { background-color: #503b1d; }
+    .lever-stick .face-front div:nth-child(14) { background-color: #6e5023; }
+    .lever-stick .face-front div:nth-child(15) { background-color: #5f4620; }
+    .lever-stick .face-front div:nth-child(16) { background-color: #705223; }
+    .lever-stick .face-front div:nth-child(17) { background-color: #5f4620; }
+    .lever-stick .face-front div:nth-child(18) { background-color: #705122; }
+
+    .lever-stick .face-side {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      top: 0;
+      width: 40px;
+      height: 180px;
+      transform: skewY(-2.5deg) translateY(-5.5px);
+    }
+
+    .lever-stick .face-side div:nth-child(1) { background-color: #d0dbe2; }
+    .lever-stick .face-side div:nth-child(2) { background-color: #98a0a8; }
+    .lever-stick .face-side div:nth-child(3) { background-color: #f8fdff; }
+    .lever-stick .face-side div:nth-child(4) { background-color: #cdd8e0; }
+    .lever-stick .face-side div:nth-child(5) { background-color: #f4ae4b; }
+    .lever-stick .face-side div:nth-child(6) { background-color: #c28d3c; }
+    .lever-stick .face-side div:nth-child(7) { background-color: #febd56; }
+    .lever-stick .face-side div:nth-child(8) { background-color: #c28e3c; }
+    .lever-stick .face-side div:nth-child(9) { background-color: #f1b554; }
+    .lever-stick .face-side div:nth-child(10) { background-color: #d49940; }
+    .lever-stick .face-side div:nth-child(11) { background-color: #f5b04c; }
+    .lever-stick .face-side div:nth-child(12) { background-color: #cf953c; }
+    .lever-stick .face-side div:nth-child(13) { background-color: #ecaa4c; }
+    .lever-stick .face-side div:nth-child(14) { background-color: #d69c43; }
+    .lever-stick .face-side div:nth-child(15) { background-color: #e4ab57; }
+    .lever-stick .face-side div:nth-child(16) { background-color: #bd8c3e; }
+    .lever-stick .face-side div:nth-child(17) { background-color: #da9e43; }
+    .lever-stick .face-side div:nth-child(18) { background-color: #af7f3a; }
+    .lever-stick .face-side div:nth-child(19) { background-color: #be8836; }
+    .lever-stick .face-side div:nth-child(20) { background-color: #af7f3a; }
+
+    .lever-base.inner {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 160px;
+      height: 80px;
+      transform: rotateX(60deg) rotateZ(-45deg) translateY(-50px);
+    }
+
+    .lever-base.inner div:nth-child(1) { background-color: #8e979f; }
+    .lever-base.inner div:nth-child(2) { background-color: #dfe9f1; }
+    .lever-base.inner div:nth-child(3) { background-color: #fefffe; }
+    .lever-base.inner div:nth-child(4) { background-color: #ccd5dd; }
+    .lever-base.inner div:nth-child(5) { background-color: #889099; }
+    .lever-base.inner div:nth-child(6) { background-color: #99a1a8; }
+    .lever-base.inner div:nth-child(7) { background-color: #858e95; }
+    .lever-base.inner div:nth-child(8) { background-color: #9298a2; }
+    .lever-base.inner div:nth-child(9) { background-color: #9da6ad; }
+    .lever-base.inner div:nth-child(10) { background-color: #c7d1da; }
+    .lever-base.inner div:nth-child(11) { background-color: #ebf3fa; }
+    .lever-base.inner div:nth-child(12) { background-color: #fefeff; }
+    .lever-base.inner div:nth-child(13) { background-color: #777e85; }
+    .lever-base.inner div:nth-child(14) { background-color: #8f97a0; }
+    .lever-base.inner div:nth-child(15) { background-color: #949494; }
+    .lever-base.inner div:nth-child(16) { background-color: #939ba2; }
+    .lime-profile-wrapper .lever-base.inner div:nth-child(17) {
+      background-color: #c5cfd7;
+      margin-right: 119px;
+    }
+    .lever-base.inner div:nth-child(18) { background-color: #e7ebeb; }
+    .lime-profile-wrapper .lever-base.inner div:nth-child(19) {
+      background-color: #adb5bd;
+      margin-right: 119px;
+    }
+    .lever-base.inner div:nth-child(20) { background-color: #dae0e4; }
+
+    .lever-base.outer .face-top {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 160px;
+      height: 40px;
+      z-index: 5;
+      transform: rotateX(60deg) rotateZ(-45deg) translateY(38px) translateX(-28px);
+    }
+
+    .lever-base.outer .face-top div:nth-child(1) { background-color: #9ba4ac; }
+    .lever-base.outer .face-top div:nth-child(2) { background-color: #c9d4dd; }
+    .lever-base.outer .face-top div:nth-child(3) { background-color: #dfe9f0; }
+    .lever-base.outer .face-top div:nth-child(4) { background-color: #ccd5dd; }
+    .lever-base.outer .face-top div:nth-child(5) { background-color: #889099; }
+    .lever-base.outer .face-top div:nth-child(6) { background-color: #99a1a8; }
+    .lever-base.outer .face-top div:nth-child(7) { background-color: #858e95; }
+    .lever-base.outer .face-top div:nth-child(8) { background-color: #9298a2; }
+    .lever-base.outer .face-top div:nth-child(9) { background-color: #8b9299; }
+    .lever-base.outer .face-top div:nth-child(10) { background-color: #a2abb3; }
+    .lever-base.outer .face-top div:nth-child(11) { background-color: #ebf3fa; }
+    .lever-base.outer .face-top div:nth-child(12) { background-color: #fefeff; }
+    .lever-base.outer .face-top div:nth-child(13) { background-color: #777e85; }
+    .lever-base.outer .face-top div:nth-child(14) { background-color: #8f97a0; }
+    .lever-base.outer .face-top div:nth-child(15) { background-color: #fcfefe; }
+    .lever-base.outer .face-top div:nth-child(16) { background-color: #939ba2; }
+
+    .lever-base.inside .face-front {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 120px;
+      height: 40px;
+      z-index: -1;
+      transform: skewY(-26.5deg) rotateY(-45deg) translateY(15px) translateX(-22.5px);
+    }
+
+    .lever-base.inside .face-front div:nth-child(1) { background-color: #464d55; }
+    .lever-base.inside .face-front div:nth-child(2) { background-color: #31363e; }
+    .lever-base.inside .face-front div:nth-child(3) { background-color: #373f43; }
+    .lever-base.inside .face-front div:nth-child(4) { background-color: #424a51; }
+    .lever-base.inside .face-front div:nth-child(5) { background-color: #3e464e; }
+    .lever-base.inside .face-front div:nth-child(6) { background-color: #25282d; }
+    .lever-base.inside .face-front div:nth-child(7) { background-color: #464d55; }
+    .lever-base.inside .face-front div:nth-child(8) { background-color: #252930; }
+    .lever-base.inside .face-front div:nth-child(9) { background-color: #31363e; }
+    .lever-base.inside .face-front div:nth-child(10) { background-color: #30353a; }
+    .lever-base.inside .face-front div:nth-child(11) { background-color: #30353a; }
+    .lever-base.inside .face-front div:nth-child(12) { background-color: #1e2024; }
+
+    .lever-base.inside .face-side {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 40px;
+      height: 40px;
+      z-index: -1;
+      transform: skewY(26.5deg) rotateY(45deg) translateY(-32px) translateX(114px);
+    }
+
+    .lever-base.inside .face-side div:nth-child(1) { background-color: #424950; }
+    .lever-base.inside .face-side div:nth-child(2) { background-color: #515860; }
+    .lever-base.inside .face-side div:nth-child(3) { background-color: #262a2f; }
+    .lever-base.inside .face-side div:nth-child(4) { background-color: #262a2f; }
+
+    .lever-base.outer .face-front {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      top: 0;
+      width: 160px;
+      height: 40px;
+      z-index: 5;
+      transform: skewY(-26.5deg) rotateY(-45deg) translateY(61px) translateX(30px);
+    }
+
+    .lever-base.outer .face-front div:nth-child(1) { background-color: #3f4852; }
+    .lever-base.outer .face-front div:nth-child(2) { background-color: #646d79; }
+    .lever-base.outer .face-front div:nth-child(3) { background-color: #9099a4; }
+    .lever-base.outer .face-front div:nth-child(4) { background-color: #747e8a; }
+    .lever-base.outer .face-front div:nth-child(5) { background-color: #5e6772; }
+    .lever-base.outer .face-front div:nth-child(6) { background-color: #404a53; }
+    .lever-base.outer .face-front div:nth-child(7) { background-color: #666f79; }
+    .lever-base.outer .face-front div:nth-child(8) { background-color: #474f5a; }
+    .lever-base.outer .face-front div:nth-child(9) { background-color: #3f4952; }
+    .lever-base.outer .face-front div:nth-child(10) { background-color: #67717b; }
+    .lever-base.outer .face-front div:nth-child(11) { background-color: #66707b; }
+    .lever-base.outer .face-front div:nth-child(12) { background-color: #39414b; }
+    .lever-base.outer .face-front div:nth-child(13) { background-color: #3f4852; }
+    .lever-base.outer .face-front div:nth-child(14) { background-color: #424a54; }
+    .lever-base.outer .face-front div:nth-child(15) { background-color: #4b545f; }
+    .lever-base.outer .face-front div:nth-child(16) { background-color: #666f79; }
+
+    .lever-base.outer .face-side {
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+      width: 120px;
+      height: 40px;
+      z-index: 7;
+      transform: skewY(26.5deg) rotateY(45deg) translateY(86px) translateX(-81.5px);
+    }
+
+    .lever-base.outer .face-side div:nth-child(1) { background-color: #adb6bf; }
+    .lever-base.outer .face-side div:nth-child(2) { background-color: #676e77; }
+    .lever-base.outer .face-side div:nth-child(3) { background-color: #5a626a; }
+    .lever-base.outer .face-side div:nth-child(4) { background-color: #6b7279; }
+    .lever-base.outer .face-side div:nth-child(5) { background-color: #acb6bf; }
+    .lever-base.outer .face-side div:nth-child(6) { background-color: #d1dbe3; }
+    .lever-base.outer .face-side div:nth-child(7) { background-color: #6a727a; }
+    .lever-base.outer .face-side div:nth-child(8) { background-color: #747b85; }
+    .lever-base.outer .face-side div:nth-child(9) { background-color: #6a7279; }
+    .lever-base.outer .face-side div:nth-child(10) { background-color: #757d86; }
+    .lever-base.outer .face-side div:nth-child(11) { background-color: #626b73; }
+    .lever-base.outer .face-side div:nth-child(12) { background-color: #626b73; }
+
+    .pixel-aux {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      z-index: 5;
+      background-color: #adb5bd;
+      transform: rotateX(60deg) rotateZ(-45deg) translateY(70.3px) translateX(-62.5px);
+    }
+
+    .switch input:checked + .slider .lever-stick {
+      transform: scale(0.8) rotateZ(-63deg) translateY(-18px);
+    }
+    .switch input:checked + .slider .lever-stick .face-top {
+      opacity: 1;
+      transform: scale(1.2) skewY(0deg) rotateX(40deg) translateY(8px) translateX(60px);
+    }
+    .switch input:checked + .slider .lever-stick .face-front {
+      transform: scale(1.2) skewY(0deg) rotateY(0deg) rotateX(40deg) translateY(40px) translateX(60px);
+    }
+    .switch input:checked + .slider .lever-stick .face-side {
+      opacity: 0;
+    }
+    .switch input:checked + .slider .pixel-aux {
+      z-index: 0;
+    }
+
+    /* Music player by Vosoone, thanks */
+    .lime-profile-wrapper .main-music-card {
+      max-width: 325px;
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 26px;
+      background: #000;
+      border: 1px solid var(--blue-dim);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px var(--blue-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-family: -apple-system, system-ui, sans-serif;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .track-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .album-art {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #222530, #11131a);
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .album-art:hover {
+      transform: scale(1.05);
+    }
+
+    .track-details {
+      flex-grow: 1;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .track-title {
+      font-size: 1.05em;
+      font-weight: 600;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .lime-profile-wrapper .artist-name {
+      font-size: 0.8em;
+      color: #a8a8b0;
+      margin-top: 2px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .volume-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      width: 32px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .volume-bars .bar {
+      width: 3px;
+      height: 5px;
+      background: linear-gradient(180deg, #00c6ff, #0072ff);
+      border-radius: 2px;
+      animation: bounce 0.8s infinite ease-in-out;
+      animation-delay: var(--delay);
+      animation-play-state: running;
+    }
+
+    @keyframes bounce {
+      0%, 100% { height: 5px; }
+      50% { height: 20px; }
+    }
+
+    .playback-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .time-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72em;
+      color: #8e8e93;
+    }
+
+    .current-time::before {
+      content: "0:00";
+      animation: timer 45s steps(45) infinite;
+      display: inline-block;
+      animation-play-state: running;
+    }
+
+    @keyframes timer {
+      0% { content: "0:00"; } 20% { content: "0:09"; } 40% { content: "0:18"; }
+      60% { content: "0:27"; } 80% { content: "0:36"; } 100% { content: "0:45"; }
+    }
+
+    .remaining-time::before {
+      content: "0:45";
+      animation: timerDown 45s steps(45) infinite;
+      display: inline-block;
+      animation-play-state: running;
+    }
+
+    @keyframes timerDown {
+      0% { content: "0:45"; } 20% { content: "0:36"; } 40% { content: "0:27"; }
+      60% { content: "0:18"; } 80% { content: "0:09"; } 100% { content: "0:00"; }
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      border-radius: 2px;
+      animation: progressAnim 45s linear infinite;
+      animation-play-state: running;
+    }
+
+    .progress-handle {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      animation: handleAnim 45s linear infinite;
+      animation-play-state: running;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lime-profile-wrapper .control-button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      color: #fff;
+    }
+
+    .control-button.play-pause-button:hover,
+    .control-button.d:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .lime-profile-wrapper .main-control-btns {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      margin-left: 8%;
+      gap: 14%;
+    }
+
+    .play-pause-button .icon-pause {
+      display: none;
+    }
+
+   
+    #play-toggle:checked ~ .track-info .volume-bars .bar,
+    #play-toggle:checked ~ .playback-controls .progress-fill,
+    #play-toggle:checked ~ .playback-controls .progress-handle,
+    #play-toggle:checked ~ .playback-controls .current-time::before,
+    #play-toggle:checked ~ .playback-controls .remaining-time::before {
+      animation-play-state: paused;
+    }
+
+    .main-music-card.not-playing .volume-bars .bar {
+      animation: none;
+      height: 5px;
+      opacity: 0.35;
+    }
+
+    .main-music-card.not-playing .progress-fill {
+      animation: none;
+      width: 0%;
+    }
+
+    .main-music-card.not-playing .progress-handle {
+      animation: none;
+      left: 0%;
+    }
+
+    .main-music-card.not-playing .current-time::before,
+    .main-music-card.not-playing .remaining-time::before {
+      animation: none;
+      content: "0:00";
+    }
+
+    #play-toggle:checked ~ .playback-controls .play-pause-button .icon-play {
+      display: block;
+    }
+    #play-toggle:checked ~ .playback-controls .play-pause-button .icon-pause {
+      display: none;
+    }
+    #play-toggle:not(:checked) ~ .playback-controls .play-pause-button .icon-play {
+      display: none;
+    }
+    #play-toggle:not(:checked) ~ .playback-controls .play-pause-button .icon-pause {
+      display: block;
+    }
+
+    @keyframes progressAnim {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes handleAnim {
+      from { left: 0%; }
+      to { left: 100%; }
     }
 
     .social-links {
@@ -395,7 +1010,6 @@
 
     .ds-label {
       letter-spacing: 0.1em;
-      transition: 0.5s;
       position: relative;
       font-size: 17px;
       background: #333;
@@ -517,6 +1131,7 @@
       margin-bottom: 25px;
       letter-spacing: 2px;
       line-height: 1.5;
+      transition: color 0.4s ease;
     }
 
     .glass-card p {
@@ -527,9 +1142,10 @@
     }
 
     .glass-card strong {
-      color: var(--purple);
+      color: var(--status-color);
       font-weight: 900;
-      text-shadow: 0 0 8px var(--purple-glow);
+      text-shadow: 0 0 8px var(--status-glow);
+      transition: color 0.4s ease, text-shadow 0.4s ease;
     }
 
     .glass-card ul {
@@ -560,7 +1176,7 @@
     }
 
     .game-btn {
-      background: rgba(30, 144, 255, 0.1);
+      background: var(--blue-dim);
       border: 2px solid var(--blue);
       color: var(--blue);
       font-family: 'Press Start 2P', system-ui;
@@ -570,7 +1186,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       display: inline-block;
-      box-shadow: 0 0 15px rgba(30, 144, 255, 0.2);
+      box-shadow: 0 0 15px var(--blue-dim);
       margin-top: 15px;
       width: 100%;
       text-align: center;
@@ -580,7 +1196,7 @@
     .game-btn:hover {
       background: var(--blue);
       color: var(--dark-bg);
-      box-shadow: 0 0 25px rgba(30, 144, 255, 0.5);
+      box-shadow: 0 0 25px var(--status-glow);
       transform: scale(1.02);
     }
 
@@ -615,17 +1231,17 @@
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(138, 43, 226, 0.4);
+      border: 1px solid var(--blue-dim);
       border-radius: 14px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(30, 144, 255, 0.05);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px var(--blue-dim);
       transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
 
     .card:hover {
       border-color: var(--blue);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(30, 144, 255, 0.35);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px var(--status-glow);
       transform: translateY(-4px);
     }
 
@@ -648,10 +1264,9 @@
       height: 100%;
       transform: translate(0px, 0px);
       border-radius: 13px;
-      background: linear-gradient(135deg, var(--purple), var(--blue));
+      background: linear-gradient(135deg, var(--status-color), var(--blue));
       transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
       overflow: hidden;
-      border: 0px solid var(--purple);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -682,7 +1297,7 @@
       width: 200px;
       height: 200px;
       transition: 0.35s ease;
-      filter: drop-shadow(0 0 10px rgba(30, 144, 255, 0.6));
+      filter: drop-shadow(0 0 10px var(--status-glow));
       pointer-events: none;
       opacity: 0.85;
       z-index: 2;
@@ -694,7 +1309,7 @@
     }
 
     .GameImg:hover .GameIcon g {
-      fill: var(--purple);
+      fill: var(--status-color);
     }
 
     .Name {
@@ -731,11 +1346,12 @@
       transform: translate(0px, 4px);
       width: 20px;
       height: 20px;
-      filter: drop-shadow(0 0 5px var(--purple-glow));
+      filter: drop-shadow(0 0 5px var(--status-glow));
     }
 
     .StarIcon g {
-      fill: var(--purple);
+      fill: var(--status-color);
+      transition: fill 0.3s ease;
     }
 
     .Stars {
@@ -751,7 +1367,7 @@
       z-index: 3;
     }
 
-    /* --- Hover states --- */
+    /* Hover states */
     .GameImg:hover .Gfooter {
       background: linear-gradient(180deg, rgba(15, 15, 25, 0.95) 0%, rgba(5, 5, 12, 0.98) 100%);
     }
@@ -761,18 +1377,15 @@
       height: 55px;
       transform: translate(10px, 10px);
       border-radius: 10px;
-      border: 2px solid var(--purple);
-      box-shadow: 0 0 15px var(--purple-glow);
+      border: 2px solid var(--status-color);
+      box-shadow: 0 0 15px var(--status-glow);
     }
 
     .GameImg:hover .SmallIcon::after {
       opacity: 0;
     }
 
-    .GameImg:hover .Descripion {
-      opacity: 1;
-    }
-
+    .GameImg:hover .Descripion,
     .GameImg:hover .Stars {
       opacity: 1;
     }
@@ -847,6 +1460,10 @@
         text-align: center;
         gap: 25px;
       }
+      .header-top-flex {
+        flex-direction: column;
+        align-items: center;
+      }
       .avatar-badge {
         right: 50%;
         transform: translateX(50%);
@@ -861,12 +1478,15 @@
       .glass-card {
         padding: 30px 20px;
       }
+      .lime-profile-wrapper .main-music-card {
+        margin: 0 auto;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Dedicated Parallax Background Image Layer -->
+  <!-- Dedicated parallax background image layer -->
   <div class="parallax-bg" id="parallaxBg"></div>
 
   <!-- Top-left logo -->
@@ -902,18 +1522,118 @@
 
       <div class="glass-card profile-header">
         <div class="avatar-wrapper">
-          <img src="https://cdn.discordapp.com/avatars/1389758746665685005/0ded0365520eeff22cc219dc15faf9e7.webp?size=1536" alt="Kainyx">
+          <img id="userAvatar" src="https://cdn.discordapp.com/avatars/1389758746665685005/0ded0365520eeff22cc219dc15faf9e7.webp?size=1536" alt="Kainyx">
           <div class="avatar-badge">OWNER</div>
         </div>
         <div class="header-info">
-          <h1>Kainyx</h1>
-          <div class="subtitle">Owner • LiME Network</div>
-          <p>Yes it's me Kainy</p>
+          
+          <div class="header-top-flex">
+            <div class="header-main-col">
+              <h1>Kainyx</h1>
+              <div class="subtitle">Owner • LiME Network</div>
+
+
+              <div id="statusPanel" class="toggle-panel">
+                <p id="discordStatusText" class="live-discord-status">Connecting to Discord...</p>
+              </div>
+
+ 
+              <div id="musicPanel" class="toggle-panel hidden">
+                <div class="main-music-card not-playing" id="musicCard">
+                  <input type="checkbox" id="play-toggle" hidden="" checked />
+
+                  <div class="track-info">
+                    <div class="album-art" id="spotifyAlbumArt"></div>
+                    <div class="track-details">
+                      <div class="track-title" id="spotifyTrackTitle">Not Playing</div>
+                      <div class="artist-name" id="spotifyArtistName">Kainy isn't listening right now</div>
+                    </div>
+                    <div class="volume-bars">
+                      <div class="bar" style="--delay:0s"></div>
+                      <div class="bar" style="--delay:0.1s"></div>
+                      <div class="bar" style="--delay:0.2s"></div>
+                      <div class="bar" style="--delay:0.3s"></div>
+                      <div class="bar" style="--delay:0.4s"></div>
+                      <div class="bar" style="--delay:0.5s"></div>
+                      <div class="bar" style="--delay:0.6s"></div>
+                      <div class="bar" style="--delay:0.7s"></div>
+                    </div>
+                  </div>
+
+                  <div class="playback-controls">
+                    <div class="time-info">
+                      <span class="current-time"></span>
+                      <span class="remaining-time"></span>
+                    </div>
+                    <div class="progress-bar">
+                      <div class="progress-fill"></div>
+                      <div class="progress-handle"></div>
+                    </div>
+                    <div class="button-row">
+                      <div class="main-control-btns">
+                        <button class="control-button back" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5"></path>
+                          </svg>
+                        </button>
+                        <div class="play-pause-btns">
+                          <label for="play-toggle" class="control-button play-pause-button">
+                            <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                              <path d="M11.596 8.697l-6.363 3.692c-.54.314-1.233-.065-1.233-.696V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"></path>
+                            </svg>
+                            <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                              <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"></path>
+                            </svg>
+                          </label>
+                        </div>
+                        <button class="control-button next" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"></path>
+                          </svg>
+                        </button>
+                      </div>
+                      <button class="control-button d" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M6.634 1.135A7 7 0 0 1 15 8a.5.5 0 0 1-1 0 6 6 0 1 0-6.5 5.98v-1.005A5 5 0 1 1 13 8a.5.5 0 0 1-1 0 4 4 0 1 0-4.5 3.969v-1.011A2.999 2.999 0 1 1 11 8a.5.5 0 0 1-1 0 2 2 0 1 0-2.5 1.936v-1.07a1 1 0 1 1 1 0V15.5a.5.5 0 0 1-1 0v-.518a7 7 0 0 1-.866-13.847"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mc lever -->
+            <div class="lever-stage">
+              <label class="switch">
+                <div class="simple-text">Music!</div>
+                <input type="checkbox" id="leverSwitchInput" />
+                <span class="slider">
+                  <div class="lever-stick">
+                    <div class="face-top"><div></div><div></div><div></div><div></div></div>
+                    <div class="face-front"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="face-side"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <div class="lever-base inner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  <div class="lever-base inside">
+                    <div class="face-front"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="face-side"><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <div class="lever-base outer">
+                    <div class="face-top"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="face-front"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="face-side"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                  </div>
+                  <div class="pixel-aux"></div>
+                </span>
+              </label>
+            </div>
+          </div>
           
           <div class="social-links">
             <a href="https://www.instagram.com/notkainyx?xtok=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank" class="insta-btn">
               <span class="icon">
-                <svg height="33" viewBox="0 0 128 128" width="33" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <svg height="33" viewBox="0 0 128 128" width="33" xmlns="http://www.w3.org/2000/svg">
                   <linearGradient id="a" gradientTransform="matrix(1 0 0 -1 594 633)" gradientUnits="userSpaceOnUse" x1="-566.711" x2="-493.288" y1="516.569" y2="621.43">
                     <stop offset="0" stop-color="#ffb900"></stop>
                     <stop offset="1" stop-color="#9100eb"></stop>
@@ -935,10 +1655,10 @@
                 <span>
                   <input type="text" class="ds_textinput" value="@notkainyx" readonly />
                   <div class="ds-input-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="38px" height="38px" viewBox="0 0 38 38" version="1.1">
-                      <g id="surface1">
-                        <path style="stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 18.933594 21.539062 C 19.546875 21.535156 20.15625 21.527344 20.789062 21.519531 C 28.1875 21.507812 28.1875 21.507812 31.039062 23.980469 C 33.105469 26.402344 33.390625 27.890625 33.316406 30.972656 C 33.3125 31.34375 33.304688 31.714844 33.300781 32.097656 C 33.289062 33.007812 33.269531 33.921875 33.25 34.832031 C 31.269531 35.425781 31.269531 35.425781 30.082031 34.832031 C 29.761719 33.097656 29.578125 31.363281 29.375 29.609375 C 29 27.839844 28.894531 27.398438 27.445312 26.390625 C 25.679688 26.144531 25.679688 26.144531 23.652344 26.179688 C 23.28125 26.175781 22.914062 26.175781 22.535156 26.175781 C 21.753906 26.171875 20.976562 26.175781 20.195312 26.183594 C 19.003906 26.191406 17.8125 26.183594 16.621094 26.171875 C 15.863281 26.171875 15.105469 26.175781 14.347656 26.179688 C 13.660156 26.179688 12.96875 26.183594 12.261719 26.183594 C 10.585938 26.25 10.585938 26.25 9.550781 27.089844 C 8.640625 28.476562 8.554688 29.871094 8.34375 31.5 C 8.261719 32.125 8.179688 32.746094 8.09375 33.386719 C 8.035156 33.863281 7.976562 34.34375 7.917969 34.832031 C 5.9375 35.425781 5.9375 35.425781 4.75 34.832031 C 4.691406 33.578125 4.652344 32.328125 4.617188 31.074219 C 4.601562 30.722656 4.582031 30.371094 4.566406 30.007812 C 4.511719 27.296875 5.164062 25.832031 6.859375 23.75 C 10.457031 21.074219 14.648438 21.542969 18.933594 21.539062 Z M 18.933594 21.539062"></path>
-                        <path style="stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 24.773438 4.980469 C 26.601562 7.253906 27.25 8.6875 27.445312 11.609375 C 26.9375 14.550781 26.007812 16.015625 23.75 17.945312 C 21.28125 19.589844 18.722656 19.308594 15.832031 19 C 13.457031 17.875 12.148438 16.65625 11.082031 14.25 C 10.414062 11.46875 10.53125 9.515625 11.609375 6.859375 C 15.328125 2.574219 20.128906 1.125 24.773438 4.980469 Z M 15.570312 7.652344 C 14.449219 9.519531 14.359375 11.070312 14.777344 13.195312 C 15.480469 14.601562 15.480469 14.601562 16.890625 15.304688 C 19.011719 15.722656 20.5625 15.632812 22.429688 14.515625 C 23.550781 12.648438 23.640625 11.09375 23.222656 8.972656 C 22.519531 7.566406 22.519531 7.566406 21.109375 6.859375 C 18.988281 6.445312 17.4375 6.53125 15.570312 7.652344 Z M 15.570312 7.652344"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="38px" height="38px" viewBox="0 0 38 38">
+                      <g>
+                        <path style="fill:#fff;" d="M 18.933594 21.539062 C 19.546875 21.535156 20.15625 21.527344 20.789062 21.519531 C 28.1875 21.507812 28.1875 21.507812 31.039062 23.980469 C 33.105469 26.402344 33.390625 27.890625 33.316406 30.972656 C 33.3125 31.34375 33.304688 31.714844 33.300781 32.097656 C 33.289062 33.007812 33.269531 33.921875 33.25 34.832031 C 31.269531 35.425781 31.269531 35.425781 30.082031 34.832031 C 29.761719 33.097656 29.578125 31.363281 29.375 29.609375 C 29 27.839844 28.894531 27.398438 27.445312 26.390625 C 25.679688 26.144531 25.679688 26.144531 23.652344 26.179688 C 23.28125 26.175781 22.914062 26.175781 22.535156 26.175781 C 21.753906 26.171875 20.976562 26.175781 20.195312 26.183594 C 19.003906 26.191406 17.8125 26.183594 16.621094 26.171875 C 15.863281 26.171875 15.105469 26.175781 14.347656 26.179688 C 13.660156 26.179688 12.96875 26.183594 12.261719 26.183594 C 10.585938 26.25 10.585938 26.25 9.550781 27.089844 C 8.640625 28.476562 8.554688 29.871094 8.34375 31.5 C 8.261719 32.125 8.179688 32.746094 8.09375 33.386719 C 8.035156 33.863281 7.976562 34.34375 7.917969 34.832031 C 5.9375 35.425781 5.9375 35.425781 4.75 34.832031 C 4.691406 33.578125 4.652344 32.328125 4.617188 31.074219 C 4.601562 30.722656 4.582031 30.371094 4.566406 30.007812 C 4.511719 27.296875 5.164062 25.832031 6.859375 23.75 C 10.457031 21.074219 14.648438 21.542969 18.933594 21.539062 Z"></path>
+                        <path style="fill:#fff;" d="M 24.773438 4.980469 C 26.601562 7.253906 27.25 8.6875 27.445312 11.609375 C 26.9375 14.550781 26.007812 16.015625 23.75 17.945312 C 21.28125 19.589844 18.722656 19.308594 15.832031 19 C 13.457031 17.875 12.148438 16.65625 11.082031 14.25 C 10.414062 11.46875 10.53125 9.515625 11.609375 6.859375 C 15.328125 2.574219 20.128906 1.125 24.773438 4.980469 Z M 15.570312 7.652344 C 14.449219 9.519531 14.359375 11.070312 14.777344 13.195312 C 15.480469 14.601562 15.480469 14.601562 16.890625 15.304688 C 19.011719 15.722656 20.5625 15.632812 22.429688 14.515625 C 23.550781 12.648438 23.640625 11.09375 23.222656 8.972656 C 22.519531 7.566406 22.519531 7.566406 21.109375 6.859375 C 18.988281 6.445312 17.4375 6.53125 15.570312 7.652344 Z"></path>
                       </g>
                     </svg>
                   </div>
@@ -1014,19 +1734,11 @@
                     <img src="https://yt3.googleusercontent.com/eRWfPpz7r0qTVYarSI3jikxzAyxJdD1jjxLjcps-KZFW25BMkKpq349kY78uDDt_vIOVhbqQ=s900-c-k-c0x00ffffff-no-rj" alt="Valorant">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">FPS • Tactical 5v5 Shooter</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Valorant</span>
               </div>
             </div>
@@ -1041,19 +1753,11 @@
                     <img src="https://data.zero1gaming.com/uploads/games/meccha-chameleon-1_cover.jpg" alt="Mecha Chameleon">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Game • Action &amp; Hide and Seek</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Mecha Cameleon</span>
               </div>
             </div>
@@ -1068,19 +1772,11 @@
                     <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/284160/header.jpg" alt="BeamNG.drive">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Driving • Vehicle Sim</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">BeamNG.drive</span>
               </div>
             </div>
@@ -1095,19 +1791,11 @@
                     <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/03/r-e-p-o-tag-page-cover-art.jpg?q=49&fit=contain&w=480&dpr=2" alt="R.E.P.O.">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Horror • Co-op Survival</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">R.E.P.O.</span>
               </div>
             </div>
@@ -1122,19 +1810,11 @@
                     <img src="https://image.api.playstation.com/vulcan/ap/rnd/202308/1509/41a9e913a52e8c1f566d273794e5ec9bd4b41a61d36e22a9.png" alt="Teardown">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Sandbox • Voxel Destruction</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Teardown</span>
               </div>
             </div>
@@ -1149,19 +1829,11 @@
                     <img src="https://i.pinimg.com/474x/ec/2a/a0/ec2aa08b6bd6c74e5c2cab78a0109bb0.jpg?nii=t" alt="Roblox">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Multiplayer • Endless Worlds</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Roblox</span>
               </div>
             </div>
@@ -1173,28 +1845,20 @@
               <div class="GameImg">
                 <div class="Gfooter">
                   <div class="SmallIcon">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Fortnite_F_lettermark_logo.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" alt="Fortnite">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Fortnite_F_lettermark_logo.png" alt="Fortnite">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Battle Royale • Action</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Fortnite</span>
               </div>
             </div>
           </a>
 
-          <!-- Rocket league -->
+          <!-- Rocket League -->
           <a href="https://www.rocketleague.com/" target="_blank" class="card-link">
             <div class="card">
               <div class="GameImg">
@@ -1203,25 +1867,17 @@
                     <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/header.jpg" alt="Rocket League">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Sports • Arcade Car Soccer</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Rocket League</span>
               </div>
             </div>
           </a>
 
-          <!-- Call of duty -->
+          <!-- Call of Duty -->
           <a href="https://store.steampowered.com/app/1938090/Call_of_Duty/" target="_blank" class="card-link">
             <div class="card">
               <div class="GameImg">
@@ -1230,19 +1886,11 @@
                     <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/header.jpg" alt="Call of Duty">
                   </div>
                   <span class="Stars">
-                    <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="StarIcon">
-                      <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                        <path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path>
-                      </g>
-                    </svg> 5/5
+                    <svg viewBox="0 0 50 50" class="StarIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M210 405 l-33 -85 -83 0 c-45 0 -85 -4 -88 -9 -3 -5 23 -33 59 -62 36 -29 65 -60 65 -68 0 -9 -9 -48 -20 -86 -11 -38 -20 -71 -20 -72 0 -12 35 4 85 37 33 22 67 40 75 40 8 0 42 -18 75 -40 50 -33 85 -49 85 -37 0 1 -9 34 -20 72 -11 38 -20 77 -20 86 0 8 29 39 65 68 36 28 63 56 60 62 -4 5 -44 9 -90 9 l-83 0 -33 85 c-17 47 -35 85 -39 85 -4 0 -22 -38 -40 -85z"></path></g></svg> 5/5
                   </span>
                   <span class="Descripion">Shooter • Fast-Paced Combat</span>
                 </div>
-                <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 50.000000 50.000000" height="50.000000pt" width="50.000000pt" version="1.0" xmlns="http://www.w3.org/2000/svg" class="GameIcon">
-                  <g stroke="none" transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)">
-                    <path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path>
-                  </g>
-                </svg>
+                <svg viewBox="0 0 50 50" class="GameIcon"><g transform="translate(0,50) scale(0.1,-0.1)"><path d="M427 471 c-2 -11 -36 -35 -78 -57 -62 -33 -77 -46 -94 -81 -14 -30 -24 -41 -35 -36 -64 25 -90 27 -117 7 -58 -42 -115 -185 -99 -248 19 -76 81 -73 195 9 19 14 41 25 50 25 9 0 43 -18 75 -40 33 -22 70 -43 83 -46 64 -16 101 30 89 113 -7 56 -62 159 -99 187 -28 20 -56 18 -121 -9 -16 -7 -17 -5 -11 16 12 39 36 60 102 90 56 25 83 50 83 78 0 18 -17 12 -23 -8z m-41 -252 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-236 -14 c0 -8 7 -15 15 -15 8 0 15 -7 15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 -7 -15 -15 0 -8 -7 -15 -15 -15 -8 0 -15 7 -15 15 0 8 -7 15 -15 15 -8 0 -15 7 -15 15 0 8 7 15 15 15 8 0 15 7 15 15 0 8 7 15 15 15 8 0 15 -7 15 -15z m196 -26 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m80 0 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z m-40 -40 c10 -17 -13 -36 -27 -22 -12 12 -4 33 11 33 5 0 12 -5 16 -11z"></path></g></svg>
                 <span class="Name">Call of Duty</span>
               </div>
             </div>
@@ -1256,7 +1904,7 @@
   </div> 
 
   <script>
-    // Dynamically fill the entire screen with matrix characters
+    // Fill the entire screen with Matrix code. Weebly did not like this
     (function fillMatrix() {
       const matrixBg = document.getElementById('matrixBg');
       if (!matrixBg) return;
@@ -1264,7 +1912,7 @@
       matrixBg.innerHTML = baseSpans.repeat(34);
     })();
 
-  
+    // Parallax scrolling for background and matrix layer
     (function initParallax() {
       const parallaxBg = document.getElementById('parallaxBg');
       const matrixBg = document.getElementById('matrixBg');
@@ -1272,13 +1920,10 @@
 
       function updateParallax() {
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        
         if (parallaxBg) {
-          // Background image shifts smoothly
           parallaxBg.style.transform = `translate3d(0, ${-scrollY * 0.22}px, 0) scale(1.05)`;
         }
         if (matrixBg) {
-   
           matrixBg.style.transform = `translate3d(0, ${-scrollY * 0.10}px, 0)`;
         }
         ticking = false;
@@ -1292,16 +1937,175 @@
       }, { passive: true });
     })();
 
-    document.getElementById('toggleGamesBtn').addEventListener('click', function() {
-      var gamesList = document.getElementById('gamesList');
-      gamesList.classList.toggle('open');
-      
-      if (gamesList.classList.contains('open')) {
-        this.textContent = 'HIDE GAMES LIST';
-      } else {
-        this.textContent = 'SHOW GAMES LIST';
+ 
+    (function initGamesBtn() {
+      const toggleBtn = document.getElementById('toggleGamesBtn');
+      const gamesList = document.getElementById('gamesList');
+      if (!toggleBtn || !gamesList) return;
+
+      toggleBtn.addEventListener('click', function() {
+        gamesList.classList.toggle('open');
+        this.textContent = gamesList.classList.contains('open') ? 'HIDE GAMES LIST' : 'SHOW GAMES LIST';
+      });
+    })();
+
+   
+    (function initLeverSwitch() {
+      const leverInput = document.getElementById('leverSwitchInput');
+      const statusPanel = document.getElementById('statusPanel');
+      const musicPanel = document.getElementById('musicPanel');
+
+      if (!leverInput || !statusPanel || !musicPanel) return;
+
+      leverInput.addEventListener('change', function() {
+        if (this.checked) {
+          statusPanel.classList.add('hidden');
+          musicPanel.classList.remove('hidden');
+        } else {
+          musicPanel.classList.add('hidden');
+          statusPanel.classList.remove('hidden');
+        }
+      });
+    })();
+
+   
+    (function initLanyard() {
+      const USER_ID = "1389758746665685005";
+      const statusTextEl = document.getElementById('discordStatusText');
+      const avatarImgEl = document.getElementById('userAvatar');
+      const musicCardEl = document.getElementById('musicCard');
+      const playToggleEl = document.getElementById('play-toggle');
+      const albumArtEl = document.getElementById('spotifyAlbumArt');
+      const trackTitleEl = document.getElementById('spotifyTrackTitle');
+      const artistNameEl = document.getElementById('spotifyArtistName');
+
+      const THEMES = {
+        online: {
+          color: "#39ff14",
+          glow: "rgba(57, 255, 20, 0.8)",
+          dim: "rgba(57, 255, 20, 0.3)",
+          fallbackText: "Online • Yes it's me Kainy"
+        },
+        idle: {
+          color: "#ffa500",
+          glow: "rgba(255, 165, 0, 0.8)",
+          dim: "rgba(255, 165, 0, 0.3)",
+          fallbackText: "Idle / Away • Yes it's me Kainy"
+        },
+        dnd: {
+          color: "#ff2a2a",
+          glow: "rgba(255, 42, 42, 0.85)",
+          dim: "rgba(255, 42, 42, 0.35)",
+          fallbackText: "Do Not Disturb • Yes it's me Kainy"
+        },
+        offline: {
+          color: "#1e90ff",
+          glow: "rgba(30, 144, 255, 0.7)",
+          dim: "rgba(30, 144, 255, 0.3)",
+          fallbackText: "I'm touching grass unlike you >:)"
+        }
+      };
+
+      function applyPresence(data) {
+        if (!data) return;
+
+        const status = data.discord_status || 'offline';
+        const theme = THEMES[status] || THEMES.offline;
+        const root = document.documentElement;
+
+  
+        root.style.setProperty('--status-color', theme.color);
+        root.style.setProperty('--status-glow', theme.glow);
+        root.style.setProperty('--blue', theme.color);
+        root.style.setProperty('--blue-dim', theme.dim);
+
+ 
+        if (data.discord_user && data.discord_user.avatar && avatarImgEl) {
+          const ext = data.discord_user.avatar.startsWith('a_') ? 'gif' : 'webp';
+          avatarImgEl.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.discord_user.avatar}.${ext}?size=1024`;
+        }
+
+  
+        if (statusTextEl) {
+          const activities = Array.isArray(data.activities) ? data.activities : [];
+          const customStatus = activities.find(a => a.type === 4);
+          const gameActivity = activities.find(a => a.type === 0);
+
+          if (status === 'offline') {
+            statusTextEl.textContent = theme.fallbackText;
+          } else if (customStatus && customStatus.state) {
+            const emoji = customStatus.emoji && customStatus.emoji.name ? `${customStatus.emoji.name} ` : '';
+            statusTextEl.textContent = `${emoji}${customStatus.state}`;
+          } else if (gameActivity && gameActivity.name) {
+            statusTextEl.textContent = `Playing ${gameActivity.name}`;
+          } else {
+            statusTextEl.textContent = theme.fallbackText;
+          }
+        }
+
+
+        if (data.listening_to_spotify && data.spotify) {
+          if (musicCardEl) musicCardEl.classList.remove('not-playing');
+          if (playToggleEl) playToggleEl.checked = false;
+          if (trackTitleEl) trackTitleEl.textContent = data.spotify.song || "Unknown Track";
+          if (artistNameEl) artistNameEl.textContent = data.spotify.artist || "Unknown Artist";
+          if (albumArtEl && data.spotify.album_art_url) {
+            albumArtEl.style.backgroundImage = `url('${data.spotify.album_art_url}')`;
+          }
+        } else {
+          if (musicCardEl) musicCardEl.classList.add('not-playing');
+          if (playToggleEl) playToggleEl.checked = true;
+          if (trackTitleEl) trackTitleEl.textContent = "Nothing";
+          if (artistNameEl) artistNameEl.textContent = "Not listening right now";
+          if (albumArtEl) albumArtEl.style.backgroundImage = "none";
+        }
       }
-    });
+
+  
+      fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success && json.data) {
+            applyPresence(json.data);
+          }
+        })
+        .catch(err => console.error("Lanyard fetch error:", err));
+
+      // Live stats via lanyard <3
+      function connectSocket() {
+        let heartbeat;
+        const ws = new WebSocket("wss://api.lanyard.rest/socket");
+
+        ws.onmessage = (event) => {
+          const msg = JSON.parse(event.data);
+          const { op, d, t } = msg;
+
+          if (op === 1) {
+            heartbeat = setInterval(() => {
+              ws.send(JSON.stringify({ op: 3 }));
+            }, d.heartbeat_interval);
+
+            ws.send(JSON.stringify({
+              op: 2,
+              d: { subscribe_to_id: USER_ID }
+            }));
+          }
+
+          if (t === "INIT_STATE" || t === "PRESENCE_UPDATE") {
+            applyPresence(d);
+          }
+        };
+
+        ws.onclose = () => {
+          clearInterval(heartbeat);
+          setTimeout(connectSocket, 5000);
+        };
+
+        ws.onerror = () => ws.close();
+      }
+
+      connectSocket();
+    })();
   </script>
 </body>
 </html>
