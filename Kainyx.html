@@ -159,7 +159,7 @@
       padding: 0;
     }
 
-    /* Matrix background with parallax support */
+    /* GPU-Optimized matrix background with parallax support */
     .matrix-bg {
       position: fixed;
       top: -10%;
@@ -169,15 +169,16 @@
       z-index: 1;
       overflow: hidden;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
-      grid-auto-rows: 42px;
-      font-size: 32px;
-      color: var(--blue-dim);
+      grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+      grid-auto-rows: 48px;
+      font-size: 30px;
+      color: var(--status-color);
       font-family: "Courier New", Courier, monospace;
       justify-content: center;
       align-content: start;
       pointer-events: none;
       will-change: transform;
+      contain: strict;
       transition: color 0.6s ease;
     }
 
@@ -194,42 +195,44 @@
 
     .matrix-bg > span {
       text-align: center;
-      text-shadow: 0 0 5px var(--blue-dim);
       user-select: none;
-      transition: color 0.5s, text-shadow 0.5s;
-      line-height: 42px;
+      line-height: 48px;
+      opacity: 0.22;
+    }
+
+ 
+    .matrix-bg > span:nth-child(19n + 2),
+    .matrix-bg > span:nth-child(29n + 1),
+    .matrix-bg > span:nth-child(11n),
+    .matrix-bg > span:nth-child(37n + 10),
+    .matrix-bg > span:nth-child(41n + 1),
+    .matrix-bg > span:nth-child(17n + 9),
+    .matrix-bg > span:nth-child(23n + 18),
+    .matrix-bg > span:nth-child(31n + 4),
+    .matrix-bg > span:nth-child(43n + 20),
+    .matrix-bg > span:nth-child(13n + 6),
+    .matrix-bg > span:nth-child(53n + 5),
+    .matrix-bg > span:nth-child(47n + 15) {
+      text-shadow: 0 0 8px var(--status-color);
+      will-change: opacity;
     }
 
     .matrix-bg > span:nth-child(19n + 2) { animation: smooth-pulse 3.5s ease-in-out infinite 0.2s; }
     .matrix-bg > span:nth-child(29n + 1) { animation: smooth-pulse 4.1s ease-in-out infinite 0.7s; }
-    .matrix-bg > span:nth-child(11n) { color: var(--blue); animation: smooth-pulse 2.9s ease-in-out infinite 1.1s; }
-    .matrix-bg > span:nth-child(37n + 10) { animation: smooth-pulse 5.3s ease-in-out infinite 1.5s; }
+    .matrix-bg > span:nth-child(11n) { animation: smooth-pulse 2.9s ease-in-out infinite 1.1s; }
+    .matrix-bg > span:nth-child(37n + 10) { color: #fff; text-shadow: 0 0 10px #fff; animation: smooth-pulse 5.3s ease-in-out infinite 1.5s; }
     .matrix-bg > span:nth-child(41n + 1) { animation: smooth-pulse 3.9s ease-in-out infinite 0.4s; }
     .matrix-bg > span:nth-child(17n + 9) { animation: smooth-pulse 2.8s ease-in-out infinite 0.9s; }
-    .matrix-bg > span:nth-child(23n + 18) { animation: smooth-pulse 4.3s ease-in-out infinite 1.3s; }
+    .matrix-bg > span:nth-child(23n + 18) { color: #fff; text-shadow: 0 0 10px #fff; animation: smooth-pulse 4.3s ease-in-out infinite 1.3s; }
     .matrix-bg > span:nth-child(31n + 4) { animation: smooth-pulse 5.6s ease-in-out infinite 0.1s; }
     .matrix-bg > span:nth-child(43n + 20) { animation: smooth-pulse 3.6s ease-in-out infinite 1.8s; }
     .matrix-bg > span:nth-child(13n + 6) { animation: smooth-pulse 3.2s ease-in-out infinite 1.2s; }
-    .matrix-bg > span:nth-child(53n + 5) { animation: smooth-pulse 4.9s ease-in-out infinite 0.5s; }
+    .matrix-bg > span:nth-child(53n + 5) { color: #fff; text-shadow: 0 0 10px #fff; animation: smooth-pulse 4.9s ease-in-out infinite 0.5s; }
     .matrix-bg > span:nth-child(47n + 15) { animation: smooth-pulse 5.9s ease-in-out infinite 1s; }
 
     @keyframes smooth-pulse {
-      0%, 100% {
-        color: var(--blue-dim);
-        text-shadow: 0 0 5px var(--blue-dim);
-      }
-      30% {
-        color: var(--blue);
-        text-shadow: 0 0 10px var(--blue), 0 0 15px var(--blue);
-      }
-      50% {
-        color: var(--status-color);
-        text-shadow: 0 0 10px var(--status-color), 0 0 15px var(--status-glow);
-      }
-      70% {
-        color: rgba(255, 255, 255, 0.9);
-        text-shadow: 0 0 10px #fff, 0 0 15px #fff;
-      }
+      0%, 100% { opacity: 0.22; }
+      50% { opacity: 0.95; }
     }
 
     .profile-container {
@@ -251,6 +254,7 @@
       padding: 40px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px var(--blue-dim);
       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.4s ease;
+      transform: translateZ(0);
     }
 
     .glass-card:hover {
@@ -346,7 +350,7 @@
       transition: border-color 0.4s ease;
     }
 
-   
+    /* Smaller lever stage */
     .lever-stage {
       position: relative;
       width: 110px;
@@ -368,7 +372,7 @@
       display: none !important;
     }
 
-  
+    /* Thanks for the mc lever KSAplay */
     .switch div {
       border: none;
       margin: 0;
@@ -408,7 +412,6 @@
       cursor: pointer;
     }
 
-    /* Target ONLY the leaf pixel divs so face containers keep their dimensions */
     .lever-base.inner > div,
     .lever-base .face-top > div,
     .lever-base .face-front > div,
@@ -683,7 +686,7 @@
       z-index: 0;
     }
 
-    /* Music player by Vosoone, thanks */
+   
     .lime-profile-wrapper .main-music-card {
       max-width: 325px;
       width: 100%;
@@ -778,50 +781,26 @@
     .time-info {
       display: flex;
       justify-content: space-between;
-      font-size: 0.72em;
-      color: #8e8e93;
-    }
-
-    .current-time::before {
-      content: "0:00";
-      animation: timer 45s steps(45) infinite;
-      display: inline-block;
-      animation-play-state: running;
-    }
-
-    @keyframes timer {
-      0% { content: "0:00"; } 20% { content: "0:09"; } 40% { content: "0:18"; }
-      60% { content: "0:27"; } 80% { content: "0:36"; } 100% { content: "0:45"; }
-    }
-
-    .remaining-time::before {
-      content: "0:45";
-      animation: timerDown 45s steps(45) infinite;
-      display: inline-block;
-      animation-play-state: running;
-    }
-
-    @keyframes timerDown {
-      0% { content: "0:45"; } 20% { content: "0:36"; } 40% { content: "0:27"; }
-      60% { content: "0:18"; } 80% { content: "0:09"; } 100% { content: "0:00"; }
+      font-size: 0.78em;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      color: #b0b0b8;
     }
 
     .progress-bar {
       width: 100%;
-      height: 4px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
+      height: 5px;
+      background-color: rgba(255, 255, 255, 0.14);
+      border-radius: 3px;
       position: relative;
-      overflow: hidden;
     }
 
     .progress-fill {
       height: 100%;
-      width: 0;
+      width: 0%;
       background: linear-gradient(90deg, #00c6ff, #0072ff);
-      border-radius: 2px;
-      animation: progressAnim 45s linear infinite;
-      animation-play-state: running;
+      border-radius: 3px;
+      transition: width 0.5s linear;
     }
 
     .progress-handle {
@@ -829,13 +808,12 @@
       top: 50%;
       left: 0%;
       transform: translate(-50%, -50%);
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       background-color: white;
       border-radius: 50%;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-      animation: handleAnim 45s linear infinite;
-      animation-play-state: running;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+      transition: left 0.5s linear;
     }
 
     .button-row {
@@ -877,12 +855,8 @@
       display: none;
     }
 
-   
-    #play-toggle:checked ~ .track-info .volume-bars .bar,
-    #play-toggle:checked ~ .playback-controls .progress-fill,
-    #play-toggle:checked ~ .playback-controls .progress-handle,
-    #play-toggle:checked ~ .playback-controls .current-time::before,
-    #play-toggle:checked ~ .playback-controls .remaining-time::before {
+    /* Paused / Not Playing States */
+    #play-toggle:checked ~ .track-info .volume-bars .bar {
       animation-play-state: paused;
     }
 
@@ -892,20 +866,8 @@
       opacity: 0.35;
     }
 
-    .main-music-card.not-playing .progress-fill {
-      animation: none;
-      width: 0%;
-    }
-
     .main-music-card.not-playing .progress-handle {
-      animation: none;
-      left: 0%;
-    }
-
-    .main-music-card.not-playing .current-time::before,
-    .main-music-card.not-playing .remaining-time::before {
-      animation: none;
-      content: "0:00";
+      opacity: 0.4;
     }
 
     #play-toggle:checked ~ .playback-controls .play-pause-button .icon-play {
@@ -919,16 +881,6 @@
     }
     #play-toggle:not(:checked) ~ .playback-controls .play-pause-button .icon-pause {
       display: block;
-    }
-
-    @keyframes progressAnim {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-
-    @keyframes handleAnim {
-      from { left: 0%; }
-      to { left: 100%; }
     }
 
     .social-links {
@@ -1537,7 +1489,7 @@
                 <p id="discordStatusText" class="live-discord-status">Connecting to Discord...</p>
               </div>
 
- 
+
               <div id="musicPanel" class="toggle-panel hidden">
                 <div class="main-music-card not-playing" id="musicCard">
                   <input type="checkbox" id="play-toggle" hidden="" checked />
@@ -1545,8 +1497,8 @@
                   <div class="track-info">
                     <div class="album-art" id="spotifyAlbumArt"></div>
                     <div class="track-details">
-                      <div class="track-title" id="spotifyTrackTitle">Not Playing</div>
-                      <div class="artist-name" id="spotifyArtistName">Kainy isn't listening right now</div>
+                      <div class="track-title" id="spotifyTrackTitle">Nothing</div>
+                      <div class="artist-name" id="spotifyArtistName">Not listening right now</div>
                     </div>
                     <div class="volume-bars">
                       <div class="bar" style="--delay:0s"></div>
@@ -1562,12 +1514,12 @@
 
                   <div class="playback-controls">
                     <div class="time-info">
-                      <span class="current-time"></span>
-                      <span class="remaining-time"></span>
+                      <span class="current-time" id="spotifyCurrentTime">0:00</span>
+                      <span class="remaining-time" id="spotifyTotalTime">0:00</span>
                     </div>
                     <div class="progress-bar">
-                      <div class="progress-fill"></div>
-                      <div class="progress-handle"></div>
+                      <div class="progress-fill" id="spotifyProgressFill"></div>
+                      <div class="progress-handle" id="spotifyProgressHandle"></div>
                     </div>
                     <div class="button-row">
                       <div class="main-control-btns">
@@ -1603,10 +1555,10 @@
               </div>
             </div>
 
-            <!-- Mc lever -->
+
             <div class="lever-stage">
               <label class="switch">
-                <div class="simple-text">Music!</div>
+                <div class="simple-text">Click me!</div>
                 <input type="checkbox" id="leverSwitchInput" />
                 <span class="slider">
                   <div class="lever-stick">
@@ -1904,15 +1856,19 @@
   </div> 
 
   <script>
-    // Fill the entire screen with Matrix code. Weebly did not like this
+    // Filled the screen with matrix characters (sized dynamically to avoid DOM lag)
     (function fillMatrix() {
       const matrixBg = document.getElementById('matrixBg');
       if (!matrixBg) return;
       const baseSpans = matrixBg.innerHTML;
-      matrixBg.innerHTML = baseSpans.repeat(34);
+      const cols = Math.ceil(window.innerWidth / 48);
+      const rows = Math.ceil((window.innerHeight * 1.25) / 48);
+      const neededSpans = cols * rows;
+      const repeats = Math.max(8, Math.min(18, Math.ceil(neededSpans / 71)));
+      matrixBg.innerHTML = baseSpans.repeat(repeats);
     })();
 
-    // Parallax scrolling for background and matrix layer
+
     (function initParallax() {
       const parallaxBg = document.getElementById('parallaxBg');
       const matrixBg = document.getElementById('matrixBg');
@@ -1937,7 +1893,7 @@
       }, { passive: true });
     })();
 
- 
+
     (function initGamesBtn() {
       const toggleBtn = document.getElementById('toggleGamesBtn');
       const gamesList = document.getElementById('gamesList');
@@ -1949,7 +1905,7 @@
       });
     })();
 
-   
+
     (function initLeverSwitch() {
       const leverInput = document.getElementById('leverSwitchInput');
       const statusPanel = document.getElementById('statusPanel');
@@ -1968,7 +1924,7 @@
       });
     })();
 
-   
+
     (function initLanyard() {
       const USER_ID = "1389758746665685005";
       const statusTextEl = document.getElementById('discordStatusText');
@@ -1978,33 +1934,93 @@
       const albumArtEl = document.getElementById('spotifyAlbumArt');
       const trackTitleEl = document.getElementById('spotifyTrackTitle');
       const artistNameEl = document.getElementById('spotifyArtistName');
+      const currentTimeEl = document.getElementById('spotifyCurrentTime');
+      const totalTimeEl = document.getElementById('spotifyTotalTime');
+      const progressFillEl = document.getElementById('spotifyProgressFill');
+      const progressHandleEl = document.getElementById('spotifyProgressHandle');
+
+      let activeSpotifyTimestamps = null;
 
       const THEMES = {
         online: {
           color: "#39ff14",
           glow: "rgba(57, 255, 20, 0.8)",
           dim: "rgba(57, 255, 20, 0.3)",
-          fallbackText: "Online • Yes it's me Kainy"
+          label: "Online"
         },
         idle: {
           color: "#ffa500",
           glow: "rgba(255, 165, 0, 0.8)",
           dim: "rgba(255, 165, 0, 0.3)",
-          fallbackText: "Idle / Away • Yes it's me Kainy"
+          label: "Idle / Away"
         },
         dnd: {
           color: "#ff2a2a",
           glow: "rgba(255, 42, 42, 0.85)",
           dim: "rgba(255, 42, 42, 0.35)",
-          fallbackText: "Do Not Disturb • Yes it's me Kainy"
+          label: "Do Not Disturb"
         },
         offline: {
           color: "#1e90ff",
           glow: "rgba(30, 144, 255, 0.7)",
           dim: "rgba(30, 144, 255, 0.3)",
-          fallbackText: "I'm touching grass unlike you >:)"
+          label: "Offline",
+          fallbackText: "Offline • I'm touching grass unlike you >:)"
         }
       };
+
+      function formatTime(ms) {
+        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+
+      function updateSpotifyProgress() {
+        if (!activeSpotifyTimestamps || !activeSpotifyTimestamps.start || !activeSpotifyTimestamps.end) {
+          if (currentTimeEl) currentTimeEl.textContent = "0:00";
+          if (totalTimeEl) totalTimeEl.textContent = "0:00";
+          if (progressFillEl) progressFillEl.style.width = "0%";
+          if (progressHandleEl) progressHandleEl.style.left = "0%";
+          return;
+        }
+
+   
+        if (playToggleEl && playToggleEl.checked) return;
+
+        const now = Date.now();
+        const start = activeSpotifyTimestamps.start;
+        const end = activeSpotifyTimestamps.end;
+        const duration = Math.max(1, end - start);
+        const elapsed = Math.min(duration, Math.max(0, now - start));
+        const percent = Math.min(100, Math.max(0, (elapsed / duration) * 100));
+
+        if (currentTimeEl) currentTimeEl.textContent = formatTime(elapsed);
+        if (totalTimeEl) totalTimeEl.textContent = formatTime(duration);
+        if (progressFillEl) progressFillEl.style.width = `${percent}%`;
+        if (progressHandleEl) progressHandleEl.style.left = `${percent}%`;
+      }
+
+      // Update song stats every second
+      setInterval(updateSpotifyProgress, 1000);
+
+
+      function getLiveDiscordStatusText(data, status, theme) {
+        if (status === 'offline') {
+          return theme.fallbackText;
+        }
+
+        const activities = Array.isArray(data.activities) ? data.activities : [];
+        const customStatus = activities.find(a => a.type === 4);
+
+        if (customStatus && (customStatus.state || (customStatus.emoji && customStatus.emoji.name))) {
+          const emoji = customStatus.emoji && customStatus.emoji.name ? `${customStatus.emoji.name} ` : '';
+          const stateText = customStatus.state || '';
+          return `${theme.label} • ${emoji}${stateText}`.trim();
+        }
+
+        return theme.label;
+      }
 
       function applyPresence(data) {
         if (!data) return;
@@ -2013,34 +2029,21 @@
         const theme = THEMES[status] || THEMES.offline;
         const root = document.documentElement;
 
-  
+        // Apply neon colors across matrix, cards, and borders
         root.style.setProperty('--status-color', theme.color);
         root.style.setProperty('--status-glow', theme.glow);
         root.style.setProperty('--blue', theme.color);
         root.style.setProperty('--blue-dim', theme.dim);
 
- 
+        // Update Avatar if changed on discord
         if (data.discord_user && data.discord_user.avatar && avatarImgEl) {
           const ext = data.discord_user.avatar.startsWith('a_') ? 'gif' : 'webp';
           avatarImgEl.src = `https://cdn.discordapp.com/avatars/${USER_ID}/${data.discord_user.avatar}.${ext}?size=1024`;
         }
 
-  
-        if (statusTextEl) {
-          const activities = Array.isArray(data.activities) ? data.activities : [];
-          const customStatus = activities.find(a => a.type === 4);
-          const gameActivity = activities.find(a => a.type === 0);
 
-          if (status === 'offline') {
-            statusTextEl.textContent = theme.fallbackText;
-          } else if (customStatus && customStatus.state) {
-            const emoji = customStatus.emoji && customStatus.emoji.name ? `${customStatus.emoji.name} ` : '';
-            statusTextEl.textContent = `${emoji}${customStatus.state}`;
-          } else if (gameActivity && gameActivity.name) {
-            statusTextEl.textContent = `Playing ${gameActivity.name}`;
-          } else {
-            statusTextEl.textContent = theme.fallbackText;
-          }
+        if (statusTextEl) {
+          statusTextEl.textContent = getLiveDiscordStatusText(data, status, theme);
         }
 
 
@@ -2052,16 +2055,20 @@
           if (albumArtEl && data.spotify.album_art_url) {
             albumArtEl.style.backgroundImage = `url('${data.spotify.album_art_url}')`;
           }
+          activeSpotifyTimestamps = data.spotify.timestamps || null;
+          updateSpotifyProgress();
         } else {
+          activeSpotifyTimestamps = null;
           if (musicCardEl) musicCardEl.classList.add('not-playing');
           if (playToggleEl) playToggleEl.checked = true;
           if (trackTitleEl) trackTitleEl.textContent = "Nothing";
           if (artistNameEl) artistNameEl.textContent = "Not listening right now";
           if (albumArtEl) albumArtEl.style.backgroundImage = "none";
+          updateSpotifyProgress();
         }
       }
 
-  
+      // Initial REST Fetch
       fetch(`https://api.lanyard.rest/v1/users/${USER_ID}`)
         .then(res => res.json())
         .then(json => {
@@ -2071,7 +2078,7 @@
         })
         .catch(err => console.error("Lanyard fetch error:", err));
 
-      // Live stats via lanyard <3
+      // Live WebSocket Connection
       function connectSocket() {
         let heartbeat;
         const ws = new WebSocket("wss://api.lanyard.rest/socket");
