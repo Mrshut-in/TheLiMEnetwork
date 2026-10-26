@@ -2,278 +2,529 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta property="og:image" content="./favicon.png" />
+  <meta property="og:title" content="Savageangel7749 • Profile">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LiME Network • Staff Profile</title>
+  <title>Savageangel7749 • Profile</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
     :root {
-      --lime: #39ff14;
-      --redneon: #ff2d55;        /* Color stuff, like ya red Savage? */
-      --dark: #232323;
-      --light: #ffffff;
-      --orange: #ff9500;
+      --redneon: #ff1744;
+      --redblood: #99001a;
+      --purple-dark: #240046;
+      --purple-glow: #7b2cbf;
+      --purple-hint: #3c096c;
+      --black-bg: #07040a;
+      --card-dark: rgba(10, 5, 14, 0.92);
+      --light: #f8f0fc;
     }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Press Start 2P', system-ui;
-      background: transparent !important;
+      /* Made by OpticEarth B) */
+      background: var(--black-bg) url('SavBack.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: var(--light);
       line-height: 1.6;
       min-height: 100vh;
-      padding: 20px;
+      padding: 90px 20px 40px;
       overflow-x: hidden;
     }
+
+
+    .layout-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+  
     .profile-container {
-      max-width: 1100px;           /* Hot fix */
-      margin: 40px auto;
-      background: rgba(35,35,35,0.98);
-      border: 6px solid var(--redneon);
-      border-radius: 30px;
-      box-shadow: 0 0 80px rgba(255, 45, 85, 0.65);
+      width: 100%;
+      background: var(--card-dark);
+      border: 3px solid var(--redneon);
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6),
+                  0 0 50px rgba(255, 23, 68, 0.45),
+                  0 0 80px rgba(123, 44, 191, 0.3),
+                  inset 0 0 35px rgba(60, 9, 108, 0.45);
       overflow: hidden;
       position: relative;
     }
-    /* === pfp === */
+
+
+    .pattern-container {
+      position: absolute;
+      inset: -1em;
+      z-index: 0;
+      opacity: 0.55;
+      --c: 7px;
+      background-color: #050108;
+      background-image:
+        radial-gradient(
+          circle at 50% 50%,
+          #0000 1.5px,
+          #050108 0 var(--c),
+          #0000 var(--c)
+        ),
+        radial-gradient(
+          circle at 50% 50%,
+          #0000 1.5px,
+          #050108 0 var(--c),
+          #0000 var(--c)
+        ),
+        radial-gradient(circle at 50% 50%, #ff1744, #ff174400 60%),
+        radial-gradient(circle at 50% 50%, #4a0e4e, #4a0e4e00 60%),
+        radial-gradient(circle at 50% 50%, #8a001a, #8a001a00 60%),
+        radial-gradient(ellipse at 50% 50%, #3c096c, #3c096c00 60%);
+      background-size:
+        12px 20.7846097px,
+        12px 20.7846097px,
+        200% 200%,
+        200% 200%,
+        200% 200%,
+        200% 20.7846097px;
+      --p: 0px 0px, 6px 10.39230485px;
+      background-position:
+        var(--p),
+        0% 0%,
+        0% 0%,
+        0% 0px;
+      animation:
+        wee 40s linear infinite,
+        darkPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes darkPulse {
+      0% {
+        filter: hue-rotate(-10deg) brightness(0.9);
+      }
+      100% {
+        filter: hue-rotate(12deg) brightness(1.15);
+      }
+    }
+
+    @keyframes wee {
+      0% {
+        background-position:
+          var(--p),
+          800% 400%,
+          1000% -400%,
+          -1200% -600%,
+          400% 41.5692194px;
+      }
+      to {
+        background-position:
+          var(--p),
+          0% 0%,
+          0% 0%,
+          0% 0%,
+          0% 0%;
+      }
+    }
+
+
     .hero {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
-      gap: 60px;
-      padding: 70px 60px;
-      background: linear-gradient(90deg, #111, #1e1e1e);
-      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 34px 40px;
+      background: linear-gradient(
+        90deg,
+        rgba(7, 4, 10, 0.88) 0%,
+        rgba(24, 5, 38, 0.65) 55%,
+        rgba(10, 4, 15, 0.85) 100%
+      );
     }
+
+    .hero-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .title {
+      color: var(--redneon);
+      font-size: clamp(1.3rem, 2.5vw, 2.2rem);
+      letter-spacing: 3px;
+      text-shadow: 0 0 25px var(--redneon),
+                   0 0 45px var(--purple-glow);
+      margin-bottom: 14px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .subtitle {
+      font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+      color: #e0b0ff;
+      margin-bottom: 18px;
+      text-shadow: 0 0 15px var(--purple-glow),
+                   0 0 25px var(--redneon);
+    }
+
+    .hero-text p {
+      font-size: 0.95rem;
+      max-width: 500px;
+      color: #ffccd5;
+      text-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+    }
+
+   
     .avatar-container {
       flex-shrink: 0;
       position: relative;
     }
+
     .avatar {
-      width: 260px;
-      height: 260px;
-      border: 12px solid var(--redneon);
+      width: 200px;
+      height: 200px;
+      border: 6px solid var(--redneon);
       border-radius: 50%;
-      box-shadow: 0 0 70px rgba(57,255,20,0.85),
-                  0 0 45px rgba(255,45,85,0.75),
-                  inset 0 0 40px rgba(57,255,20,0.5);
       overflow: hidden;
       background: #000;
       animation: glowShift 5s infinite ease-in-out;
     }
+
     .avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .avatar-badge {
       position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: var(--orange);
-      color: #111;
-      font-size: 0.85em;
-      padding: 6px 18px;
+      bottom: 5px;
+      right: 0px;
+      background: linear-gradient(135deg, var(--redneon), var(--purple-hint));
+      color: #fff;
+      font-size: 0.72em;
+      padding: 6px 16px;
       border-radius: 30px;
+      border: 2px solid #ff758f;
       font-weight: bold;
-      box-shadow: 0 0 25px var(--orange);
+      box-shadow: 0 0 20px var(--redneon),
+                  0 0 30px var(--purple-glow);
       letter-spacing: 2px;
-    }
-    .hero-text {
-      flex: 1;
-      min-width: 320px;
-    }
-    .title {
-      color: var(--lime);
-      font-size: 2.9em;            /* Small hotfix */
-      letter-spacing: 7px;
-      text-shadow: 0 0 35px var(--lime);
-      margin-bottom: 12px;
-      line-height: 1.05;
-    }
-    .subtitle {
-      font-size: 1.55em;
-      color: #aaffcc;
-      margin-bottom: 30px;
-      text-shadow: 0 0 20px var(--lime);
-    }
-    .hero-text p {
-      font-size: 1.25em;
-      max-width: 520px;
-      color: #ccffdd;
-      text-shadow: 0 0 10px rgba(57,255,20,0.4);
-    }
-    /* === Main I think? === */
-    .content {
-      padding: 50px 40px;
-    }
-    h2 {
-      color: var(--lime);
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 12px var(--lime);
-    }
-    p {
-      font-size: 1.15em;
-      margin-bottom: 28px;
-      color: #f0fff0;
-      text-shadow: 0 0 6px rgba(57,255,20,0.3);
-    }
-    .section {
-      margin-bottom: 50px;
-    }
-    ul {
-      color:#f0fff0;
-      padding-left: 30px;
-      margin-bottom: 25px;
-      font-size: 1.1em;
-    }
-    li {
-      margin-bottom: 12px;
-    }
-    .footer {
-      background: #1a1a1a;
-      padding: 30px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #aaa;
-      border-top: 3px solid var(--redneon);
+      transform: rotate(8deg);
+      white-space: nowrap;
     }
 
-    /* ── New colors ── */
     @keyframes glowShift {
       0%, 100% {
-        box-shadow: 0 0 70px rgba(57,255,20,0.85),
-                    0 0 45px rgba(255,45,85,0.75),
-                    inset 0 0 40px rgba(57,255,20,0.5);
+        box-shadow: 0 0 45px rgba(255, 23, 68, 0.85),
+                    0 0 35px rgba(123, 44, 191, 0.65),
+                    inset 0 0 30px rgba(255, 23, 68, 0.5);
       }
       50% {
-        box-shadow: 0 0 115px rgba(57,255,20,1),
-                    0 0 70px rgba(255,45,85,0.95),
-                    inset 0 0 55px rgba(255,45,85,0.6);
+        box-shadow: 0 0 80px rgba(255, 23, 68, 1),
+                    0 0 60px rgba(123, 44, 191, 0.95),
+                    inset 0 0 45px rgba(60, 9, 108, 0.8);
       }
     }
 
-    /* ── Improved mobile layout, I hope it looks good ── */
-    @media (max-width: 900px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 60px 40px;
-        gap: 40px;
-      }
-      .avatar {
-        width: 220px;
-        height: 220px;
-      }
-      .title {
-        font-size: 2.45em;
-      }
-      .avatar-badge {
-        font-size: 0.9em;
-        padding: 7px 20px;
-        bottom: 10px;
-        right: 10px;
-      }
+
+    .cards-wrapper {
+      padding: 0;
+      position: relative;
+      z-index: 1;
     }
-    @media (max-width: 600px) {
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 290px 290px;
+      grid-template-areas:
+        "bio favs"
+        "bio play";
+      gap: 30px;
+      width: 100%;
+    }
+
+    .grid-bio { grid-area: bio; }
+    .grid-favs { grid-area: favs; }
+    .grid-play { grid-area: play; }
+
+  
+    .card {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, rgba(15, 5, 20, 0.95), rgba(35, 4, 22, 0.92));
+      border: 3px solid var(--redneon);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border-radius: 16px;
+      box-shadow: 0px 0px 25px 4px rgba(255, 23, 68, 0.3),
+                  0px 10px 25px rgba(0, 0, 0, 0.8),
+                  inset 0 0 25px rgba(60, 9, 108, 0.45);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card:hover {
+      border-radius: 20px;
+      cursor: pointer;
+      transform: scale(1.03);
+      border-color: #c77dff;
+      box-shadow: 0px 0px 35px 8px rgba(255, 23, 68, 0.6),
+                  0px 0px 55px 10px rgba(123, 44, 191, 0.55);
+      background: linear-gradient(145deg, rgba(28, 4, 45, 0.98), rgba(65, 5, 30, 0.96));
+      z-index: 10;
+    }
+
+    .first-content {
+      height: 100%;
+      width: 100%;
+      transition: all 0.4s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      opacity: 1;
+      border-radius: 15px;
+      background: radial-gradient(circle at center, rgba(255, 23, 68, 0.14), transparent 70%);
+    }
+
+    .first-content span {
+      color: var(--redneon);
+      font-size: 20px; 
+      line-height: 1.5;
+      text-shadow: 0 0 18px var(--redneon),
+                   0 0 30px var(--purple-glow);
+    }
+
+    .first-content .hint {
+      margin-top: 18px;
+      font-size: 0.65rem;
+      color: #c77dff;
+      opacity: 0.8;
+      letter-spacing: 2px;
+    }
+
+    .card:hover .first-content {
+      height: 0px;
+      opacity: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .second-content {
+      height: 0%;
+      width: 100%;
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: left;
+      padding: 0 35px;
+      border-radius: 15px;
+      transition: all 0.4s;
+      font-size: 0px;
+      transform: rotate(90deg) scale(-1);
+      overflow: hidden;
+    }
+
+    .card:hover .second-content {
+      opacity: 1;
+      height: 100%;
+      padding: 30px 35px;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      transform: rotate(0deg) scale(1);
+    }
+
+ 
+    .grid-bio.card:hover .second-content {
+      font-size: 0.92rem;
+      line-height: 1.95;
+      padding: 45px 40px;
+    }
+
+    .second-content p {
+      margin-bottom: 18px;
+      color: #ffe5ec;
+      text-shadow: 0 0 8px rgba(255, 23, 68, 0.4);
+    }
+
+    .second-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .second-content ul {
+      list-style: none;
+      padding-left: 0;
+      width: 100%;
+    }
+
+    .second-content li {
+      margin-bottom: 12px;
+      color: #f3d9fa;
+      text-shadow: 0 0 8px rgba(123, 44, 191, 0.6);
+    }
+
+    .second-content li:last-child {
+      margin-bottom: 0;
+    }
+
+    .highlight-red {
+      color: var(--redneon);
+      text-shadow: 0 0 12px var(--redneon);
+    }
+
+    .highlight-purple {
+      color: #e0aaff;
+      text-shadow: 0 0 12px var(--purple-glow);
+    }
+
+ 
+    @media (max-width: 900px) {
       body {
-        padding: 15px 12px;
-      }
-      .profile-container {
-        border-width: 5px;
-        border-radius: 22px;
-        margin: 15px auto;
+        padding: 30px 10px 40px;
       }
       .hero {
-        padding: 45px 25px;
+        flex-direction: column-reverse;
+        text-align: center;
         gap: 30px;
       }
-      .avatar {
-        width: 190px;
-        height: 190px;
+      .hero-text p {
+        margin: 0 auto;
       }
-      .avatar-badge {
-        font-size: 0.82em;
-        padding: 6px 18px;
-        bottom: 8px;
-        right: 8px;
+      .cards-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 300px 300px 300px;
+        grid-template-areas:
+          "bio"
+          "favs"
+          "play";
+      }
+      .grid-bio.card:hover .second-content {
+        font-size: 0.82rem;
+        line-height: 1.75;
+        padding: 25px 30px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 35px 16px 28px 16px;
+        gap: 24px;
+      }
+      .avatar {
+        width: 160px;
+        height: 160px;
       }
       .title {
-        font-size: 2.15em;
-        letter-spacing: 5px;
+        font-size: 1.25rem;
+        letter-spacing: 2px;
       }
-      .content {
-        padding: 40px 25px;
+      .cards-grid {
+        grid-template-rows: 320px 320px 320px;
       }
-      h2 {
-        font-size: 1.65em;
+      .card:hover {
+        transform: scale(1.01);
       }
-      p, ul, li {
-        font-size: 1.05em;
-      }
-      .footer {
-        padding: 25px 20px;
-        font-size: 0.82em;
+      .card:hover .second-content {
+        padding: 22px 20px;
+        font-size: 0.72rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="profile-container">
-    <!-- Pfp 2 ??? -->
-    <div class="hero">
-      <div class="hero-text">
-        <h1 class="title">Savageangel7749</h1>
-        <div class="subtitle">Co-Owner/Head Dev • LiME Network</div>
-        <p>Your favorite bug fixer</p>
-      </div>
-      <div class="avatar-container">
-        <div class="avatar">
-          <img src="https://cdn.discordapp.com/avatars/776526576728539206/d5853ed39f8923bd6bf49aa81e5d6134.webp?size=1536" alt="Savageangel7749 Avatar">
+
+  <div class="layout-container">
+ 
+    <div class="profile-container">
+ 
+      <div class="pattern-container"></div>
+
+      <div class="hero">
+        <div class="hero-text">
+          <h1 class="title">Savageangel7749</h1>
+          <div class="subtitle">Co. Owner • Head-Dev</div>
+          <p>Your favorite bug fixer</p>
         </div>
-        <div class="avatar-badge">DEVELOPER</div>
+
+        <div class="avatar-container">
+          <div class="avatar">
+            <img src="https://cdn.discordapp.com/avatars/776526576728539206/d5853ed39f8923bd6bf49aa81e5d6134.webp?size=1536" alt="Savageangel7749 Avatar">
+          </div>
+          <div class="avatar-badge">DEVELOPER</div>
+        </div>
       </div>
     </div>
-    <div class="content">
-      <div class="section">
-        <h2>WHO I AM</h2>
-        <p>
-          Hey everyone! I'm <strong style="color:#39ff14;">Savageangel7749</strong>, Co-Owner &amp; Head-Developer of LiME Network.
-          I help run the server and build all the cool stuff behind the scenes.
-        </p>
-        <p>
-          From coding new features to keeping everything running smooth, I'm all in on making LiME the best community possible.
-        </p>
+
+    <!-- Bio cards -->
+    <div class="cards-wrapper">
+      <div class="cards-grid">
+
+   
+        <div class="card grid-bio">
+          <div class="first-content">
+            <span>WHO I AM</span>
+            <div class="hint">[ Bio 1]</div>
+          </div>
+          <div class="second-content">
+            <div>
+              <p>
+                Hey everyone! I'm <strong class="highlight-red">Savageangel7749</strong>, Co-Owner &amp; Head-Developer of LiME Network. I help run the server and build all the cool stuff behind the scenes.
+              </p>
+              <p>
+                From coding new features to keeping everything running smooth, I'm all in on making LiME the best community possible.
+              </p>
+            </div>
+          </div>
+        </div>
+
+ 
+        <div class="card grid-favs">
+          <div class="first-content">
+            <span>WHAT I DO AS HEAD DEV</span>
+            <div class="hint">[ Bio 2]</div>
+          </div>
+          <div class="second-content">
+            <ul>
+              <li>🔥 Leading most development &amp; coding for the server</li>
+              <li>🔥 Creating new features, minigames, and updates</li>
+              <li>🔥 Keeping the server stable and bug-free</li>
+              <li>🔥 Working with the team to turn ideas into real content</li>
+            </ul>
+          </div>
+        </div>
+
+  
+        <div class="card grid-play">
+          <div class="first-content">
+            <span>WHY LiME MATTERS TO ME</span>
+            <div class="hint">[ Bio 3 ]</div>
+          </div>
+          <div class="second-content">
+            <div>
+              <p>
+                LiME is a huge part of my life — a place where I met the amazing <strong class="highlight-purple">OpticEarth</strong>, I love that guy.
+              </p>
+              <p>
+                It's more than just a server; it's a project I care about deeply and want to keep growing.
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div class="section">
-        <h2>WHAT I DO AS HEAD DEVELOPER</h2>
-        <p>
-          As Head Developer my main job is:
-        </p>
-        <ul>
-          <li>✅ Leading most development and coding for the server</li>
-          <li>✅ Creating new features, minigames, and updates</li>
-          <li>✅ Keeping the server stable and bug-free</li>
-          <li>✅ Working with the team to turn ideas into real content</li>
-        </ul>
-      </div>
-      <div class="section">
-        <h2>WHY IS LiME IMPORTANT TO ME</h2>
-        <p>
-          LiME is a huge part of my life — a place where I met the amazing OpticEarth, I love that guy.
-        </p>
-        <p>
-          It's more than just a server; it's a project I care about deeply and want to keep growing.
-        </p>
-      </div>
-    </div>
-    <!-- Bottom -->
-    <div class="footer">
-      © LiME Network • 2026 • Independent &amp; Proudly Following Minecraft Usage Guidelines<br>
-      <span style="color:#39ff14;">Not affiliated with Mojang or Microsoft • Just here to vibe □</span>
     </div>
   </div>
+
 </body>
 </html>
