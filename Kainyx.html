@@ -376,18 +376,94 @@
       transition: border-color 0.4s ease;
     }
 
-      /* Remake of Savages player but minecraft themed */
+/* Remake of Savages player but minecraft themed */
     .mc-player-slot {
       position: relative;
       width: 340px;
-      min-height: 145px;
+      min-height: 155px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      z-index: 40;
+      pointer-events: none; /* Only triggers when hovering the peering disc */
+    }
+
+    /* Big disc peering from the right side of the profile card */
+    .mc-peering-wrap {
+      position: absolute;
+      right: -40px; 
+      top: 50%;
+      transform: translateY(-50%);
+      width: 115px;
+      height: 165px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border-right: 3px solid var(--status-color);
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 45;
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease;
+    }
+
+    .mc-peering-disc {
+      position: relative;
+      width: 145px;
+      height: 145px;
+      margin-left: 24px; 
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      z-index: 40;
+      filter: drop-shadow(-4px 4px 12px rgba(0, 0, 0, 0.85))
+              drop-shadow(0 0 14px var(--status-glow));
     }
 
+    .mc-peering-disc .mc-disc-svg {
+      width: 145px;
+      height: 145px;
+    }
+
+    .mc-peering-disc .mc-disc-cover {
+      width: 140px;
+      height: 140px;
+    }
+
+    .mc-peering-disc .mc-disc-hole {
+      width: 28px;
+      height: 28px;
+    }
+
+    .mc-disc-cover {
+      display: none;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #101018;
+      box-shadow: 0 0 0 2px var(--status-color),
+                  0 4px 10px rgba(0, 0, 0, 0.9),
+                  0 0 12px var(--status-glow);
+      animation: mcDiscSpin 3.2s linear infinite;
+    }
+
+    .mc-disc-hole {
+      display: none;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #05050a;
+      border: 3px solid var(--status-color);
+      box-shadow: inset 0 0 6px #000, 0 0 8px var(--status-glow);
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    /* Full Jukebox (hidden until peering disc is hovered) */
     .mc-jukebox {
       position: relative;
       width: 340px;
@@ -403,8 +479,30 @@
       gap: 14px;
       user-select: none;
       font-family: 'Inter', system-ui, sans-serif;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.4s ease;
+      opacity: 0;
+      transform: translateX(45px) scale(0.88);
+      pointer-events: none;
+      transition: opacity 0.32s ease,
+                  transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.3s ease,
+                  border-color 0.4s ease;
       overflow: visible;
+    }
+
+    /* Hover State: Peering disc disappears & jukebox pops out */
+    .mc-player-slot:hover .mc-peering-wrap {
+      opacity: 0;
+      transform: translate(45px, -50%) scale(0.65);
+      pointer-events: none;
+    }
+
+    .mc-player-slot:hover .mc-jukebox {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.9),
+                  0 0 30px var(--status-glow),
+                  inset 0 0 22px var(--blue-dim);
     }
 
     .mc-jukebox::before {
@@ -419,13 +517,6 @@
       border-radius: 4px;
       box-shadow: 0 0 10px var(--status-glow);
       transition: border-color 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .mc-jukebox:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.9),
-                  0 0 30px var(--status-glow),
-                  inset 0 0 22px var(--blue-dim);
     }
 
     .mc-disc-bay {
@@ -488,7 +579,7 @@
       box-shadow: 0 0 8px var(--status-color);
     }
 
-    /* Floating jukebox notes */
+    /* Floating music notes */
     .mc-note {
       position: absolute;
       font-family: 'Press Start 2P', monospace;
@@ -546,7 +637,6 @@
       text-transform: uppercase;
     }
 
-    /* From old musc player */
     .mc-eq {
       display: flex;
       align-items: flex-end;
@@ -599,7 +689,6 @@
       text-overflow: ellipsis;
     }
 
-    /* interactive like Savages */
     .mc-progress-row {
       display: flex;
       align-items: center;
@@ -637,11 +726,10 @@
       height: 10px;
       background: #fff;
       border: 2px solid var(--status-color);
-      border-radius: 2px; /* Pixel-style square thumb */
+      border-radius: 2px;
       box-shadow: 0 0 8px var(--status-color);
     }
 
-    /* Controls row */
     .mc-controls {
       display: flex;
       align-items: center;
@@ -1370,15 +1458,31 @@
               </div>
             </div>
 
-            <div class="mc-player-slot">
+<div class="mc-player-slot">
+              <!-- Big peering disc on the right edge of the profile -->
+              <div class="mc-peering-wrap" title="Hover to open Jukebox">
+                <span class="mc-note n1">♪</span>
+                <span class="mc-note n2">♫</span>
+                <div class="mc-peering-disc">
+                  <svg class="mc-disc-svg" id="peeringDiscSvg">
+                    <use href="#minecraft-music-disc"></use>
+                  </svg>
+                  <img class="mc-disc-cover" id="peeringDiscCover" src="" alt="Album Cover" />
+                  <div class="mc-disc-hole" id="peeringDiscHole"></div>
+                </div>
+              </div>
+
+              <!-- Full jukebox that pops out on hover -->
               <div class="mc-jukebox" id="mc-spotify-player">
 
                 <div class="mc-disc-bay">
                   <span class="mc-note n1">♪</span>
                   <span class="mc-note n2">♫</span>
-                  <svg class="mc-disc-svg">
+                  <svg class="mc-disc-svg" id="jukeboxDiscSvg">
                     <use href="#minecraft-music-disc"></use>
                   </svg>
+                  <img class="mc-disc-cover" id="jukeboxDiscCover" src="" alt="Album Cover" />
+                  <div class="mc-disc-hole" id="jukeboxDiscHole"></div>
                   <div class="mc-tonearm"></div>
                 </div>
 
@@ -1393,7 +1497,7 @@
 
                   <div class="mc-song-meta">
                     <p class="mc-song-title" id="spotifyTrackTitle">Nothing</p>
-                    <p class="mc-song-artist" id="spotifyArtistName">No muisc atm</p>
+                    <p class="mc-song-artist" id="spotifyArtistName">No music atm</p>
                   </div>
 
                   <div class="mc-progress-row">
@@ -1748,7 +1852,7 @@
       });
     })();
 
-    (function initLanyard() {
+(function initLanyard() {
       const USER_ID = "1389758746665685005";
       const statusTextEl = document.getElementById('discordStatusText');
       const avatarImgEl = document.getElementById('userAvatar');
@@ -1760,6 +1864,13 @@
       const playStatusEl = document.getElementById('mcPlayStatus');
       const playBtnEl = document.getElementById('mcPlayBtn');
 
+      const peeringDiscSvg = document.getElementById('peeringDiscSvg');
+      const peeringDiscCover = document.getElementById('peeringDiscCover');
+      const peeringDiscHole = document.getElementById('peeringDiscHole');
+      const jukeboxDiscSvg = document.getElementById('jukeboxDiscSvg');
+      const jukeboxDiscCover = document.getElementById('jukeboxDiscCover');
+      const jukeboxDiscHole = document.getElementById('jukeboxDiscHole');
+
       let activeSpotifyTimestamps = null;
       let activeTrackId = null;
 
@@ -1770,6 +1881,30 @@
             window.open(`https://open.spotify.com/track/${activeTrackId}`, '_blank');
           }
         });
+      }
+
+      function setDiscArtwork(albumArtUrl) {
+        if (albumArtUrl) {
+          if (peeringDiscCover) {
+            peeringDiscCover.src = albumArtUrl;
+            peeringDiscCover.style.display = 'block';
+          }
+          if (jukeboxDiscCover) {
+            jukeboxDiscCover.src = albumArtUrl;
+            jukeboxDiscCover.style.display = 'block';
+          }
+          if (peeringDiscHole) peeringDiscHole.style.display = 'block';
+          if (jukeboxDiscHole) jukeboxDiscHole.style.display = 'block';
+          if (peeringDiscSvg) peeringDiscSvg.style.display = 'none';
+          if (jukeboxDiscSvg) jukeboxDiscSvg.style.display = 'none';
+        } else {
+          if (peeringDiscCover) peeringDiscCover.style.display = 'none';
+          if (jukeboxDiscCover) jukeboxDiscCover.style.display = 'none';
+          if (peeringDiscHole) peeringDiscHole.style.display = 'none';
+          if (jukeboxDiscHole) jukeboxDiscHole.style.display = 'none';
+          if (peeringDiscSvg) peeringDiscSvg.style.display = 'block';
+          if (jukeboxDiscSvg) jukeboxDiscSvg.style.display = 'block';
+        }
       }
 
       const THEMES = {
@@ -1881,6 +2016,7 @@
           if (playBtnEl) {
             playBtnEl.title = `Listen to ${data.spotify.song} on Spotify`;
           }
+          setDiscArtwork(data.spotify.album_art_url || null);
           activeSpotifyTimestamps = data.spotify.timestamps || null;
           updateSpotifyProgress();
         } else {
@@ -1898,6 +2034,7 @@
           if (playBtnEl) {
             playBtnEl.title = "No song currently playing";
           }
+          setDiscArtwork(null);
           updateSpotifyProgress();
         }
       }
@@ -1948,4 +2085,3 @@
   </script>
 </body>
 </html>
-
