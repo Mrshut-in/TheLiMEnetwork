@@ -292,6 +292,7 @@
       padding: 34px 40px;
       position: relative;
       z-index: 25;
+      overflow: hidden; /* Cleanly cuts off the right half of the big disc at the card border */
     }
 
     .avatar-wrapper {
@@ -376,7 +377,7 @@
       transition: border-color 0.4s ease;
     }
 
-/* Remake of Savages player but minecraft themed */
+    /* Remake of Savages player but minecraft themed */
     .mc-player-slot {
       position: relative;
       width: 340px;
@@ -386,54 +387,59 @@
       justify-content: flex-end;
       flex-shrink: 0;
       z-index: 40;
-      pointer-events: none; /* Only triggers when hovering the peering disc */
+      pointer-events: none;
     }
 
-    /* Big disc peering from the right side of the profile card */
+    /* Big disc peering from the right side of the profile card (cut off in the center, no box) */
     .mc-peering-wrap {
       position: absolute;
-      right: -40px; 
+      right: -125px; /* Centers the 170px disc on the card's right edge */
       top: 50%;
       transform: translateY(-50%);
-      width: 115px;
-      height: 165px;
-      overflow: hidden;
+      width: 170px;
+      height: 170px;
+      overflow: visible;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      border-right: 3px solid var(--status-color);
+      justify-content: center;
+      border: none;
+      background: transparent;
+      box-shadow: none;
       pointer-events: auto;
       cursor: pointer;
-      z-index: 45;
-      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease;
+      z-index: 5;
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-.mc-peering-disc {
+    .mc-peering-disc {
       position: relative;
-      width: 145px;
-      height: 145px;
-      margin-left: 24px; 
+      width: 170px;
+      height: 170px;
+      margin-left: 0;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      filter: drop-shadow(-4px 4px 12px rgba(0, 0, 0, 0.85)); /* No glow fix */
+      filter: drop-shadow(-6px 4px 14px rgba(0, 0, 0, 0.85)); /* Dark shadow only, no glow on big disc */
     }
 
     .mc-peering-disc .mc-disc-svg {
-      width: 145px;
-      height: 145px;
+      width: 170px;
+      height: 170px;
+      filter: none; /* No glow on big disc */
     }
 
     .mc-peering-disc .mc-disc-cover {
-      width: 140px;
-      height: 140px;
+      width: 162px;
+      height: 162px;
+      box-shadow: 0 0 0 2px #1a1a24, 0 4px 12px rgba(0, 0, 0, 0.9); /* No glow on big disc */
     }
 
     .mc-peering-disc .mc-disc-hole {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
+      box-shadow: inset 0 0 6px #000;
     }
 
     .mc-disc-cover {
@@ -462,15 +468,18 @@
       pointer-events: none;
     }
 
-/* Full Jukebox (hidden until peering disc is hovered) */
+    /* Full Jukebox (completely hidden until peering disc is hovered) */
     .mc-jukebox {
       position: relative;
+      z-index: 20;
       width: 340px;
       padding: 14px 16px 14px 14px;
-      border-radius: 20px;
-      background: rgba(10, 12, 20, 0.85); /* Clean, subtle dark glass backdrop */
-      border: 1px solid rgba(255, 255, 255, 0.08); /* Soft minimal border */
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); /* Smooth drop shadow without box-outline glow */
+      border-radius: 18px;
+      background: rgba(12, 14, 22, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--blue-dim);
+      box-shadow: none;
       display: flex;
       align-items: center;
       gap: 14px;
@@ -481,50 +490,34 @@
       pointer-events: none;
       transition: opacity 0.32s ease,
                   transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-                  box-shadow 0.3s ease;
+                  box-shadow 0.3s ease,
+                  border-color 0.3s ease;
       overflow: visible;
     }
 
-    /* Remove the old top accent bar */
-    .mc-jukebox::before {
-      display: none;
+    /* Invisible hover bridge so moving the cursor from the edge to the jukebox never flickers */
+    .mc-jukebox::after {
+      content: "";
+      position: absolute;
+      top: -15px;
+      bottom: -15px;
+      right: -45px;
+      width: 50px;
     }
 
-    /* Hover State: Peering disc disappears & jukebox pops out */
+    /* Hover State: Peering disc disappears & clean jukebox pops out */
     .mc-player-slot:hover .mc-peering-wrap {
       opacity: 0;
       transform: translate(45px, -50%) scale(0.65);
-      pointer-events: none;
     }
 
     .mc-player-slot:hover .mc-jukebox {
       opacity: 1;
       transform: translateX(0) scale(1);
       pointer-events: auto;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85); /* Clean soft shadow on hover, no harsh box glow */
-    }
-
-    .mc-player-slot:hover .mc-jukebox {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-      pointer-events: auto;
-      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.9),
-                  0 0 30px var(--status-glow),
-                  inset 0 0 22px var(--blue-dim);
-    }
-
-    .mc-jukebox::before {
-      content: "";
-      position: absolute;
-      top: -4px;
-      left: 28px;
-      width: 68px;
-      height: 6px;
-      background: #05050a;
-      border: 1.5px solid var(--status-color);
-      border-radius: 4px;
-      box-shadow: 0 0 10px var(--status-glow);
-      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      border-color: var(--status-color);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85),
+                  0 0 20px var(--blue-dim);
     }
 
     .mc-disc-bay {
@@ -548,12 +541,12 @@
       border-color: var(--status-color);
     }
 
-.mc-disc-svg {
+    .mc-disc-svg {
       width: 86px;
       height: 86px;
       shape-rendering: crispEdges;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.9))
-              drop-shadow(0 0 10px var(--status-glow)); /* Adds the glow back to the little disc */
+              drop-shadow(0 0 10px var(--status-glow)); /* Small disc inside jukebox keeps the glow */
       animation: mcDiscSpin 3.2s linear infinite;
       display: block;
     }
@@ -612,15 +605,27 @@
       animation: floatNote 2.6s ease-in-out infinite 1.3s;
     }
 
-    .mc-note.n3 {
-      top: 45px;
+    /* Position notes on the visible left half of the big peering disc */
+    .mc-peering-wrap .mc-note.n1 {
+      top: 6px;
+      left: 28px;
+    }
+
+    .mc-peering-wrap .mc-note.n2 {
+      top: 38px;
       left: -6px;
+      right: auto;
+    }
+
+    .mc-peering-wrap .mc-note.n3 {
+      bottom: 32px;
+      left: -10px;
       animation: floatNote 3.1s ease-in-out infinite 0.6s;
     }
 
-    .mc-note.n4 {
-      bottom: -4px;
-      left: 22px;
+    .mc-peering-wrap .mc-note.n4 {
+      bottom: 4px;
+      left: 26px;
       animation: floatNote 2.4s ease-in-out infinite 1.8s;
     }
 
@@ -785,8 +790,7 @@
       border-color: var(--status-color);
       color: #fff;
     }
-
-    .hidden-input {
+.hidden-input {
       display: none;
     }
 
@@ -1008,7 +1012,7 @@
       opacity: 1;
     }
 
-    /* Bios*/
+    /* Bios */
     .glass-card h2 {
       font-family: 'Press Start 2P', system-ui;
       font-size: 1.1em;
@@ -1422,8 +1426,7 @@
     <div class="matrix-overlay"></div>
 
     <div class="profile-container">
-
-      <div class="glass-card profile-header">
+<div class="glass-card profile-header">
         <div class="avatar-wrapper">
           <img id="userAvatar" src="https://cdn.discordapp.com/avatars/1389758746665685005/0ded0365520eeff22cc219dc15faf9e7.webp?size=1536" alt="Kainyx">
           <div class="avatar-badge">OWNER</div>
@@ -1478,8 +1481,8 @@
               </div>
             </div>
 
-<div class="mc-player-slot">
-            <!-- Big peering disc on the right edge of the profile -->
+            <div class="mc-player-slot">
+              <!-- Big peering disc on the right edge of the profile -->
               <div class="mc-peering-wrap" title="Hover to open Jukebox">
                 <span class="mc-note n1">♪</span>
                 <span class="mc-note n2">♫</span>
@@ -1824,9 +1827,8 @@
 
     </div>
 
-  </div> 
-
-  <script>
+  </div>
+<script>
     // Filled the screen with matrix characters (sized dynamically to avoid DOM lag)
     (function fillMatrix() {
       const matrixBg = document.getElementById('matrixBg');
@@ -1847,7 +1849,7 @@
       function updateParallax() {
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         if (parallaxBg) {
-                    parallaxBg.style.transform = `translate3d(0, ${-scrollY * 0.22}px, 0) scale(1.05)`;
+          parallaxBg.style.transform = `translate3d(0, ${-scrollY * 0.22}px, 0) scale(1.05)`;
         }
         if (matrixBg) {
           matrixBg.style.transform = `translate3d(0, ${-scrollY * 0.10}px, 0)`;
@@ -1874,7 +1876,7 @@
       });
     })();
 
-(function initLanyard() {
+    (function initLanyard() {
       const USER_ID = "1389758746665685005";
       const statusTextEl = document.getElementById('discordStatusText');
       const avatarImgEl = document.getElementById('userAvatar');
