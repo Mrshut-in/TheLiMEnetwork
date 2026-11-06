@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Contact Us • LiME Network</title>
+	
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="LiME Network" />
+	<meta property="og:title" content="Contact Us • LiME Network" />
+	<meta property="og:description" content="Get in touch with the LiME Network team via Discord, email, or phone support." />
+	<meta property="og:image" content="https://limenetwork.dev/favicon.png" />
+	<meta property="og:url" content="https://limenetwork.dev/contact" />
+	<meta name="theme-color" content="#39ff14" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" type="image/png" href="./favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Droid+Sans:wght@400;700&family=Abril+Fatface&display=swap" rel="stylesheet">
+
+	<style>
+		*, *::before, *::after {
+			box-sizing: border-box;
+			cursor: none !important;
+		}
+
+		body, html {
+			margin: 0;
+			padding: 0;
+			min-height: 100%;
+			font-family: 'Inter', 'Droid Sans', sans-serif;
+			background-color: #0b0e14;
+			background-image: url('./loveLiME.jpg');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			color: #d5d5d5;
+			overflow-x: hidden;
+			display: flex;
+			flex-direction: column;
+		}
+
+		/* Custom cursor */
+		#cursor-i {
+			position: fixed;
+			pointer-events: none;
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: bold;
+			color: #000;
+			background: #39ff14;
+			border-radius: 50%;
+			box-shadow: 0 0 10px #39ff14, 0 0 20px rgba(57, 255, 20, 0.65);
+			transform: translate(-50%, -50%);
+			z-index: 999999;
+			user-select: none;
+			transition: opacity 0.15s ease;
+		}
+
+		@media (hover: none) and (pointer: coarse) {
+			*, *::before, *::after { cursor: auto !important; }
+			#cursor-i { display: none !important; }
+		}
+
+		/* Top-left "i" logo */
+		.floating-logo {
+			position: fixed;
+			top: 25px;
+			left: 35px;
+			z-index: 1000;
+		}
+
+		.floating-logo a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+			color: #39ff14;
+			font-family: 'Abril Fatface', serif;
+			font-size: 2.2em;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.55);
+			transition: transform 0.2s ease, text-shadow 0.2s ease;
+		}
+
+		.floating-logo a:hover {
+			transform: scale(1.08);
+			text-shadow: 0 0 20px rgba(57, 255, 20, 0.9);
+		}
+
+		/* Side buttons */
+		.right-nav-dock {
+			position: fixed;
+			top: 50%;
+			right: 25px;
+			transform: translateY(-50%);
+			background: rgba(0, 0, 0, 0.72);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(57, 255, 20, 0.28);
+			border-radius: 16px;
+			padding: 12px 10px;
+			z-index: 1000;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 0 15px rgba(57, 255, 20, 0.08);
+		}
+
+		.right-nav-dock ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			text-align: right;
+		}
+
+		.right-nav-dock a.nav-item {
+			display: block;
+			padding: 9px 16px;
+			color: #ddd;
+			text-decoration: none;
+			font-family: 'Inter', sans-serif;
+			font-weight: 600;
+			font-size: 14.5px;
+			border-radius: 10px;
+			border-right: 3px solid transparent;
+			transition: all 0.25s ease;
+		}
+
+		.right-nav-dock a.nav-item:hover,
+		.right-nav-dock a.nav-item.active {
+			color: #39ff14;
+			background: rgba(57, 255, 20, 0.1);
+			border-right: 3px solid #39ff14;
+			transform: translateX(-3px);
+			text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+		}
+
+		.contact-section {
+			flex: 1;
+			background: radial-gradient(circle at 50% 25%, rgba(12, 208, 22, 0.15) 0%, rgba(9, 88, 184, 0.15) 50%, rgba(11, 14, 20, 0.82) 100%);
+			padding: 80px 20px 70px;
+		}
+
+		.contact-container {
+			max-width: 980px;
+			margin: 0 auto;
+		}
+
+		.contact-header {
+			text-align: center;
+			margin-bottom: 28px;
+		}
+
+		.contact-title {
+			font-size: 3em;
+			font-weight: 700;
+			color: #ffffff;
+			margin: 0 0 10px 0;
+			text-shadow: 0 0 18px rgba(57, 255, 20, 0.35), 0 2px 6px rgba(0, 0, 0, 0.9);
+		}
+
+		.contact-subtitle {
+			font-size: 1.15em;
+			color: #39ff14;
+			font-weight: 600;
+			letter-spacing: 1.5px;
+			text-transform: uppercase;
+			margin: 0 0 14px 0;
+			text-shadow: 0 0 10px rgba(57, 255, 20, 0.35);
+		}
+
+		.contact-desc {
+			font-size: 1.1em;
+			color: #d5d5d5;
+			max-width: 540px;
+			margin: 0 auto;
+			line-height: 1.6;
+			text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+		}
+
+		.warning-banner {
+			background: rgba(0, 0, 0, 0.65);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 193, 7, 0.45);
+			border-left: 4px solid #ffc107;
+			border-radius: 12px;
+			padding: 12px 18px;
+			margin: 0 auto 28px;
+			max-width: 760px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			font-size: 0.95em;
+			color: #ececec;
+			text-align: center;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+		}
+
+		.warning-banner strong {
+			color: #ffc107;
+		}
+
+		.contact-top-grid {
+			display: grid;
+			grid-template-columns: 1.25fr 0.95fr;
+			gap: 24px;
+			margin-bottom: 45px;
+			align-items: stretch;
+		}
+
+		.glass-card {
+			background: rgba(0, 0, 0, 0.65);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(57, 255, 20, 0.25);
+			border-radius: 16px;
+			padding: 32px 30px;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+			display: flex;
+			flex-direction: column;
+		}
+
+		.card-heading {
+			font-size: 1.65em;
+			font-weight: 700;
+			color: #ffffff;
+			margin: 0 0 20px 0;
+			text-align: center;
+			text-shadow: 0 0 12px rgba(57, 255, 20, 0.25);
+		}
+
+		/* Gmail highlight box */
+		.general-email-box {
+			background: rgba(57, 255, 20, 0.07);
+			border: 1px solid rgba(57, 255, 20, 0.35);
+			border-radius: 12px;
+			padding: 16px;
+			text-align: center;
+			margin-bottom: 22px;
+		}
+
+		.general-email-label {
+			display: block;
+			font-size: 0.78em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+			color: #39ff14;
+			margin-bottom: 6px;
+		}
+
+		.general-email-link {
+			color: #ffffff;
+			font-size: 1.08em;
+			font-weight: 600;
+			text-decoration: none;
+			word-break: break-all;
+			transition: color 0.2s ease, text-shadow 0.2s ease;
+		}
+
+		.general-email-link:hover {
+			color: #39ff14;
+			text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+		}
+
+		/* Owner emails list */
+		.owner-list-title {
+			font-size: 0.82em;
+			text-transform: uppercase;
+			letter-spacing: 1.2px;
+			color: #888;
+			margin: 0 0 12px 0;
+			font-weight: 700;
+		}
+
+		.owner-list {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			margin-top: auto;
+		}
+
+		.owner-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding-bottom: 12px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.owner-row:last-child {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+
+		.owner-name {
+			font-weight: 600;
+			font-size: 1.05em;
+			color: #e0e0e0;
+		}
+
+		.status-offline-pill {
+			font-size: 0.82em;
+			font-weight: 600;
+			color: #999;
+			background: rgba(255, 255, 255, 0.06);
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			padding: 4px 10px;
+			border-radius: 8px;
+		}
+
+		/* Phone card */
+		.phone-card-body {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			padding: 15px 10px;
+		}
+
+		.phone-number-status {
+			font-family: monospace;
+			font-size: 1.85em;
+			font-weight: 700;
+			color: #39ff14;
+			background: rgba(57, 255, 20, 0.06);
+			border: 1px dashed rgba(57, 255, 20, 0.35);
+			border-radius: 12px;
+			padding: 16px 24px;
+			margin-bottom: 18px;
+			text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+		}
+
+		.phone-subtext {
+			font-size: 1em;
+			color: #ccc;
+			line-height: 1.5;
+			margin: 0 0 12px 0;
+		}
+
+		.phone-footnote {
+			font-size: 0.82em;
+			color: #777;
+			margin-top: auto;
+		}
+
+		.discord-open-row {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 50px;
+			max-width: 860px;
+			margin: 0 auto;
+		}
+
+		.discord-side-blurb {
+			flex: 1;
+			max-width: 380px;
+			border-left: 3px solid #39ff14;
+			padding-left: 22px;
+			text-align: left;
+		}
+
+		.discord-side-tag {
+			display: inline-block;
+			font-size: 0.8em;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			color: #39ff14;
+			margin-bottom: 8px;
+			text-shadow: 0 0 10px rgba(57, 255, 20, 0.45);
+		}
+
+		.discord-side-heading {
+			font-size: 2em;
+			font-weight: 700;
+			color: #ffffff;
+			margin: 0 0 12px 0;
+			text-shadow: 0 0 18px rgba(57, 255, 20, 0.3), 0 2px 8px rgba(0, 0, 0, 0.95);
+		}
+
+		.discord-side-text {
+			font-size: 1.2em;
+			line-height: 1.6;
+			color: #e0e0e0;
+			margin: 0;
+			text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
+		}
+
+		/* Discordddddd */
+		.discord-widget-standalone {
+			width: 100%;
+			max-width: 380px;
+			border-radius: 20px;
+			overflow: hidden;
+			border: 1px solid rgba(57, 255, 20, 0.35);
+			box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 25px rgba(57, 255, 20, 0.15);
+			flex-shrink: 0;
+		}
+
+		.discord-widget-standalone iframe {
+			display: block;
+			cursor: auto !important;
+		}
+
+		.site-footer {
+			text-align: center;
+			padding: 18px 20px;
+			background: rgba(0, 0, 0, 0.9);
+			border-top: 1px solid rgba(57, 255, 20, 0.2);
+			font-size: 11.5px;
+			letter-spacing: 0.6px;
+			color: rgb(213, 213, 213);
+		}
+
+		/* Mobile stuff */
+		@media (max-width: 900px) {
+			.floating-logo {
+				position: static;
+				display: flex;
+				justify-content: center;
+				padding: 20px 0 5px;
+				background: rgba(11, 14, 20, 0.85);
+			}
+
+			.right-nav-dock {
+				position: sticky;
+				top: 10px;
+				right: auto;
+				transform: none;
+				margin: 10px auto 0;
+				width: max-content;
+				max-width: 94%;
+				padding: 8px 12px;
+			}
+
+			.right-nav-dock ul {
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 6px;
+			}
+
+			.right-nav-dock a.nav-item {
+				padding: 6px 12px;
+				font-size: 13.5px;
+				border-right: none;
+				border-bottom: 2px solid transparent;
+			}
+
+			.right-nav-dock a.nav-item:hover,
+			.right-nav-dock a.nav-item.active {
+				transform: translateY(-2px);
+				border-right: none;
+				border-bottom: 2px solid #39ff14;
+			}
+
+			.contact-section {
+				padding-top: 35px;
+			}
+
+			.contact-top-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.discord-open-row {
+				flex-direction: column;
+				gap: 28px;
+				text-align: center;
+			}
+
+			.discord-side-blurb {
+				border-left: none;
+				border-bottom: 2px solid #39ff14;
+				padding-left: 0;
+				padding-bottom: 16px;
+				text-align: center;
+			}
+
+			.contact-title {
+				font-size: 2.3em;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- Custom Cursor -->
+	<div id="cursor-i">i</div>
+
+	<div class="floating-logo">
+		<a href="./index.html">i</a>
+	</div>
+
+	<nav class="right-nav-dock">
+		<ul>
+			<li><a href="./index.html" class="nav-item">Info</a></li>
+			<li><a href="https://limenetwork.dev/join" class="nav-item">Join</a></li>
+			<li><a href="https://limenetwork.dev/join#rules" class="nav-item">Rules</a></li>
+			<li><a href="https://limenetwork.dev/browser" class="nav-item">Browser</a></li>
+			<li><a href="https://limenetwork.dev/staff" class="nav-item">Staff</a></li>
+			<li><a href="https://limenetwork.dev/contact" class="nav-item active">Contact Us</a></li>
+			<li><a href="#" class="nav-item">Feedback</a></li>
+		</ul>
+	</nav>
+
+	<main class="contact-section">
+		<div class="contact-container">
+			
+			<div class="contact-header">
+				<h1 class="contact-title">Contact Us</h1>
+				<p class="contact-subtitle">LiME Network • Crossplay Survival</p>
+				<p class="contact-desc">
+					Questions about the server? Need support or want to join the team?<br>
+					Reach out anytime — we've got you covered.
+				</p>
+			</div>
+
+			<!-- Smoll notice :> -->
+			<div class="warning-banner">
+				<span>⚠️ <strong>Notice:</strong> Our custom owner emails and phone support line are currently down while we set up new ones. Our general Gmail and Discord are fully active!</span>
+			</div>
+
+			<div class="contact-top-grid">
+				
+				<!-- Emails card -->
+				<div class="glass-card">
+					<h2 class="card-heading">Email Support</h2>
+					
+					<!-- Active email -->
+					<div class="general-email-box">
+						<span class="general-email-label">General Server Email (Active)</span>
+						<a href="mailto:thelimenetworkserver@gmail.com" class="general-email-link">
+							thelimenetworkserver@gmail.com
+						</a>
+					</div>
+
+					<!-- Owner emails are down -->
+					<p class="owner-list-title">Direct Owner Emails</p>
+					<div class="owner-list">
+						<div class="owner-row">
+							<span class="owner-name">Kainy</span>
+							<!-- Uncomment when remade: <a href="mailto:KainyxDzz@LiMEowner.dev" class="general-email-link">KainyxDzz@LiMEowner.dev</a> -->
+							<span class="status-offline-pill">Remaking Soon</span>
+						</div>
+						<div class="owner-row">
+							<span class="owner-name">Savage</span>
+							<!-- Uncomment when remade: <a href="mailto:Savageangel7749@LiMEowner.dev" class="general-email-link">Savageangel7749@LiMEowner.dev</a> -->
+							<span class="status-offline-pill">Remaking Soon</span>
+						</div>
+						<div class="owner-row">
+							<span class="owner-name">Mr. Earth</span>
+							<!-- Uncomment when remade: <a href="mailto:OpticEarth@LiMEowner.dev" class="general-email-link">OpticEarth@LiMEowner.dev</a> -->
+							<span class="status-offline-pill">Remaking Soon</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="glass-card">
+					<h2 class="card-heading">Phone Support</h2>
+					<div class="phone-card-body">
+						<div class="phone-number-status">Temporarily Down</div>
+						<p class="phone-subtext">
+							We are picking up a new official number soon!
+						</p>
+						<p class="phone-footnote">
+							Active support hours will be posted once the new number is live.
+						</p>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="discord-open-row">
+				<div class="discord-side-blurb">
+					<span class="discord-side-tag">Live Community &amp; Tickets</span>
+					<h2 class="discord-side-heading">Discord Support</h2>
+					<p class="discord-side-text">
+						Need a quick reply? Our staff practically lives in Discord — hop in for the fastest help!
+					</p>
+				</div>
+
+				<div class="discord-widget-standalone" id="discord-frame-box">
+					<iframe
+						src="https://ptb.discord.com/widget?id=802506842981793823&amp;theme=dark"
+						width="100%"
+						height="500"
+						allowtransparency="true"
+						frameborder="0"
+						sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts">
+					</iframe>
+				</div>
+			</div>
+
+		</div>
+	</main>
+
+	<footer class="site-footer">
+		NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
+	</footer>
+
+	<script>
+		// Custom cursor tracking
+		const cursor = document.getElementById('cursor-i');
+		document.addEventListener('mousemove', (e) => {
+			cursor.style.left = e.clientX + 'px';
+			cursor.style.top  = e.clientY + 'px';
+		});
+		document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
+		document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
+
+		// Hide custom cursor when hovering inside the Discord iframe so it doesn't freeze on the edge like it dose on other pages >:(
+		const dcBox = document.getElementById('discord-frame-box');
+		if (dcBox) {
+			dcBox.addEventListener('mouseenter', () => { cursor.style.opacity = '0'; });
+			dcBox.addEventListener('mouseleave', () => { cursor.style.opacity = '1'; });
+		}
+	</script>
+</body>
+</html>
